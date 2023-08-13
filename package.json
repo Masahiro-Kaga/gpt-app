@@ -150,5 +150,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13"
   }
 }
