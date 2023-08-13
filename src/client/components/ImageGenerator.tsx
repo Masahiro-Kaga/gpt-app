@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import Button from '@mui/material/Button';
+
 
 const ImageGenerator = () => {
   const getImages = async()=> {
@@ -11,10 +13,12 @@ const ImageGenerator = () => {
     }
   }
   return (
-    <div>
+    <>
       <input type="text" />
-      <button>Create</button>
-    </div>
+      <input className="border-solid"></input>
+      <button className="text-[#50d71e]">Create</button>
+      <Button variant="outlined">Outlined</Button>
+    </>
   )
 }
 
