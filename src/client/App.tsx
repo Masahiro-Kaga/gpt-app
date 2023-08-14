@@ -1,10 +1,14 @@
 import React from 'react';
-import ImageGenerator from './components/ImageGenerator';
+import ImageGeneratorPage from './pages/ImageGeneratorPage';
+import Header from './components/common/Header';
+import Footer from './components/common/Footer';
 
 function App() {
   return (
     <div>
-      <ImageGenerator></ImageGenerator>
+      <Header></Header>
+      <ImageGeneratorPage></ImageGeneratorPage>
+      <Footer></Footer>
     </div>
   );
 }
