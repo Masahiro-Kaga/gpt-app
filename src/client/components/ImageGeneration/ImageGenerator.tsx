@@ -1,24 +1,48 @@
 import { Button } from "@mui/material";
 import Slider from "@mui/material/Slider";
-import React from "react";
+import { useState } from "react";
 import axios from "axios";
 
+interface ImageData {
+  url: string;
+}
+
 const ImageGenerator = () => {
+  const [imagePrompt, setImagePrompt] = useState("");
+  const [imageURLs, setImageURLs] = useState<{ data: ImageData[] }>({
+    data: [],
+  });
   const getImages = async () => {
     try {
-      // const options = {
-
-      // };
-      const data = { key1: "Value1", key2: "Value2" };
-      const response = await axios.post("http://localhost:8000/imageGenerator/images", data);
+      const data = { prompt: imagePrompt };
+      const response = await axios.post(
+        "http://localhost:8000/imageGenerator/images",
+        data
+      );
       console.log("Clicked!");
+      console.log(response);
+      if (response.data.data[0].test) {
+        setImageURLs({
+          data: [
+            {
+              url: "/images/image-generator/for_test-DALL_E.png",
+            },
+          ],
+        });
+      } else {
+        setImageURLs(response.data);
+      }
     } catch (error) {
       console.error(error);
     }
   };
   return (
     <>
-      <input className="border-solid"></input>
+      <input
+        className="border-solid"
+        value={imagePrompt}
+        onChange={(event) => setImagePrompt(event.target.value)}
+      ></input>
       <button className="text-[#50d71e]" onClick={getImages}>
         Create
       </button>
@@ -29,6 +53,17 @@ const ImageGenerator = () => {
         aria-label="Small"
         valueLabelDisplay="auto"
       />
+      <figure>
+        <img src="/images/image-generator/for_test-DALL_E.png" alt="" />
+      </figure>
+      <section>
+        {imageURLs.data?.map((source: ImageData, index: number) => (
+          <div key={index}>
+            <img src={source.url}></img>
+            <div>{source.url}</div>
+          </div>
+        ))}
+      </section>
     </>
   );
 };

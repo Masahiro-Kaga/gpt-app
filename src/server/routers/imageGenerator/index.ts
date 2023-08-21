@@ -1,4 +1,7 @@
 import express, { Request, Response } from "express";
+import dotenv from 'dotenv';
+dotenv.config();
+
 const router = express.Router();
 
 const { Configuration, OpenAIApi } = require("openai");
@@ -9,15 +12,19 @@ const openai = new OpenAIApi(configuration);
 
 router.post("/images", async(req:Request,res:Response)=>{
     try {
-        // const response = await openai.createImage({
-        //     prompt: "A cute baby sea other",
-        //     n: 2,
-        //     size: "1024x1024"
-        // });
-        // console.log(response);
-        // res.send(response.data.data);
-        console.log(req.body);
-        console.log("Success Post");
+        if (process.env.EXECUTABLE_DALL_E){
+            // const response = await openai.createImage({
+            //     prompt: req.body.prompt ? req.body.prompt : "Cute baby",
+            //     n: 1,
+            //     size: "1024x1024"
+            // });
+            
+            res.json({ created: Math.floor(Date.now() / 1000), data: [{test:true}] });
+            // console.log(response);
+            // res.json(response.data);
+        } else {
+            res.json({ created: Math.floor(Date.now() / 1000), data: [{test:true}] });
+        }
     } catch (error) {
         console.error(error)
     }
