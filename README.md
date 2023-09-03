@@ -1,3 +1,6 @@
+// 8/20 SCSSをインストール、で、早速使用開始したいところ。
+// Video 3:45:36、次はImage Variationの部分。
+
 GPT App
 
 使用モデル

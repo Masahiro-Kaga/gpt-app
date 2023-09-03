@@ -64,6 +64,7 @@ const ImageGenerator = () => {
           </div>
         ))}
       </section>
+      <div className="testcss">Test SCSS</div>
     </>
   );
 };
