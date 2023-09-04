@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import Slider from "@mui/material/Slider";
 import { useState } from "react";
 import axios from "axios";
 
@@ -14,28 +13,28 @@ const ImageGenerator = () => {
   });
   const getImages = async () => {
     try {
-      const data = { prompt: imagePrompt };
-      const response = await axios.post(
-        "http://localhost:8000/imageGenerator/images",
-        data
-      );
+      // const data = { prompt: imagePrompt };
+      // const response = await axios.post(
+      //   "http://localhost:8000/imageGenerator/images",
+      //   data
+      // );
       console.log("Clicked!");
-      console.log(response);
-      if (response.data.data[0].test) {
-        setImageURLs({
-          data: [
-            {
-              url: "/images/image-generator/for_test-DALL_E.png",
-            },
-          ],
-        });
-      } else {
-        setImageURLs(response.data);
-      }
+      // if (response.data.data[0].test) {
+      //   setImageURLs({
+      //     data: [
+      //       {
+      //         url: "/images/image-generator/for_test-DALL_E.png",
+      //       },
+      //     ],
+      //   });
+      // } else {
+      //   setImageURLs(response.data);
+      // }
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <>
       <input
@@ -43,19 +42,11 @@ const ImageGenerator = () => {
         value={imagePrompt}
         onChange={(event) => setImagePrompt(event.target.value)}
       ></input>
-      <button className="text-[#50d71e]" onClick={getImages}>
-        Create
-      </button>
-      <Button variant="outlined">Outlined</Button>
-      <Slider
-        size="small"
-        defaultValue={70}
-        aria-label="Small"
-        valueLabelDisplay="auto"
-      />
-      <figure>
-        <img src="/images/image-generator/for_test-DALL_E.png" alt="" />
-      </figure>
+
+      <Button variant="outlined" onClick={getImages}>Create</Button>
+      {/* <figure>
+        <img src="ANY IMAGE HERE" alt="" />
+      </figure> */}
       <section>
         {imageURLs.data?.map((source: ImageData, index: number) => (
           <div key={index}>
@@ -64,7 +55,6 @@ const ImageGenerator = () => {
           </div>
         ))}
       </section>
-      <div className="testcss">Test SCSS</div>
     </>
   );
 };
