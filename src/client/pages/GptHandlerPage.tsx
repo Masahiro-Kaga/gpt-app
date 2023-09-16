@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import GptHandler from "../components/GptHandle/GptHandler";
 import SideSettingDrawer from "../components/common/SideSettingDrawer";
 
-const GptHandlePage = () => {
+const GptHandlerPage = () => {
   const containerStyle = css`
     position:relative; 
   `
@@ -26,4 +26,4 @@ const GptHandlePage = () => {
   )
 }
 
-export default GptHandlePage
+export default GptHandlerPage

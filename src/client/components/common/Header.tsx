@@ -11,18 +11,24 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <Box sx={{ flexGrow: 1, padding: { xs: "100px", sm: "20px" } }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        padding: { xs: "100px", sm: "20px" },
+        maxWidth: "1500px",
+        margin: "auto",
+      }}
+    >
       <AppBar
         position="static"
         sx={{
           borderRadius: "25px 25px 25px 25px",
-          bgcolor: "white",
-          minHeight: "100px",
+          bgcolor: "rgba(255,255,255,0.7)",
         }}
       >
         <Toolbar sx={{ alignSelf: "flex-center" }}>
           <IconButton component={Link} to="/">
-            <SvgIcon sx={{ fontSize: "120px" }}>
+            <SvgIcon sx={{ fontSize: "60px" }}>
               <PlayAiLogoButton></PlayAiLogoButton>
             </SvgIcon>
           </IconButton>
@@ -32,23 +38,23 @@ export default function Header() {
               to="/image-generation"
               variant="contained"
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1rem",
                 backgroundColor: "rgb(230, 77, 92)",
                 "&:hover": {
                   color: "black",
                   backgroundColor: "white",
                 },
-                marginRight:'10px'
+                marginRight: "10px",
               }}
             >
-              Image Generater
+              Image Generator
             </Button>
             <Button
               component={Link}
               to="/gpt-handler"
               variant="contained"
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1rem",
                 backgroundColor: "rgb(0, 198, 181)",
                 "&:hover": {
                   color: "black",
