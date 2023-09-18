@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AppBar,
   Box,
@@ -6,10 +7,14 @@ import {
   IconButton,
   SvgIcon,
 } from "@mui/material";
-import { ReactComponent as PlayAiLogoButton } from "../../logo/logo.svg";
 import { Link } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
 
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const loginHandler = (loginOrOut:boolean) => setIsLoggedIn(loginOrOut);
+  
+
   return (
     <Box
       sx={{
@@ -26,13 +31,18 @@ export default function Header() {
           bgcolor: "rgba(255,255,255,0.7)",
         }}
       >
-        <Toolbar sx={{ alignSelf: "flex-center" }}>
-          <IconButton component={Link} to="/">
-            <SvgIcon sx={{ fontSize: "60px" }}>
-              <PlayAiLogoButton></PlayAiLogoButton>
-            </SvgIcon>
-          </IconButton>
-          <Box sx={{ marginLeft: "auto" }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+            <IconButton sx={{ '&:hover': { backgroundColor: 'rgba(0,0,0,0.0)' } }} component={Link} to="/">
+              <Avatar alt="logo" src="/images/logo2.png" sx={{ borderRadius: 0 }} style={{ width: '100%', objectFit: 'contain'}} />
+              {/* <img alt="logo" src="/images/logo2.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
+            </IconButton>
+          <Box>
             <Button
               component={Link}
               to="/image-generation"
@@ -45,6 +55,7 @@ export default function Header() {
                   backgroundColor: "white",
                 },
                 marginRight: "10px",
+                marginLeft: "50px",
               }}
             >
               Image Generator
@@ -65,6 +76,7 @@ export default function Header() {
               GPT Handler
             </Button>
           </Box>
+          <Button onClick={()=>loginHandler(!isLoggedIn)}>{isLoggedIn ? "Logout" : "Login"}</Button>
         </Toolbar>
       </AppBar>
     </Box>
