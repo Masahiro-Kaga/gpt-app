@@ -1,17 +1,24 @@
 version: '3'
 services:
   mongo:
+    container_name: mongo-gptapp
     image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+
     ports:
-      - "27017:27017"
+      - "${MONGODB_PORT}:27022"
     volumes:
       - mongo_data:/data/db
+      - ./mongod.conf.orig:/etc/mongod.conf.orig
 
   gpt-app:
+    container_name: node-gptapp
     build: .
     ports:
-      - "8000:8000"
-      - "3000:3000"
+      - "${SERVER_PORT}:8005"
+      - "${CLIENT_PORT}:3005"
     depends_on:
       - mongo
 
