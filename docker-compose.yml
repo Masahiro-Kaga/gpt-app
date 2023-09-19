@@ -8,17 +8,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
 
     ports:
-      - "${MONGODB_PORT}:27022"
+      - "${MONGODB_PORT}:27017"
     volumes:
       - mongo_data:/data/db
-      - ./mongod.conf.orig:/etc/mongod.conf.orig
 
   gpt-app:
     container_name: node-gptapp
     build: .
     ports:
-      - "${SERVER_PORT}:8005"
-      - "${CLIENT_PORT}:3005"
+      - "${SERVER_PORT}:8000"
+      - "${CLIENT_PORT}:3000"
     depends_on:
       - mongo
 

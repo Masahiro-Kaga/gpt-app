@@ -78,7 +78,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run client\" \"npm run server\"",
-    "client": "PORT=3005 node scripts/start.js",
+    "client": "node scripts/start.js",
     "server": "ts-node ./src/server/index.ts",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
