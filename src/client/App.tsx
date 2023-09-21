@@ -1,17 +1,28 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import ImageGeneratorPage from "./pages/ImageGeneratorPage";
 import GptHandlerPage from "./pages/GptHandlerPage";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
     <Router>
-      <Header></Header>
       <Routes>
-        <Route path="/image-generation" Component={ImageGeneratorPage} />
-        <Route path="/gpt-handler" Component={GptHandlerPage} />
+        <Route path="/" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Header></Header>
+              <Outlet />
+            </>
+          }
+        >
+          <Route path="image-generation" element={<ImageGeneratorPage />} />
+          <Route path="gpt-handler" element={<GptHandlerPage />} />{" "}
+        </Route>
       </Routes>
       <Footer></Footer>
     </Router>

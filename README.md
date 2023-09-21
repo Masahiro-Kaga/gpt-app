@@ -43,3 +43,13 @@ GPT App
 [Whisper]
 - [ ]: ページデザイン
 - [ ]: サイドメニューの設定項目
+
+
+
+
+Localでmongodbを起動する。
+ - brew services start mongodb/brew/mongodb-community
+Localでmongodbを停止する。
+ - brew services stop mongodb/brew/mongodb-community
+Localでmondodbが動いてるかどうか確認する。
+ - brew services list

@@ -1,29 +1,14 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import GptHandler from "../components/GptHandle/GptHandler";
 import SideSettingDrawer from "../components/common/SideSettingDrawer";
+import BackgroundImage from "../components/common/BackgroundImage";
 
-const GptHandlerPage = () => {
-  const containerStyle = css`
-    position:relative; 
-  `
-  const backgroundStyle = css`
-    position:fixed;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    background: url('/images/background-images/gptHandler_bg.jpeg') no-repeat center center / cover;
-  `
+const GptHandlerPage: React.FC = () => {
   return (
-    <div css={containerStyle}>
-      <div css={backgroundStyle}></div>
+    <BackgroundImage url="/images/background-images/dashboard-bg.jpeg">
       <GptHandler></GptHandler>
       <SideSettingDrawer></SideSettingDrawer>
-    </div>
-  )
-}
+    </BackgroundImage>
+  );
+};
 
-export default GptHandlerPage
+export default GptHandlerPage;

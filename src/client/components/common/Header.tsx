@@ -12,8 +12,7 @@ import Avatar from "@mui/material/Avatar";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const loginHandler = (loginOrOut:boolean) => setIsLoggedIn(loginOrOut);
-  
+  const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);
 
   return (
     <Box
@@ -38,10 +37,19 @@ export default function Header() {
             justifyContent: "space-between",
           }}
         >
-            <IconButton sx={{ '&:hover': { backgroundColor: 'rgba(0,0,0,0.0)' } }} component={Link} to="/">
-              <Avatar alt="logo" src="/images/logo2.png" sx={{ borderRadius: 0 }} style={{ width: '100%', objectFit: 'contain'}} />
-              {/* <img alt="logo" src="/images/logo2.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
-            </IconButton>
+          <IconButton
+            sx={{ "&:hover": { backgroundColor: "rgba(0,0,0,0.0)" } }}
+            component={Link}
+            to="/"
+          >
+            <Avatar
+              alt="logo"
+              src="/images/logo2.png"
+              sx={{ borderRadius: 0 }}
+              style={{ width: "100%", objectFit: "contain" }}
+            />
+            {/* <img alt="logo" src="/images/logo2.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
+          </IconButton>
           <Box>
             <Button
               component={Link}
@@ -76,7 +84,9 @@ export default function Header() {
               GPT Handler
             </Button>
           </Box>
-          <Button onClick={()=>loginHandler(!isLoggedIn)}>{isLoggedIn ? "Logout" : "Login"}</Button>
+          <Button onClick={() => loginHandler(!isLoggedIn)}>
+            {isLoggedIn ? "Logout" : "Login"}
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
