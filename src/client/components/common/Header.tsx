@@ -5,10 +5,10 @@ import {
   Toolbar,
   Button,
   IconButton,
-  SvgIcon,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
+import ServiceButton from "./ServiceButton";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -51,38 +51,18 @@ export default function Header() {
             {/* <img alt="logo" src="/images/logo2.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
           </IconButton>
           <Box>
-            <Button
-              component={Link}
+            <ServiceButton
               to="/image-generation"
-              variant="contained"
-              sx={{
-                fontSize: "1rem",
-                backgroundColor: "rgb(230, 77, 92)",
-                "&:hover": {
-                  color: "black",
-                  backgroundColor: "white",
-                },
-                marginRight: "10px",
-                marginLeft: "50px",
-              }}
-            >
-              Image Generator
-            </Button>
-            <Button
-              component={Link}
+              backgroundColor="rgb(230, 77, 92)"
+              disabled={false}
+              title="Image Generator"
+            ></ServiceButton>
+            <ServiceButton
               to="/gpt-handler"
-              variant="contained"
-              sx={{
-                fontSize: "1rem",
-                backgroundColor: "rgb(0, 198, 181)",
-                "&:hover": {
-                  color: "black",
-                  backgroundColor: "white",
-                },
-              }}
-            >
-              GPT Handler
-            </Button>
+              backgroundColor="rgb(0, 198, 181)"
+              disabled={false}
+              title="GPT Handler"
+            ></ServiceButton>
           </Box>
           <Button onClick={() => loginHandler(!isLoggedIn)}>
             {isLoggedIn ? "Logout" : "Login"}
