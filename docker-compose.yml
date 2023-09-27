@@ -4,9 +4,9 @@ services:
     container_name: mongo-gptapp
     image: mongo:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
-
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
     ports:
       - "${MONGODB_PORT}:27017"
     volumes:
@@ -18,8 +18,12 @@ services:
     ports:
       - "${SERVER_PORT}:8000"
       - "${CLIENT_PORT}:3000"
+    environment:
+      DOCKER_ENV: true
     depends_on:
       - mongo
-
+    volumes:
+      - .:/gpt-app
+      
 volumes:
   mongo_data:

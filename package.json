@@ -26,6 +26,7 @@
     "browserslist": "^4.18.1",
     "camelcase": "^6.2.1",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "chalk": "^4.1.2",
     "concurrently": "^8.2.0",
     "cors": "^2.8.5",
     "css-loader": "^6.5.1",
@@ -45,6 +46,8 @@
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
     "mini-css-extract-plugin": "^2.4.5",
+    "module-alias": "^2.2.3",
+    "mongoose": "^7.5.2",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.1",
     "openai": "^3.3.0",
@@ -133,6 +136,10 @@
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "_moduleAliases": {
+      "@modules": "build/modules",
+      "@core": "build/core"
     },
     "moduleFileExtensions": [
       "web.js",

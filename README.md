@@ -49,7 +49,13 @@ GPT App
 
 Localでmongodbを起動する。
  - brew services start mongodb/brew/mongodb-community
+Mongo bashを利用する。
+ - (mongodbを起動後)mongosh
 Localでmongodbを停止する。
  - brew services stop mongodb/brew/mongodb-community
 Localでmondodbが動いてるかどうか確認する。
  - brew services list
+
+mongo compassで、ローカルでmongo動かしてて、接続切るの忘れてcompass経由でDockerのmongoにアクセスしようとしたら、authentication failedになる。authentication情報は正しいのに、そういう文言になるので、注意。
+
+dockerのyml直した時に、特にmongoの部分だと、docker downしてもキャッシュが残ってしまう場合あるので、docker-compose down -vで捨てること。
