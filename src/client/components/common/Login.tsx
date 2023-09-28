@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import { Button, FormControl, Input, InputLabel } from "@mui/material";
 import ServiceButton from "./ServiceButton";
 import { useEffect, useState } from "react";
+import moment from 'moment-timezone';
 import axios from "axios";
 
 const commonContainerStyles = css`
@@ -28,13 +29,12 @@ const descriptionContainer = css`
   gap: 10px 0px;
 `;
 
+interface UserProps {
+  loginUsername: string;
+}
 interface InputFormProps {
   label: string;
   onChangeEvent: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-interface UserProps {
-  loginUsername: string;
 }
 
 const InputForm: React.FC<InputFormProps> = ({ label, onChangeEvent }) => {
@@ -55,15 +55,54 @@ const InputForm: React.FC<InputFormProps> = ({ label, onChangeEvent }) => {
   );
 };
 
+interface SigninButtonProps {
+  // registerUser: (event: React.MouseEvent<HTMLElement>) => void;
+  registerUser: () => void;
+  typeOfButton: string;
+}
+
+const SigninButton: React.FC<SigninButtonProps> = ({
+  registerUser,
+  typeOfButton,
+}) => {
+  return (
+    <Button
+      sx={{
+        width: "200px",
+        margin: "25px 0",
+        alignSelf: "center",
+        backgroundColor: "white",
+        color: "black",
+        "&:hover": { backgroundColor: "rgba(255,255,255,0.7)" },
+      }}
+      variant="contained"
+      disabled={false}
+      onClick={registerUser}
+    >
+      {typeOfButton}
+    </Button>
+  );
+};
+
 const Login: React.FC = () => {
   const [user, setUser] = useState<UserProps>({ loginUsername: "" });
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const registerUser = async () => {
-    console.log(123)
+    console.log(123);
+    const localTime = moment.tz(moment.tz.guess()).format();
+    // これは言語設定のやつ
+    // const accessedRegion = navigator.language;
+    const accessedRegion = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(accessedRegion);
     try {
-      const response = await axios.post("http://localhost:8000/login", { username, password });
+      const response = await axios.post("http://localhost:8000/user", {
+        username,
+        password,
+        created:localTime,
+        accessedRegion,
+      });
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -88,21 +127,10 @@ const Login: React.FC = () => {
           label="Password"
           onChangeEvent={(event) => setPassword(event.target.value)}
         ></InputForm>
-        <Button
-          sx={{
-            width: "200px",
-            margin: "25px 0",
-            alignSelf: "center",
-            backgroundColor: "white",
-            color: "black",
-            "&:hover": { backgroundColor: "rgba(255,255,255,0.7)" },
-          }}
-          variant="contained"
-          disabled={false}
-          onClick={()=>registerUser()}
-        >
-          Login
-        </Button>
+        <div className="flex gap-4">
+          <SigninButton registerUser={registerUser} typeOfButton="Login" />
+          <SigninButton registerUser={registerUser} typeOfButton="Register" />
+        </div>
       </div>
       <div css={descriptionContainer}>
         <img src="/images/logo.png"></img>

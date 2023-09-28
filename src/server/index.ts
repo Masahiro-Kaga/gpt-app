@@ -13,7 +13,7 @@ const app = express();
 // 追加資料2：https://stackoverflow.com/questions/56650711/cannot-find-module-that-is-defined-in-tsconfig-paths
 // const imageGeneratorRoute = require(`${global.routersDir}/imageGenerator`);
 import imageGeneratorRoute from "@routers/imageGenerator/index";
-import loginRoute from "./routers/login";
+import userRoute from "./routers/user";
 import DBHandler from "./db";
 
 app.use(cors());
@@ -48,6 +48,6 @@ const connectDb = async () => {
 })();
 
 app.use("/imageGenerator", imageGeneratorRoute);
-app.use("/login", loginRoute);
+app.use("/user", userRoute);
 
 app.listen(port, () => console.log(`Server is running on PORT ${port}`));

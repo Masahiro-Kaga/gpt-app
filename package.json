@@ -49,6 +49,8 @@
     "jest-watch-typeahead": "^1.0.0",
     "mini-css-extract-plugin": "^2.4.5",
     "module-alias": "^2.2.3",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "mongoose": "^7.5.2",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.1",
@@ -84,7 +86,7 @@
   "scripts": {
     "start": "concurrently \"npm run client\" \"npm run server\"",
     "client": "node scripts/start.js",
-    "server": "ts-node ./src/server/index.ts",
+    "server": "nodemon --exec ts-node ./src/server/index.ts",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },

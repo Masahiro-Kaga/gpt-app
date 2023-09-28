@@ -13,6 +13,15 @@ const UserSchema = new Schema({
     required: true,
     type: String,
   },
+  accessedRegion: {
+    required:true,
+    type:String
+  },
+  // Dateにすると自動でUTCになるもんで。
+  created: {
+		type: String,
+		required: true,
+	},
 });
 
 // // This使っているので、アロー関数は無理。
@@ -23,7 +32,6 @@ UserSchema.pre("save", async function userPasswordHash(next) {
       const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
       const hash = await bcrypt.hash(user.password, salt);
       user.password = hash;
-      console.log(test)
       next();
       // https://www.youtube.com/watch?v=pEbA46E7c7o
     } catch (err) {

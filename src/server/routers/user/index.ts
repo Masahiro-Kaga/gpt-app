@@ -8,7 +8,6 @@ const router = express.Router();
 router.post("/", async (req: Request, res: Response) => {
   try {
     console.log(req.body);
-    console.log("successful");
     console.log(User);
     const newUser = new User(req.body);
     await newUser.save();
