@@ -50,6 +50,7 @@
     "jest": "^27.4.3",
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
+    "joi": "^17.10.2",
     "mini-css-extract-plugin": "^2.4.5",
     "module-alias": "^2.2.3",
     "moment": "^2.29.4",

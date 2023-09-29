@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import Joi from "joi";
 const { Schema } = mongoose;
 
 const SALT_WORK_FACTOR = 10;
@@ -22,6 +23,13 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
+});
+
+export const UserValidationSchema = Joi.object({
+  username: Joi.string().min(3).max(30).required(),
+  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+  accessedRegion: Joi.string().min(1).max(100).required(),
+  created: Joi.date().iso().required()
 });
 
 // // This使っているので、アロー関数は無理。
