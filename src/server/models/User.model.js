@@ -34,8 +34,10 @@ UserSchema.pre("save", async function userPasswordHash(next) {
       user.password = hash;
       next();
       // https://www.youtube.com/watch?v=pEbA46E7c7o
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      if(error instanceof Error){
+        console.error(error.message);
+      }
       next();
     }
   } else {

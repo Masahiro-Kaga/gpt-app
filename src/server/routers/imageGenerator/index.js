@@ -10,7 +10,7 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration);
 
-router.post("/images", async(req:Request,res:Response)=>{
+router.post("/images", async()=>{
     try {
         if (process.env.EXECUTABLE_DALL_E){
             // const response = await openai.createImage({

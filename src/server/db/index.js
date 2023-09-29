@@ -6,13 +6,6 @@ import chalk from 'chalk';
 
 const Collections = {};
 
-interface initProps {
-  driver: string;
-  username: string;
-  password: string;
-  database: string;
-}
-
 // Ver 6.0から標準でこの設定。型定義セットも既に存在しないのでエラー出る。
 // const mongooseConfig = {
 // 	useNewUrlParser: true,
@@ -35,7 +28,7 @@ class DBHandler {
    * @param {object} 	args.database 	The database name to connect to.
    * @returns {boolean} Whether the connection passed or not.
    */
-  static async init(args: initProps): Promise<boolean> {
+  static async init( args ) {
     const driver = args.driver;
     const username = args.username;
     const password = args.password;;
@@ -87,9 +80,33 @@ class DBHandler {
       return false;
     }
   }
-}
 
-// type ColorType = 'green' | 'red' | 'orange' | 'cyan' | 'blue';
+  /**
+	 * Grab single / first document corresponding to the table and find params.
+	 *
+	 * @param args An object of arguments.
+   * @param args.model The model schema to reference.
+	 * @param args.criteria Criteria object to filter documents fetched.
+	 * @returns Whether the query passed and relating data.
+	 */
+  static async getDocument(args) {
+    const {
+      model, criteria, fields = {}, populate = '', session = false,
+    } = args;
+    try {
+      const doc = await Collections[model]
+        .findOne(criteria, fields)
+        .populate(populate)
+        .session(session);
+      return { pass: !!doc, data: doc || `Failed to find ${model} document.` };
+    } catch (error) {
+      if(error instanceof Error){
+      console.log(error)
+      return {pass: false, data: error.message};
+    }
+  }
+}
+}
 
 /**
  * Display a console log output in a specified color.
@@ -97,14 +114,11 @@ class DBHandler {
  * @param {string} color 	The color to display in.
  * @param {(number | string | Array | object)} value	The value to output.
  */
-// function colorLog( color: ColorType | string, value: number | string | any[] | object): void {
-type ColorType = 'green' | 'red' | 'orange' | 'cyan' | 'blue';
-
 
 function colorLog(
-  color: ColorType,
-  value: number | string | any[] | object
-): void {
+  color,
+  value
+) {
   const colors = {
     green: chalk.green,
     red: chalk.red,

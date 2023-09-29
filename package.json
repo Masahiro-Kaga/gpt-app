@@ -86,7 +86,7 @@
   "scripts": {
     "start": "concurrently \"npm run client\" \"npm run server\"",
     "client": "node scripts/start.js",
-    "server": "nodemon --exec ts-node ./src/server/index.ts",
+    "server": "nodemon --exec ts-node ./src/server/index.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },

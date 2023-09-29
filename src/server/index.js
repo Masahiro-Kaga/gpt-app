@@ -24,10 +24,10 @@ app.use(express.json());
 const connectDb = async () => {
   try {
     return DBHandler.init({
-      driver: process.env.MONGODB_DRIVER ?? "",
-      username: process.env.MONGODB_USERNAME ?? "",
-      password: process.env.MONGODB_PASSWORD ?? "",
-      database: process.env.MONGODB_DATABASE ?? "",
+      driver: process.env.MONGODB_DRIVER || "",
+      username: process.env.MONGODB_USERNAME || "",
+      password: process.env.MONGODB_PASSWORD || "",
+      database: process.env.MONGODB_DATABASE || "",
     });
   } catch (error) {
     console.error("Error while connecting to the database:", error);
