@@ -59,3 +59,5 @@ Localでmondodbが動いてるかどうか確認する。
 mongo compassで、ローカルでmongo動かしてて、接続切るの忘れてcompass経由でDockerのmongoにアクセスしようとしたら、authentication failedになる。authentication情報は正しいのに、そういう文言になるので、注意。
 
 dockerのyml直した時に、特にmongoの部分だと、docker downしてもキャッシュが残ってしまう場合あるので、docker-compose down -vで捨てること。
+
+mkcertの利用も検討。

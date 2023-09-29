@@ -1,19 +1,15 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
+import { validateUser } from "./middleware";
 import User from "../../models/User.model"
 dotenv.config();
 
 const router = express.Router();
 
-router.post("/", async ( req,res ) => {
+router.post("/", validateUser, async ( req,res ) => {
   try {
     console.log(req.body);
     console.log(User);
-    const existingUser = await User.findOne( {username:req.body.username} );
-    console.log(existingUser)
-    if (existingUser) {
-        return res.json({ pass: false, data: "Username already taken." });
-    }
     const newUser = new User(req.body);
     await newUser.save();
     res.send({ pass: true, data: newUser });
