@@ -17,7 +17,7 @@ const Collections = {};
 /**
  * Static class for connecting to DB and making calls.
  */
-class DBHandler {
+export class DBHandler {
   /**
    * Initialize the mongoose connection and enable for Promises.
    *
@@ -70,14 +70,14 @@ class DBHandler {
         "green",
         `\nSuccessfully connected to DB ${database} as user: ${username}\n`
       );
-      return true;
+      return { pass: true , data: {url}};
     } catch (err) {
       console.log(err)
       colorLog(
         "red",
         `\nCould not connect to DB ${database} as user: ${username}\n`
       );
-      return false;
+      return { pass: false , data: "Cannot connect Mongodb: " + err.message};
     }
   }
 
@@ -158,5 +158,3 @@ function colorLog(
   // console.log(color + value); // display with color.
   // console.log(color + value + "\x1b[0m"); // reset.
 }
-
-export default DBHandler;
