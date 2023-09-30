@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import { validateUser } from "./middleware";
-import User from "../../models/User.model"
-import { UserValidationSchema } from "../../models/User.model";
+import User from "../../../models/User.model"
+import { UserValidationSchema } from "../../../models/User.model";
 dotenv.config();
 
 const router = express.Router();

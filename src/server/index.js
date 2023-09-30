@@ -7,10 +7,10 @@ import "module-alias/register";
 
 // requireとかimportする際、CommonJS（require）でしか、これは使えない。Ecma(import)じゃ無理ぽ。
 // でも他では使える。
-global.globalDir = path.resolve( __dirname, '../..' );
-global.serverDir = path.resolve( __dirname );
-global.routesDir = path.resolve( __dirname, './routes' );
-global.modulesDir = path.resolve( __dirname, './modules' );
+global.globalDir = path.resolve(__dirname, "../..");
+global.serverDir = path.resolve(__dirname);
+global.routesDir = path.resolve(__dirname, "./routes");
+global.modulesDir = path.resolve(__dirname, "./modules");
 
 dotenv.config();
 const port = process.env.SERVER_PORT;
@@ -24,8 +24,10 @@ const app = express();
 // jsconfig.json に書く,module-alias があるらしい。いまはtsやめたけど、なぜかtscofig.jsonが働いてくれてる。あとでなおす
 // https://qiita.com/ryo2020/items/3346c4f0c9786b416b72
 
-import imageGeneratorRoute from "@routers/imageGenerator/index";
-import userRoute from "@routers/user/index";
+// import imageGeneratorRoute from "@server/routers/api/imageGenerator/index";
+// import userRoute from "@routers/api/user/index";
+
+
 // import になると、テンプレートリテラルはみとめられていない。
 // import userRoute from `${global.routesDir}/user/index`;
 // ただ、動的importなるもんもあるらしい。でもこれも面倒らしい。
@@ -73,11 +75,14 @@ const activateRoutes = async (url) =>{
 (async () => {
   const isConnectedDb = await connectDb();
   const isActivateRoutes = await activateRoutes(isConnectedDb.data.url);
+  const router = await RouteHandler.getApiRoutes();
+  app.use(router);
+  console.log("router???");
+  console.log(router);
   console.log("connected???");
   console.log(isConnectedDb);
   console.log("isActivateRoutes???");
   console.log(isActivateRoutes);
-  
 
   if (!isConnectedDb.pass) {
     console.log("Unable to connect to mongodb, check console.");
@@ -86,13 +91,7 @@ const activateRoutes = async (url) =>{
   }
 })();
 
-// app.use( express.static('/public') );
-
-app.use("/imageGenerator", imageGeneratorRoute);
-app.use("/user", userRoute);
-
-console.log(globalDir);
-
-// app.use( '/assets', express.static( `${global.globalDir}/public/images` ) );
+// app.use("/imageGenerator", imageGeneratorRoute);
+// app.use("/user", userRoute);
 
 app.listen(port, () => console.log(`Server is running on PORT ${port}`));

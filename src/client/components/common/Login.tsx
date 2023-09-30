@@ -97,7 +97,7 @@ const Login: React.FC = () => {
     const accessedRegion = Intl.DateTimeFormat().resolvedOptions().timeZone;
     console.log(accessedRegion);
     try {
-      const response = await axios.post("http://localhost:8000/user", {
+      const response = await axios.post("http://localhost:8000/api/user", {
         username,
         password,
         created:localTime,

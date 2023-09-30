@@ -69,5 +69,57 @@ export class RouteHandler {
 			sessionMiddleware,
 		};
 	}
+
+	/**
+	 * Grab all api routes in /routes.
+	 *
+	 * @param {Function|boolean} apiRateLimitMiddleware Optional function to handle API rate limits on all API endpoints.
+	 * @returns {object} Express router object.
+	 */
+    static async getApiRoutes(apiRateLimitMiddleware = false) {
+        const router = express.Router();
+      
+        const apiTypes = ['api'];
+      
+        // Register both /api and /migrate endpoints.
+        for (const type of apiTypes) {
+          const apiDir = fs.readdirSync(path.join(__dirname, `./${type}`));
+          for (const r of apiDir) {
+            if (r === 'utilities') continue;
+      
+            const endpoint = r.replace('.js', '');
+            if (apiRateLimitMiddleware !== false) {
+              router.use(`/${type}/${endpoint}/`, apiRateLimitMiddleware);
+            }
+      
+            try {
+            console.log("testing1!")
+            const importedModule = await import(`./${type}/${r}`);
+            console.log(importedModule)
+            router.use(`/${type}/${endpoint}`, importedModule.default); // ここで .default を使っていることに注意
+            console.log("testing2!")
+            } catch (error) {
+              console.error(`Error importing module: ./${type}/${r}`, error);
+            }
+          }
+        }
+            
+		// Handle ≈≈≈ when passError = true.
+		router.use( ( err, req, res, next ) => {
+			if ( err && err.error && err.error.isJoi ) {
+			// we had a joi error, let's return a custom 400 json response
+				res.json( {
+					pass: false,
+					data: 'Validation errors please see details.',
+					errors: err.error.details.map( d => d.message ),
+				} );
+			} else {
+			// pass on to another error handler
+				next( err );
+			}
+		} );
+
+		return router;
+	}
 }
 
