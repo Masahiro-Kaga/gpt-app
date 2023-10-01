@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.post("/", validateUser, async ( req,res ) => {
   try {
-    console.log(req.body);
-    console.log(User);
+    console.log('req.headers???');
+    console.log(req.headers);
     const { error, value } = UserValidationSchema.validate(req.body);
     if (error) {
       return res.send(error.details[0].message);

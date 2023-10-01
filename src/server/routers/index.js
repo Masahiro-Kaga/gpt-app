@@ -25,10 +25,14 @@ export class RouteHandler {
 
         // Allow CORS from same origin.
 		const origin = [];
-		process.env.NODE_ENV === 'development' && origin.push( `${process.env.URL}:${process.env.CLIENT_PORT || 3000}` );
-		const corsSettings = { origin };
-		process.env.NODE_ENV === 'development' && ( corsSettings.credentials = true ); // Access-Control-Allow-Credentials when axios sent withCredentials.
-		router.use( cors( corsSettings ) );
+        process.env.NODE_ENV === 'development' && origin.push( `${process.env.REACT_APP_URL}:${process.env.REACT_APP_CLIENT_PORT || 3000}` );
+        const corsSettings = { origin };
+        process.env.NODE_ENV === 'development' && ( corsSettings.credentials = true ); // Access-Control-Allow-Credentials when axios sent withCredentials.
+        // const app = express();
+        // app.use( cors( {origin: 'http://localhost:3000', credentials: true} ) );
+        // router.use( cors( {origin: 'http://localhost:3000', credentials: true} ) );
+
+        router.use( cors( corsSettings ) );
 
         console.log('corsSettings???');
         console.log(corsSettings);
@@ -50,7 +54,10 @@ export class RouteHandler {
 				resave: false,
 				rolling: true,
 				saveUninitialized: false,
+
 				cookie: {
+                    secure:false,
+                    httpOnly:true,
 					maxAge: +( process.env.SESSION_TIMEOUT || 4 * 60 * 60 * 1000 ),
 				},
                 // requireを使う時は下のとおりだと思う。https://stackoverflow.com/questions/66654037/mongo-connect-error-with-mongo-connectsession
@@ -93,11 +100,8 @@ export class RouteHandler {
             }
       
             try {
-            console.log("testing1!")
             const importedModule = await import(`./${type}/${r}`);
-            console.log(importedModule)
             router.use(`/${type}/${endpoint}`, importedModule.default); // ここで .default を使っていることに注意
-            console.log("testing2!")
             } catch (error) {
               console.error(`Error importing module: ./${type}/${r}`, error);
             }

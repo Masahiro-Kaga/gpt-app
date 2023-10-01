@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-if ( process.env.ENV === 'development' ) {
-	axios.defaults.baseURL = `${process.env.URL}:${process.env.CLIENT_PORT || 3000}/`;
+// Frontだと、REACT_APP_を先につけないとenv変数が使えない、はずだが、たまに使えたりする。意味ふめい。実際にNODE_ENVは使えてる。
+if ( process.env.NODE_ENV === 'development' ) {
+	console.log(process.env.REACT_APP_NODE_ENV)
+	console.log(process.env.REACT_APP_URL)
+	console.log(process.env.REACT_APP_SERVER_PORT)
+	axios.defaults.baseURL = `${process.env.REACT_APP_URL}:${process.env.REACT_APP_SERVER_PORT || 8000}/`;
 	axios.defaults.withCredentials = true; // Allows for CORS cookies.
 }
 
@@ -9,6 +13,7 @@ if ( process.env.ENV === 'development' ) {
 axios.interceptors.response.use( response => response.data,
 	// Any status codes that falls outside the range of 2xx cause this function to trigger.
 	( err ) => {
+		console.log(err);
 		switch ( err.response.status ) {
 		// Internal Server Error.
 		case 500:

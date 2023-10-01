@@ -13,7 +13,7 @@ global.routesDir = path.resolve(__dirname, "./routes");
 global.modulesDir = path.resolve(__dirname, "./modules");
 
 dotenv.config();
-const port = process.env.SERVER_PORT;
+const port = process.env.REACT_APP_SERVER_PORT;
 const app = express();
 
 // TypeScriptはモジュールのインポートパスにテンプレートリテラルや変数を直接使用することを許可していないとのこと。
@@ -44,7 +44,9 @@ const app = express();
 import { DBHandler } from "./db";
 import { RouteHandler } from "./routers";
 
-app.use(cors());
+// app.use(cors());
+// app.use(cors({origin: 'http://localhost:3000', credentials: true}));
+
 app.use(express.json());
 
 // TypeScript 3.7 以降、nullish coalescing operatorを使用してデフォルトの値を指定することができる。||とほぼ同じ効果。
@@ -65,7 +67,7 @@ const connectDb = async () => {
 
 const activateRoutes = async (url) =>{
   try {
-    return RouteHandler.getMiddlewareRoutes(url);
+    return await RouteHandler.getMiddlewareRoutes(url);
   } catch (error) {
     console.error("Error while activating routers: ", error);
     return false;
@@ -74,19 +76,19 @@ const activateRoutes = async (url) =>{
 
 (async () => {
   const isConnectedDb = await connectDb();
-  const isActivateRoutes = await activateRoutes(isConnectedDb.data.url);
-  const router = await RouteHandler.getApiRoutes();
-  app.use(router);
-  console.log("router???");
-  console.log(router);
-  console.log("connected???");
-  console.log(isConnectedDb);
-  console.log("isActivateRoutes???");
-  console.log(isActivateRoutes);
+  // const isActivateRoutes = await activateRoutes(isConnectedDb.data.url);
+  // const router = await RouteHandler.getApiRoutes();
+  // app.use(router);
 
   if (!isConnectedDb.pass) {
     console.log("Unable to connect to mongodb, check console.");
   } else {
+    const { router: middlewareRouter } = await RouteHandler.getMiddlewareRoutes(isConnectedDb.data.url);
+    app.use(middlewareRouter);
+
+    const apiRouter = await RouteHandler.getApiRoutes();
+    app.use(apiRouter);
+
     console.log("Connected mongo.");
   }
 })();
