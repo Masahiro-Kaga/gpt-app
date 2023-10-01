@@ -5,6 +5,7 @@ import ServiceButton from "./ServiceButton";
 import { useEffect, useState } from "react";
 import moment from 'moment-timezone';
 import axios from "axios";
+import UserAuthButton from "./UserAuthButton";
 
 const commonContainerStyles = css`
   flex: 1;
@@ -55,34 +56,34 @@ const InputForm: React.FC<InputFormProps> = ({ label, onChangeEvent }) => {
   );
 };
 
-interface SigninButtonProps {
-  // registerUser: (event: React.MouseEvent<HTMLElement>) => void;
-  registerUser: () => void;
-  typeOfButton: string;
-}
+// interface UserAuthButtonProps {
+//   // userAction: (event: React.MouseEvent<HTMLElement>) => void;
+//   userAction: () => void;
+//   typeOfButton: string;
+// }
 
-const SigninButton: React.FC<SigninButtonProps> = ({
-  registerUser,
-  typeOfButton,
-}) => {
-  return (
-    <Button
-      sx={{
-        width: "200px",
-        margin: "25px 0",
-        alignSelf: "center",
-        backgroundColor: "white",
-        color: "black",
-        "&:hover": { backgroundColor: "rgba(255,255,255,0.7)" },
-      }}
-      variant="contained"
-      disabled={false}
-      onClick={registerUser}
-    >
-      {typeOfButton}
-    </Button>
-  );
-};
+// const UserAuthButton: React.FC<UserAuthButtonProps> = ({
+//   userAction,
+//   typeOfButton,
+// }) => {
+//   return (
+//     <Button
+//       sx={{
+//         width: "200px",
+//         margin: "25px 0",
+//         alignSelf: "center",
+//         backgroundColor: "white",
+//         color: "black",
+//         "&:hover": { backgroundColor: "rgba(255,255,255,0.7)" },
+//       }}
+//       variant="contained"
+//       disabled={false}
+//       onClick={userAction}
+//     >
+//       {typeOfButton}
+//     </Button>
+//   );
+// };
 
 const Login: React.FC = () => {
   const [user, setUser] = useState<UserProps>({ loginUsername: "" });
@@ -90,7 +91,6 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   const registerUser = async () => {
-    console.log(123);
     const localTime = moment.tz(moment.tz.guess()).format();
     // これは言語設定のやつ
     // const accessedRegion = navigator.language;
@@ -108,6 +108,11 @@ const Login: React.FC = () => {
       console.log(error);
     }
   };
+
+  const loginUser = async () => {
+    console.log(123);
+    
+  }
 
   useEffect(() => {
     console.log(username);
@@ -128,8 +133,8 @@ const Login: React.FC = () => {
           onChangeEvent={(event) => setPassword(event.target.value)}
         ></InputForm>
         <div className="flex gap-4">
-          <SigninButton registerUser={registerUser} typeOfButton="Login" />
-          <SigninButton registerUser={registerUser} typeOfButton="Register" />
+          <UserAuthButton userAction={loginUser} typeOfButton="Login" />
+          <UserAuthButton userAction={registerUser} typeOfButton="Register" />
         </div>
       </div>
       <div css={descriptionContainer}>
