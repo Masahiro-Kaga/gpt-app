@@ -100,7 +100,7 @@ const Login: React.FC = () => {
       const response = await axios.post("/api/user", {
         username,
         password,
-        created: localTime,
+        localTime,
         accessedRegion,
       });
       console.log(response);
@@ -110,13 +110,21 @@ const Login: React.FC = () => {
   };
 
   const loginUser = async () => {
-    console.log(123);
     try {
       const response = await axios.post("/api/user/login", {
         username,
         password
       });
-      console.log("response");
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const logoutUser = async () => {
+    console.log(9)
+    try {
+      const response = await axios.get("/api/user/logout");
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -144,6 +152,7 @@ const Login: React.FC = () => {
         <div className="flex gap-4">
           <UserAuthButton userAction={loginUser} typeOfButton="Login" />
           <UserAuthButton userAction={registerUser} typeOfButton="Register" />
+          <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
         </div>
       </div>
       <div css={descriptionContainer}>

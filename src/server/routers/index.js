@@ -36,7 +36,7 @@ export class RouteHandler {
 
         console.log('corsSettings???');
         console.log(corsSettings);
-
+		  
 		// Static Routes.
         
         // なんか、http://localhost:3000/images/logo2.pngでアクセスできるから、次のやつは特に必要ないみたい。てか静的ホスティングっていうみたい。
@@ -108,6 +108,7 @@ export class RouteHandler {
           }
         }
             
+		// Joi
 		// Handle ≈≈≈ when passError = true.
 		router.use( ( err, req, res, next ) => {
 			if ( err && err.error && err.error.isJoi ) {
@@ -123,6 +124,12 @@ export class RouteHandler {
 			}
 		} );
 
+		// エンドポイントなければ、ここ。
+		router.use((req,res) => {
+			console.log(req);
+			res.status(404).json({path:false, data:`Endpoint ${req.url} not found.`})
+		  })    
+	  
 		return router;
 	}
 }

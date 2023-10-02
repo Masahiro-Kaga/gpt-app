@@ -9,11 +9,17 @@ if ( process.env.NODE_ENV === 'development' ) {
 	axios.defaults.withCredentials = true; // Allows for CORS cookies.
 }
 
+axios.defaults.timeout = 2000; // 2秒のタイムアウトを設定
+
 // Any status code that lie within the range of 2xx cause this function to trigger.
 axios.interceptors.response.use( response => response.data,
 	// Any status codes that falls outside the range of 2xx cause this function to trigger.
 	( error ) => {
 		console.log(error);
+		// res.jsonがまさかのない場合で、レスポンスが帰ってこない場合はここ通る。
+		if (error.code === 'ECONNABORTED') {
+			return {pass:false,data:"Request timed out, No response."}
+        }
 		switch ( error.response.status ) {
 		// Internal Server Error.
 		case 500:
@@ -49,5 +55,6 @@ axios.interceptors.response.use( response => response.data,
 		default:
 			console.log( `Unhandled server response ${error.response.status}` );
 		}
-		return { pass: false, data: error.response.data };
+		// return { pass: false, data: error.response.data };
+		return { pass: false, data: "Hey" };
 	} );

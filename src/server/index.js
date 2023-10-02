@@ -93,6 +93,7 @@ const activateRoutes = async (url) =>{
   }
 })();
 
+
 // app.use("/imageGenerator", imageGeneratorRoute);
 // app.use("/user", userRoute);
 

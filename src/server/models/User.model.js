@@ -18,19 +18,32 @@ const UserSchema = new Schema({
     required:true,
     type:String
   },
-  // Dateにすると自動でUTCになるもんで。
-  created: {
+  // Date型にすると自動でUTCになってしまう。だからベットcreatedをさくせい。
+  localTime: {
 		type: String,
 		required: true,
 	},
+  created: {
+    type: Date,
+    default: new Date(),
+  }
 });
 
 export const UserValidationSchema = Joi.object({
-  username: Joi.string().min(3).max(30).required(),
-  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-  accessedRegion: Joi.string().min(1).max(100).required(),
-  created: Joi.date().iso().required()
+  username: Joi.string().min(3).max(30),
+  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+  accessedRegion: Joi.string().min(1).max(100),
+  localTime: Joi.date().iso()
 });
+
+// requiredは上のスキーマで対応、エラーの出方がわかりやすい。
+
+// export const UserValidationSchema = Joi.object({
+//   username: Joi.string().min(3).max(30).required(),
+//   password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+//   accessedRegion: Joi.string().min(1).max(100).required(),
+//   localTime: Joi.date().iso().required()
+// });
 
 // // This使っているので、アロー関数は無理。
 UserSchema.pre("save", async function userPasswordHash(next) {
