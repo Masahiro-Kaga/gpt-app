@@ -12,9 +12,9 @@ if ( process.env.NODE_ENV === 'development' ) {
 // Any status code that lie within the range of 2xx cause this function to trigger.
 axios.interceptors.response.use( response => response.data,
 	// Any status codes that falls outside the range of 2xx cause this function to trigger.
-	( err ) => {
-		console.log(err);
-		switch ( err.response.status ) {
+	( error ) => {
+		console.log(error);
+		switch ( error.response.status ) {
 		// Internal Server Error.
 		case 500:
 			console.log( 'Internal Server Error. redirecting to 500 page.' );
@@ -23,7 +23,7 @@ axios.interceptors.response.use( response => response.data,
 
 		// Session expired.
 		case 440:
-			console.log( err.request, 'Session expired. Logging out and redirecting to 440 page.' );
+			console.log( error.request, 'Session Expired. Logging out and redirecting to 440 page.' );
 			// router.push( '/error/440', () => {} );
 			// !!store.state.user === true && store.dispatch( 'logout' );
 			// store.commit( 'setUser', null );
@@ -47,7 +47,7 @@ axios.interceptors.response.use( response => response.data,
 			// router.push( '/error/401', () => {} );
 			break;
 		default:
-			console.log( `Unhandled server response ${err.response.status}` );
+			console.log( `Unhandled server response ${error.response.status}` );
 		}
-		return { pass: false, data: err.response.data };
+		return { pass: false, data: error.response.data };
 	} );

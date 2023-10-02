@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { Button, FormControl, Input, InputLabel } from "@mui/material";
 import ServiceButton from "./ServiceButton";
 import { useEffect, useState } from "react";
-import moment from 'moment-timezone';
+import moment from "moment-timezone";
 import axios from "axios";
 import UserAuthButton from "./UserAuthButton";
 
@@ -100,7 +100,7 @@ const Login: React.FC = () => {
       const response = await axios.post("/api/user", {
         username,
         password,
-        created:localTime,
+        created: localTime,
         accessedRegion,
       });
       console.log(response);
@@ -111,8 +111,17 @@ const Login: React.FC = () => {
 
   const loginUser = async () => {
     console.log(123);
-    
-  }
+    try {
+      const response = await axios.post("/api/user/login", {
+        username,
+        password
+      });
+      console.log("response");
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     console.log(username);
