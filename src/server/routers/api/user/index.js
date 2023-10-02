@@ -28,16 +28,17 @@ router.post("/", validateUser, async ( req,res ) => {
 router.post("/login", async (req,res)=> {
   try {
     if(!req.body.username) return res.status({pass: false, data: "Bad Request. Username is required."}) 
+    // もしユーザーいなければnullを返す。
     const user = await User.findOne( {username:req.body.username} );
-    // if(!user) return res.status().json({pass:false,data:"User not found."})
-    const isValidPassword = await bcrypt.compare(req.body.password, user.password);
-    // if(!isValidPassword) return res.json({pass:false, data:"Invalid password."})
+    // if(!user) return res.status(401).json({pass:false,data:"Unauthorized, User not found."})
+    const isValidPassword = user && await bcrypt.compare(req.body.password, user.password);
+    // if(!isValidPassword) return res.status(401).json({pass:false, data:"Unauthorized, Invalid password."})
     // 逆に、エラーの内容を明らかにさせないというのもセキュリティ上の対策。
     if(!user || !isValidPassword)　return res.status(401).json({pass:false, data:"Unauthorized. Invalid credentials."})
     res.json( {pass:true,data:"Successful to login."});
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({pass:false,data:"Internal Server Error."})
+    console.error(`Login error: ${error.message}`);
+    return res.status(500).json({pass:false,data:"Internal Server Error while user is logging in."})
   }
 })
 
