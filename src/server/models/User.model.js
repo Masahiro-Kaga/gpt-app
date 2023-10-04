@@ -36,6 +36,11 @@ export const UserValidationSchema = Joi.object({
   localTime: Joi.date().iso()
 });
 
+export const UserLoginValidationSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().required(),
+});
+
 // requiredは上のスキーマで対応、エラーの出方がわかりやすい。
 
 // export const UserValidationSchema = Joi.object({

@@ -35,7 +35,7 @@ export class DBHandler {
 
     const { database, url } = (()=>{
       if(!process.env.DOCKER_ENV){
-        const databaseName = args.database.replace('mongo','localhost').split('/')[0] + '/';
+        const databaseName = args.database.replace('mongo','localhost').split('/')[0] + '/dev';
         return {
           database: databaseName,
           url: `${driver}${databaseName}`,
@@ -47,6 +47,8 @@ export class DBHandler {
         }
       }
     })();
+
+
 
     // const database = !process.env.DOCKER_ENV ? args.database.replace('mongo','localhost').split('/')[0] + '/' : args.database ;
 

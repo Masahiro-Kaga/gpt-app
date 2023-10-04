@@ -55,6 +55,11 @@ axios.interceptors.response.use( response => response.data,
 		default:
 			console.log( `Unhandled server response ${error.response.status}` );
 		}
-		// return { pass: false, data: error.response.data };
-		return { pass: false, data: "Hey" };
-	} );
+		return { pass: false, data: error.response.data };
+	}
+);
+
+export interface APIGeneralResponseType {
+    pass: boolean;
+    data: string;
+}

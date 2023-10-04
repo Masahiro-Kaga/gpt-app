@@ -58,6 +58,11 @@ Localでmondodbが動いてるかどうか確認する。
 
 mongo compassで、ローカルでmongo動かしてて、接続切るの忘れてcompass経由でDockerのmongoにアクセスしようとしたら、authentication failedになる。authentication情報は正しいのに、そういう文言になるので、注意。
 
+compassで繋げるときのURL
+docker　 mongodb://root:gpt_mongo@localhost:27017/dev?authMechanism=DEFAULT&authSource=admin&directConnection=true
+ローカル　mongodb://localhost:27017/dev
+dockerはmongo:27017で繋がってるけど、ローカルから繋げる時はフォワードされてるから、オリジナルのlocalhost:20717で接続する。
+
 dockerのyml直した時に、特にmongoの部分だと、docker downしてもキャッシュが残ってしまう場合あるので、docker-compose down -vで捨てること。
 
 mkcertの利用も検討。

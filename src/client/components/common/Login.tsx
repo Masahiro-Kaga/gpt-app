@@ -5,7 +5,13 @@ import ServiceButton from "./ServiceButton";
 import { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
+import { APIGeneralResponseType } from "../../axiosConfig"  // どっちがいいのかね。
+// import { APIGeneralResponse } from "src/client/types";
 import UserAuthButton from "./UserAuthButton";
+import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from "../../store/store";
+import { loginAction, logoutAction } from "../../store/userSlice";
+import { useSelector } from "react-redux";
 
 const commonContainerStyles = css`
   flex: 1;
@@ -86,9 +92,12 @@ const InputForm: React.FC<InputFormProps> = ({ label, onChangeEvent }) => {
 // };
 
 const Login: React.FC = () => {
-  const [user, setUser] = useState<UserProps>({ loginUsername: "" });
+  // const [user, setUser] = useState<UserProps>({ loginUsername: "" });
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const dispatch = useDispatch();
+  const user = useSelector((state:RootState)=>state.userKeyName)
 
   const registerUser = async () => {
     const localTime = moment.tz(moment.tz.guess()).format();
@@ -109,22 +118,25 @@ const Login: React.FC = () => {
     }
   };
 
-  const loginUser = async () => {
+const loginUser = async (): Promise<APIGeneralResponseType> => {
+  try {
+    const response: APIGeneralResponseType = await axios.post("/api/user/login", {
+      username,
+      password
+    });
+    console.log(response);
+    response.pass && dispatch(loginAction({ username }));
+    return response;
+  } catch (error) {
+    console.error(error);
+    return { pass: false, data: "An error occurred" };
+  }
+};
+  
+  const logoutUser = async ():Promise<void> => {
     try {
-      const response = await axios.post("/api/user/login", {
-        username,
-        password
-      });
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const logoutUser = async () => {
-    console.log(9)
-    try {
-      const response = await axios.get("/api/user/logout");
+      const response: APIGeneralResponseType = await axios.get("/api/user/logout");
+      response.pass && dispatch(logoutAction());
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -170,6 +182,7 @@ const Login: React.FC = () => {
           title="GPT Handler"
         ></ServiceButton>
       </div>
+      <h1>{user.username}</h1>
     </div>
   );
 };
