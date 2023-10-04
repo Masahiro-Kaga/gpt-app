@@ -1,12 +1,19 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import ImageGeneratorPage from "./pages/ImageGeneratorPage";
 import GptHandlerPage from "./pages/GptHandlerPage";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import LoginPage from "./pages/LoginPage";
+import MainShowWindow from "./components/common/MainShowWindow";
 
 function App() {
+  const [headerHeight,setHeaderHeight] = useState<number>(0);
   return (
     <Router>
       <Routes>
@@ -15,8 +22,11 @@ function App() {
           path="/"
           element={
             <>
-              <Header></Header>
-              <Outlet />
+              <Header onHeightChange={setHeaderHeight}></Header>
+              <MainShowWindow>
+                <div>{headerHeight}</div>
+                <Outlet />
+              </MainShowWindow>
             </>
           }
         >

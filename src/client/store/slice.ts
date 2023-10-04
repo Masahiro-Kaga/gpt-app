@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+const userInitialState = {
     username:'',
     isSessionActive:false,
 }
 
 // Sliceはaction.jsとreducer.jsを統合したもの的なやつ
 const userSlice = createSlice({
-    name:'userSliceName',
-    initialState,
+    name:'userSlice',
+    initialState:userInitialState,
     reducers: {
         // PayloadActionはactionのジェネリック型だってさ。
         loginAction: (state,action: PayloadAction<{username:string}>) => {
@@ -23,9 +23,26 @@ const userSlice = createSlice({
 })
 // loginとかlogoutがaction。
 
+const optionInitialState = {
+    headerHeight:0,
+}
+
+const optionSlice = createSlice({
+    name:'optionSlice',
+    initialState:optionInitialState,
+    reducers: {
+        getHeaderHeight: (state, action: PayloadAction<{ headerHeight:number} >) => {
+            state.headerHeight = action.payload.headerHeight;
+        }
+    }
+})
+
 export const { loginAction, logoutAction } = userSlice.actions;
+export const { getHeaderHeight } = optionSlice.actions;
+
 // reducerとactionをエクスポート。
-export default userSlice.reducer;
+export const userReducer = userSlice.reducer;
+export const optionReducer = optionSlice.reducer;
 
 
 

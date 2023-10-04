@@ -66,3 +66,11 @@ dockerはmongo:27017で繋がってるけど、ローカルから繋げる時は
 dockerのyml直した時に、特にmongoの部分だと、docker downしてもキャッシュが残ってしまう場合あるので、docker-compose down -vで捨てること。
 
 mkcertの利用も検討。
+helmetも。
+
+
+CSSの定義！！！
+	MUIを使うとき→使い回して、いろんなところで使う部品・コンポーネントがあるとき。
+	その他はemotionsで。
+	枠操作、ボックス操作については、tailwindで。
+	

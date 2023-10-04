@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -9,13 +9,34 @@ import {
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import ServiceButton from "./ServiceButton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { getHeaderHeight } from "../../store/slice";
 
-export default function Header() {
+interface HeaderProps {
+  onHeightChange:(height:number) => void;
+}
+
+export default function Header({onHeightChange}:HeaderProps) {
+  const dispatch = useDispatch();
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);
+  
+  const headerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {  
+    if(headerRef.current){
+      onHeightChange(headerRef.current.offsetHeight);
+      dispatch(getHeaderHeight({ headerHeight: headerRef.current.offsetHeight }));
+    }
+  }, [onHeightChange]);
+  
+  
+  const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);
+  
   return (
     <Box
+      ref={headerRef}
       sx={{
         flexGrow: 1,
         padding: { xs: "100px", sm: "20px" },

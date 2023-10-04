@@ -10,7 +10,7 @@ import { APIGeneralResponseType } from "../../axiosConfig"  // どっちがい�
 import UserAuthButton from "./UserAuthButton";
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from "../../store/store";
-import { loginAction, logoutAction } from "../../store/userSlice";
+import { loginAction, logoutAction } from "../../store/slice";
 import { useSelector } from "react-redux";
 
 const commonContainerStyles = css`
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   const dispatch = useDispatch();
-  const user = useSelector((state:RootState)=>state.userKeyName)
+  const user = useSelector((state:RootState)=>state.userKey)
 
   const registerUser = async () => {
     const localTime = moment.tz(moment.tz.guess()).format();
