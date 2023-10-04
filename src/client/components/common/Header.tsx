@@ -13,11 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { getHeaderHeight } from "../../store/slice";
 
-interface HeaderProps {
-  onHeightChange:(height:number) => void;
-}
-
-export default function Header({onHeightChange}:HeaderProps) {
+export default function Header() {
   const dispatch = useDispatch();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -26,10 +22,9 @@ export default function Header({onHeightChange}:HeaderProps) {
 
   useEffect(() => {  
     if(headerRef.current){
-      onHeightChange(headerRef.current.offsetHeight);
       dispatch(getHeaderHeight({ headerHeight: headerRef.current.offsetHeight }));
     }
-  }, [onHeightChange]);
+  }, []);
   
   
   const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);

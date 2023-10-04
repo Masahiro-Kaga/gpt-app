@@ -13,7 +13,6 @@ import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
 
 function App() {
-  const [headerHeight,setHeaderHeight] = useState<number>(0);
   return (
     <Router>
       <Routes>
@@ -22,9 +21,8 @@ function App() {
           path="/"
           element={
             <>
-              <Header onHeightChange={setHeaderHeight}></Header>
+              <Header></Header>
               <MainShowWindow>
-                <div>{headerHeight}</div>
                 <Outlet />
               </MainShowWindow>
             </>
