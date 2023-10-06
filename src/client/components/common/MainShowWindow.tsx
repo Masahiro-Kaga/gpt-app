@@ -1,29 +1,38 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React, { ReactNode } from 'react';
+import { css } from "@emotion/react";
+import React, { ReactNode } from "react";
 import { RootState } from "../../store/store";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { Box } from "@mui/material";
 
 interface MainShowWindowProps {
   children: ReactNode;
 }
 
 const containerStyles = css`
-    background-color: white;
-    margin :20px ;
-    border-radius: 20px;
-`
+    max-width: 1500px;
+    margin: auto;
+`;
 
 const MainShowWindow: React.FC<MainShowWindowProps> = ({ children }) => {
-
-  const option = useSelector((state:RootState)=>state.optionKey)
+  const option = useSelector((state: RootState) => state.optionKey);
 
   return (
-    <div css={containerStyles}>
-      {children}
-      {option.headerHeight}
+    <div className="flex p-10 sm:p-6" css={containerStyles}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          backgroundColor: "white",
+          height: `calc(100vh - ${option.headerHeight}px - 40px)`,
+          padding: { xs: "10px", sm: "20px" },
+          width: "100%",
+          borderRadius: "20px",
+        }}
+      >
+        {children}
+      </Box>
     </div>
   );
-}
+};
 
 export default MainShowWindow;

@@ -16,7 +16,8 @@ router.post("/images", async()=>{
             // const response = await openai.createImage({
             //     prompt: req.body.prompt ? req.body.prompt : "Cute baby",
             //     n: 1,
-            //     size: "1024x1024"
+            //     size: "1024x1024",
+            //     user: req.session.userId,
             // });
             
             res.json({ created: Math.floor(Date.now() / 1000), data: [{test:true}] });

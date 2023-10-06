@@ -39,7 +39,7 @@ export class RouteHandler {
 		  
 		// Static Routes.
         
-        // なんか、http://localhost:3000/images/logo2.pngでアクセスできるから、次のやつは特に必要ないみたい。てか静的ホスティングっていうみたい。
+        // なんか、http://localhost:3000/images/logoSmall.pngでアクセスできるから、次のやつは特に必要ないみたい。てか静的ホスティングっていうみたい。
         // router.use( '/assets', express.static( "../../../public/images" ) );
 
 		// Cookie Parser creates req.session in express-session.

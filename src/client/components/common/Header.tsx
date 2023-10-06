@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import ServiceButton from "./ServiceButton";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { getHeaderHeight } from "../../store/slice";
 
 export default function Header() {
@@ -60,11 +59,11 @@ export default function Header() {
           >
             <Avatar
               alt="logo"
-              src="/images/logo2.png"
+              src="/images/logoSmall.png"
               sx={{ borderRadius: 0 }}
               style={{ width: "100%", objectFit: "contain" }}
             />
-            {/* <img alt="logo" src="/images/logo2.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
+            {/* <img alt="logo" src="/images/logoSmall.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
           </IconButton>
           <Box>
             <ServiceButton

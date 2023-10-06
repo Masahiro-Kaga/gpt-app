@@ -32,7 +32,7 @@ function App() {
           <Route path="gpt-handler" element={<GptHandlerPage />} />{" "}
         </Route>
       </Routes>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </Router>
   );
 }
