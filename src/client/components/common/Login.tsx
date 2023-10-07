@@ -145,9 +145,7 @@ const loginUser = async (): Promise<APIGeneralResponseType> => {
 
   useEffect(() => {
     console.log(username);
-    // return () => {
-    //   second
-    // }
+    
   }, [username]);
 
   return (

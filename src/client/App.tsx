@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
+  Navigate,
 } from "react-router-dom";
 import ImageGeneratorPage from "./pages/ImageGeneratorPage";
 import GptHandlerPage from "./pages/GptHandlerPage";
@@ -11,8 +12,11 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store/store";
 
 function App() {
+  const user = useSelector((state: RootState) => state.userKey);
   return (
     <Router>
       <Routes>
@@ -28,8 +32,26 @@ function App() {
             </>
           }
         >
-          <Route path="image-generation" element={<ImageGeneratorPage />} />
-          <Route path="gpt-handler" element={<GptHandlerPage />} />{" "}
+          <Route
+            path="image-generation"
+            element={
+              !user?.isSessionActive ? (
+                <Navigate to="/" replace />
+              ) : (
+                <ImageGeneratorPage />
+              )
+            }
+          />
+          <Route
+            path="gpt-handler"
+            element={
+              !user?.isSessionActive ? (
+                <Navigate to="/" replace />
+              ) : (
+                <GptHandlerPage />
+              )
+            }
+          />
         </Route>
       </Routes>
       {/* <Footer></Footer> */}
