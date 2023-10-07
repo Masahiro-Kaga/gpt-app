@@ -35,7 +35,7 @@ interface ImageData {
 const ImageGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [numberOfImages, setNumberOfImages] = useState<number>(1);
-  const [imageSize, setImageSize] = useState<string>("256");
+  const [imageSize, setImageSize] = useState<string>("256x256");
   const [] = useState<number>();
   const [] = useState<number>();
 
@@ -79,9 +79,9 @@ const ImageGenerator: React.FC = () => {
           value={imageSize}
           onChange={(event) => setImageSize(event.target.value)}
         >
-          <MenuItem value={"256"}>256</MenuItem>
-          <MenuItem value={"512"}>512</MenuItem>
-          <MenuItem value={"1024"}>1024</MenuItem>
+          <MenuItem value={"256x256"}>256</MenuItem>
+          <MenuItem value={"512x512"}>512</MenuItem>
+          <MenuItem value={"1024x1024"}>1024</MenuItem>
         </Select>
       ),
     },
@@ -90,53 +90,35 @@ const ImageGenerator: React.FC = () => {
 
   const getImages = async () => {
     // For the test.
-    setImageURLs({
-      data: [
-        {
-          url: "/images/background-images/proposed_1.jpeg",
-        },
-        {
-          url: "/images/background-images/proposed_1.jpeg",
-        },
-        {
-          url: "/images/background-images/proposed_1.jpeg",
-        },
-        {
-          url: "/images/background-images/proposed_1.jpeg",
-        },
-      ],
-    });
+    // setImageURLs({
+    //   data: [
+    //     {
+    //       url: "/images/background-images/proposed_1.jpeg",
+    //     },
+    //     {
+    //       url: "/images/background-images/proposed_1.jpeg",
+    //     },
+    //     {
+    //       url: "/images/background-images/proposed_1.jpeg",
+    //     },
+    //     {
+    //       url: "/images/background-images/proposed_1.jpeg",
+    //     },
+    //   ],
+    // });
 
-    // try {
-    //   const data = { prompt: iprompt };
-    //   const response = await axios.post(
-    //     "http://localhost:8000/imageGenerator/images",
-    //     data
-    //   );
-    //   console.log("Clicked!");
-    //   if (response.data.data[0].test) {
-    //     setImageURLs({
-    //       data: [
-    //         {
-    //           url: "../../logo/logo.png",
-    //         },
-    //         {
-    //           url: "../../logo/logo.png",
-    //         },
-    //         {
-    //           url: "../../logo/logo.png",
-    //         },
-    //         {
-    //           url: "../../logo/logo.png",
-    //         },
-    //       ],
-    //     });
-    //   } else {
-    //     setImageURLs(response.data);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const data = { prompt, n: numberOfImages, size: imageSize };
+      const response = await axios.post(
+        "/api/imageGenerator/images",
+        data,{ timeout: 10000 }
+      );
+      console.log("Clicked!");
+      console.log(response.data);
+      setImageURLs(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // return (
@@ -239,16 +221,12 @@ const ImageGenerator: React.FC = () => {
             margin="auto"
           >
             <SettingDrawer items={items}>Setting</SettingDrawer>
-            <Box
-              display="flex"
-              flexWrap="wrap"
-              justifyContent="space-around"
-              >
-                {items.map((item, index) => (
-                  <div key={index}>
-                    {item.title}: <span>{item.value}</span>
-                  </div>
-                ))}
+            <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+              {items.map((item, index) => (
+                <div key={index}>
+                  {item.title}: <span>{item.value}</span>
+                </div>
+              ))}
             </Box>
           </Box>
         </div>

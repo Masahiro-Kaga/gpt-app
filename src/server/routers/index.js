@@ -126,7 +126,7 @@ export class RouteHandler {
 
 		// エンドポイントなければ、ここ。
 		router.use((req,res) => {
-			console.log(req);
+			// console.log(req);  // ながーいの出てくるよ。
 			res.status(404).json({path:false, data:`Endpoint ${req.url} not found.`})
 		  })    
 	  
