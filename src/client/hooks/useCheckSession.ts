@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { APIGeneralResponseType } from "../axiosConfig";
 import axios from "axios";
 
-
-export function useCheckSession() {
+export function useCheckSession(pass: boolean | null) {
   const user = useSelector((state: RootState) => state.userKey);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -41,26 +40,10 @@ export function useCheckSession() {
   //   }, [user.isSessionActive]); // ← ステートの変更を検知するために依存配列に追加
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response: APIGeneralResponseType = await axios.get(
-          "/api/user/check-session"
-        );
-        console.log(response);
-        if (!response.pass) {
-          console.log("useEffect to fetch session works");
-          navigate("/");
-          return;
-        }
-        dispatch(fetchSession( { username:response.data } ))
-        return response;
-      } catch (error) {
-        //また、throwを使用するかどうかについては、createAsyncThunk内でエラーをキャッチしてReduxのrejectedアクションをディスパッチするために必要です。インターセプターでエラー処理を完結させる場合、createAsyncThunkでのthrowは必要ありません。 だそうです。
-        throw error; // これが、fetchLatestSessionData.rejectedを働かせる。
-      }
-
-    };
-
-    fetchData();
-  }, [user.isSessionActive]); // ← ステートの変更を検知するために依存配列に追加
+    if (pass === null) return; // APIの結果を待つ
+    if (!pass) {
+      console.log("useEffect to fetch session works");
+      navigate("/");
+    }
+  }, [pass]);
 }

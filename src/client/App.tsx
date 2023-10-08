@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
+  useNavigate,
 } from "react-router-dom";
 import ImageGeneratorPage from "./pages/ImageGeneratorPage";
 import GptHandlerPage from "./pages/GptHandlerPage";
@@ -12,10 +13,19 @@ import Footer from "./components/common/Footer";
 import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
 import { useCheckSession } from "./hooks/useCheckSession";
+import { APIGeneralResponseType } from "./axiosConfig";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSession } from "./store/slice";
+import { RootState } from "./store/store";
 
-function MainContents() {
+interface MainContentsProps {
+  pass: boolean | null;
+}
+
+function MainContents({pass}:MainContentsProps) {
   console.log("are you there");
-  useCheckSession();
+  useCheckSession(pass);
 
   return (
     <>
@@ -29,11 +39,37 @@ function MainContents() {
 }
 
 function App() {
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state:RootState)=>state.userKey)
+
+  const [pass,setPass] = useState<boolean | null>(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: APIGeneralResponseType = await axios.get(
+          "/api/user/check-session"
+        );
+        setPass(response.pass);
+        if (!response.pass) {
+          
+          return;
+        }
+        dispatch(fetchSession( { username:response.data } ))
+        return response;
+      } catch (error) {
+        //また、throwを使用するかどうかについては、createAsyncThunk内でエラーをキャッチしてReduxのrejectedアクションをディスパッチするために必要です。インターセプターでエラー処理を完結させる場合、createAsyncThunkでのthrowは必要ありません。 だそうです。
+        throw error; // これが、fetchLatestSessionData.rejectedを働かせる。
+      }
+    };
+    fetchData();
+  }, [user.isSessionActive])
+  
   return (
     <Router>
       <Routes>
         <Route index element={<LoginPage />} />
-        <Route path="/contents" element={<MainContents />}>
+        <Route path="/contents" element={<MainContents pass={pass} />}>
           <Route path="image-generation" element={<ImageGeneratorPage />} />
           <Route path="gpt-handler" element={<GptHandlerPage />} />
         </Route>
