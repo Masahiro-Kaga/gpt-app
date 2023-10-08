@@ -13,7 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
 import { useCheckSession } from "./hooks/useCheckSession";
 
-function MainContent() {
+function MainContents() {
   console.log("are you there");
   useCheckSession();
 
@@ -32,8 +32,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainContent />}>
-          <Route index element={<LoginPage />} />
+        <Route index element={<LoginPage />} />
+        <Route path="/contents" element={<MainContents />}>
           <Route path="image-generation" element={<ImageGeneratorPage />} />
           <Route path="gpt-handler" element={<GptHandlerPage />} />
         </Route>

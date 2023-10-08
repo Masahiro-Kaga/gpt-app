@@ -67,13 +67,13 @@ export default function Header() {
           </IconButton>
           <Box>
             <ServiceButton
-              to="/image-generation"
+              to="/contents/image-generation"
               backgroundColor="rgb(230, 77, 92)"
               disabled={false}
               title="Image Generator"
             ></ServiceButton>
             <ServiceButton
-              to="/gpt-handler"
+              to="/contents/gpt-handler"
               backgroundColor="rgb(0, 198, 181)"
               disabled={false}
               title="GPT Handler"
