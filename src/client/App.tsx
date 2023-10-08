@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
-  Navigate,
 } from "react-router-dom";
 import ImageGeneratorPage from "./pages/ImageGeneratorPage";
 import GptHandlerPage from "./pages/GptHandlerPage";
@@ -12,49 +11,33 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store/store";
+import { useCheckSession } from "./hooks/useCheckSession";
+
+function MainContent() {
+  console.log("are you there");
+  useCheckSession();
+
+  return (
+    <>
+      <Header />
+      <MainShowWindow>
+        <Outlet />
+      </MainShowWindow>
+      {/* <Footer /> */}
+    </>
+  );
+}
 
 function App() {
-  const user = useSelector((state: RootState) => state.userKey);
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/"
-          element={
-            <>
-              <Header></Header>
-              <MainShowWindow>
-                <Outlet />
-              </MainShowWindow>
-            </>
-          }
-        >
-          <Route
-            path="image-generation"
-            element={
-              !user?.isSessionActive ? (
-                <Navigate to="/" replace />
-              ) : (
-                <ImageGeneratorPage />
-              )
-            }
-          />
-          <Route
-            path="gpt-handler"
-            element={
-              !user?.isSessionActive ? (
-                <Navigate to="/" replace />
-              ) : (
-                <GptHandlerPage />
-              )
-            }
-          />
+        <Route path="/" element={<MainContent />}>
+          <Route index element={<LoginPage />} />
+          <Route path="image-generation" element={<ImageGeneratorPage />} />
+          <Route path="gpt-handler" element={<GptHandlerPage />} />
         </Route>
       </Routes>
-      {/* <Footer></Footer> */}
     </Router>
   );
 }

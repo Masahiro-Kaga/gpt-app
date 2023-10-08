@@ -10,7 +10,7 @@ import { APIGeneralResponseType } from "../../axiosConfig"  // どっちがい�
 import UserAuthButton from "./UserAuthButton";
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from "../../store/store";
-import { loginAction, logoutAction } from "../../store/slice";
+import { fetchSession, deleteSession } from "../../store/slice";
 import { useSelector } from "react-redux";
 
 const commonContainerStyles = css`
@@ -125,7 +125,7 @@ const loginUser = async (): Promise<APIGeneralResponseType> => {
       password
     });
     console.log(response);
-    response.pass && dispatch(loginAction({ username }));
+    response.pass && dispatch(fetchSession({ username }));
     return response;
   } catch (error) {
     console.error(error);
@@ -136,7 +136,7 @@ const loginUser = async (): Promise<APIGeneralResponseType> => {
   const logoutUser = async ():Promise<void> => {
     try {
       const response: APIGeneralResponseType = await axios.get("/api/user/logout");
-      response.pass && dispatch(logoutAction());
+      response.pass && dispatch(deleteSession());
       console.log(response);
     } catch (error) {
       console.error(error);

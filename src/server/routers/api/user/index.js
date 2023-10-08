@@ -46,9 +46,12 @@ router.post("/login", async (req,res)=> {
       console.log("Login error: Unauthorized. Invalid credentials.")
       return res.status(401).json("Unauthorized. Invalid credentials.")
     }
+    // Bittreoでは、fetchLatestSessionDataで、セッションから全部のuser情報を引っ張ってきて、setUserでさらにストアしてた。
     req.session.userId = user._id;
+    req.session.username = user.username;
     res.json( {pass:true,data:"Successful to login."});
   } catch (error) {
+    // エラーステータスを投げれば、axiosConfigで設定したところにいって{pass/data}で処理してくれる。
     console.error(`Login error: ${error.message}`);
     return res.status(500).json("Internal Server Error while user is logging in.")
   }
@@ -64,6 +67,27 @@ router.get("/logout", async (req,res)=> {
     console.error(`Logout error: ${error.message}`);
     return res.status(500).json("Internal Server Error while user is logging out.")
 
+  }
+})
+
+router.get("/check-session", async (req,res)=> {
+  console.log(req.session)
+  try {
+    if(req.session && req.session.userId){
+      const user = await User.findOne( {_id:req.session.userId} );
+      if(!user){
+        console.log("Session error: Unauthorized. Invalid credentials.")
+        return res.status(401).json("Unauthorized. Invalid credentials.")
+      } 
+      console.log(user.username)
+      return res.json({pass:true,data:user.username});
+    }
+    if(req.session && !("userId" in req.session)) {
+      return res.status(401).json("Session expired.");
+    }    
+  } catch (error) {
+    console.error(`Check session error: ${error.message}`);
+    return res.status(500).json("Internal Server Error while user check login status.")
   }
 })
 
