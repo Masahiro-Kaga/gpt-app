@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import "./index.scss";
 import "./axiosConfig.ts";
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <Router>
         <App />
+      </Router>
     </Provider>
   </React.StrictMode>
 );

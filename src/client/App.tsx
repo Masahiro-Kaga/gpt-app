@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
 import ImageGeneratorPage from "./pages/ImageGeneratorPage";
 import GptHandlerPage from "./pages/GptHandlerPage";
 import Header from "./components/common/Header";
@@ -15,66 +9,64 @@ import MainShowWindow from "./components/common/MainShowWindow";
 import { useCheckSession } from "./hooks/useCheckSession";
 import { APIGeneralResponseType } from "./axiosConfig";
 import axios from "axios";
+// import { setupResponseInterceptor } from "./axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSession } from "./store/slice";
 import { RootState } from "./store/store";
 
-interface MainContentsProps {
-  pass: boolean | null;
-}
-
-function MainContents({pass}:MainContentsProps) {
-  console.log("are you there");
-  useCheckSession(pass);
-
-  return (
-    <>
-      <Header />
-      <MainShowWindow>
-        <Outlet />
-      </MainShowWindow>
-      {/* <Footer /> */}
-    </>
-  );
-}
+console.log("First Render!");
 
 function App() {
-  // const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const user = useSelector((state:RootState)=>state.userKey)
+  const navigate = useNavigate();
 
-  const [pass,setPass] = useState<boolean | null>(null);
+  console.log("are you there");
+
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.userKey);
+  const location = useLocation();
+
   useEffect(() => {
+
+    // こうしないとasync/await設定不可らしい。useEffect(async　はエラー。
     const fetchData = async () => {
       try {
         const response: APIGeneralResponseType = await axios.get(
           "/api/user/check-session"
         );
-        setPass(response.pass);
+        if (response.pass === null) return; // APIの結果を待つ
         if (!response.pass) {
-          
+          console.log("useEffect to fetch session works");
+          navigate("/");
           return;
-        }
-        dispatch(fetchSession( { username:response.data } ))
-        return response;
+        };
+        dispatch(fetchSession({ username: response.data }));
       } catch (error) {
         //また、throwを使用するかどうかについては、createAsyncThunk内でエラーをキャッチしてReduxのrejectedアクションをディスパッチするために必要です。インターセプターでエラー処理を完結させる場合、createAsyncThunkでのthrowは必要ありません。 だそうです。
         throw error; // これが、fetchLatestSessionData.rejectedを働かせる。
       }
     };
     fetchData();
-  }, [user.isSessionActive])
-  
+  }, [user.isSessionActive,location.pathname]);
+
   return (
-    <Router>
-      <Routes>
-        <Route index element={<LoginPage />} />
-        <Route path="/contents" element={<MainContents pass={pass} />}>
-          <Route path="image-generation" element={<ImageGeneratorPage />} />
-          <Route path="gpt-handler" element={<GptHandlerPage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <Routes>
+      <Route index element={<LoginPage />} />
+      <Route
+        path="/contents"
+        element={
+          <>
+            <Header />
+            <MainShowWindow>
+              <Outlet />
+            </MainShowWindow>
+            {/* <Footer /> */}
+          </>
+        }
+      >
+        <Route path="image-generation" element={<ImageGeneratorPage />} />
+        <Route path="gpt-handler" element={<GptHandlerPage />} />
+      </Route>
+    </Routes>
   );
 }
 

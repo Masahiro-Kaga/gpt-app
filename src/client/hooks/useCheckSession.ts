@@ -39,7 +39,10 @@ export function useCheckSession(pass: boolean | null) {
   //     fetchData();
   //   }, [user.isSessionActive]); // ← ステートの変更を検知するために依存配列に追加
 
+  // もう使ってないけど、参考に。
   useEffect(() => {
+    // 何回もレンダリングされて、初期値falseにしてたから何回も失敗。でも、pass変数（前までuseState→プロップスで渡ってた）が、初期値falseじゃなくてnullにすることで、axiosレスポンスの結果をまって下の!passに渡せる。
+    // このやり方は標準、とのこと。
     if (pass === null) return; // APIの結果を待つ
     if (!pass) {
       console.log("useEffect to fetch session works");
