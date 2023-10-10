@@ -6,8 +6,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import ImageGeneratorPage from "./pages/ImageGeneratorPage";
-import GptHandlerPage from "./pages/GptHandlerPage";
+import ContentsPage from "./pages/ContentsPage";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import LoginPage from "./pages/LoginPage";
@@ -17,7 +16,7 @@ import { APIGeneralResponseType } from "./axiosConfig";
 import axios from "axios";
 // import { setupResponseInterceptor } from "./axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSession, deleteSession} from "./store/slice";
+import { fetchSession, deleteSession } from "./store/slice";
 import { RootState } from "./store/store";
 import ErrorPage from "./pages/ErrorPage";
 
@@ -46,39 +45,38 @@ function App() {
         if (error.code === "ECONNABORTED") {
           return { pass: false, data: "Request timed out, No response." };
         }
-  
+
         switch (error.response.status) {
           case 500:
             navigate("/error/500");
             break;
-  
+
           case 440:
             console.log(
               error.request,
               "Session Expired. Logging out and redirecting to 440 page."
             );
             dispatch(deleteSession());
-                        // dispatch(setUser(null));
-            console.log("location???")
-            console.log(location)
-            if(location.pathname !== '/'){
+            // dispatch(setUser(null));
+            console.log("location???");
+            console.log(location);
+            if (location.pathname !== "/") {
               navigate(`/error/${error.response.status}`);
             }
             break;
-  
+
           case 404:
             // navigate(`/error/${error.response.status}`);
             break;
-  
+
           case 403:
             // navigate(`/error/${error.response.status}`);
             break;
-  
+
           case 401:
-            
             // navigate(`/error/${error.response.status}`);
             break;
-  
+
           default:
             console.log(`Unhandled server response ${error.response.status}`);
         }
@@ -88,9 +86,8 @@ function App() {
     return () => {
       axios.interceptors.response.eject(responseInterceptor);
     };
-  
-  }, [navigate])
-  
+  }, [navigate]);
+
   useEffect(() => {
     // こうしないとasync/await設定不可らしい。useEffect(async　はエラー。
     const fetchData = async () => {
@@ -107,7 +104,7 @@ function App() {
         //   navigate("/");
         //   return;
         // }
-        if(response.pass === true){
+        if (response.pass === true) {
           dispatch(fetchSession({ username: response.data }));
         }
       } catch (error) {
@@ -126,15 +123,12 @@ function App() {
         element={
           <>
             <Header />
-            <MainShowWindow>
-              <Outlet />
-            </MainShowWindow>
+            <Outlet />
             {/* <Footer /> */}
           </>
         }
       >
-        <Route path="image-generation" element={<ImageGeneratorPage />} />
-        <Route path="gpt-handler" element={<GptHandlerPage />} />
+        <Route path=":subPage" element={<ContentsPage />} />
       </Route>
       <Route path="/error/:errorCode" element={<ErrorPage />} />
     </Routes>
