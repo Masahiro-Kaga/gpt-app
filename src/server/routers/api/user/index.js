@@ -83,7 +83,7 @@ router.get("/check-session", async (req,res)=> {
       return res.json({pass:true,data:user.username});
     }
     if(req.session && !("userId" in req.session)) {
-      return res.status(401).json("Session expired.");
+      return res.status(440).json("Session expired.");
     }    
   } catch (error) {
     console.error(`Check session error: ${error.message}`);
