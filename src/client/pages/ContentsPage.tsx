@@ -30,7 +30,7 @@ const ContentsPage: React.FC = () => {
 
   return (
     <>
-      <BackgroundImage url="/images/background-images/dashboard-bg.jpeg" />
+      <BackgroundImage url="/images/background-images/error-bg.jpeg" />
       <Slide key={key} direction="right" in={true} timeout={1000} mountOnEnter unmountOnExit>
           <div>
         <MainShowWindow>

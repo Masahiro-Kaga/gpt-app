@@ -22,7 +22,7 @@ const MainShowWindow: React.FC<MainShowWindowProps> = ({ children }) => {
       <Box
         sx={{
           flexGrow: 1,
-          backgroundColor: "white",
+          backgroundColor: "rgba(255,255,255,0.8)",
           height: `calc(100vh - ${option.headerHeight}px - 40px)`,
           padding: { xs: "10px", sm: "20px" },
           width: "100%",

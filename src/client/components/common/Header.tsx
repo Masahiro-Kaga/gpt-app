@@ -1,33 +1,46 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Button,
-  IconButton,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { AppBar, Box, Toolbar, Button, IconButton } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import ServiceButton from "./ServiceButton";
 import { useDispatch, useSelector } from "react-redux";
-import { getHeaderHeight } from "../../store/slice";
+import { getHeaderHeight,deleteSession } from "../../store/slice";
+import { RootState } from "src/client/store/store";
+import { APIGeneralResponseType } from "src/client/axiosConfig";
+import axios from "axios";
 
 export default function Header() {
+  const user = useSelector((state: RootState) => state.userKey);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  
+  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const headerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {  
-    if(headerRef.current){
-      dispatch(getHeaderHeight({ headerHeight: headerRef.current.offsetHeight }));
+  useEffect(() => {
+    if (headerRef.current) {
+      dispatch(
+        getHeaderHeight({ headerHeight: headerRef.current.offsetHeight })
+      );
     }
   }, []);
-  
-  
-  const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);
-  
+
+  const logoutUser = async (): Promise<void> => {
+    try {
+      const response: APIGeneralResponseType = await axios.get(
+        "/api/user/logout"
+      );
+      response.pass && dispatch(deleteSession());
+      navigate("/");
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);
+
   return (
     <Box
       ref={headerRef}
@@ -79,9 +92,12 @@ export default function Header() {
               title="GPT Handler"
             ></ServiceButton>
           </Box>
-          <Button onClick={() => loginHandler(!isLoggedIn)}>
-            {isLoggedIn ? "Logout" : "Login"}
-          </Button>
+          {user.isSessionActive && (
+            <Button onClick={() => logoutUser()}>
+              {/* {user.isSessionActive && `${user.username} Logout`} */}
+              {user.isSessionActive && "Logout"}
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

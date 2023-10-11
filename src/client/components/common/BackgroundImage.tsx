@@ -11,14 +11,16 @@ const backgroundStyles = (backgroundImageUrl: string) => css`
   height: 100%;
   z-index: -1;
   background: url("${backgroundImageUrl}") no-repeat center center / cover;
+  /* filter: grayscale(100%) brightness(0.5);; */
 `;
 
 interface BackgroundProps {
   url: string;
+  classOption?: string;
 }
 
-const BackgroundImage: React.FC<BackgroundProps> = ({ url }) => {
-  return <div css={backgroundStyles(url)} />;
+const BackgroundImage: React.FC<BackgroundProps> = ({ url,classOption }) => {
+  return <div css={backgroundStyles(url)} className={classOption} />;
 };
 
 export default BackgroundImage;

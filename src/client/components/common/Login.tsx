@@ -5,10 +5,10 @@ import ServiceButton from "./ServiceButton";
 import { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
-import { APIGeneralResponseType } from "../../axiosConfig"  // どっちがいいのかね。
+import { APIGeneralResponseType } from "../../axiosConfig"; // どっちがいいのかね。
 // import { APIGeneralResponse } from "src/client/types";
 import UserAuthButton from "./UserAuthButton";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchSession, deleteSession } from "../../store/slice";
 import { useSelector } from "react-redux";
@@ -34,6 +34,18 @@ const descriptionContainer = css`
   ${commonContainerStyles};
   flex-direction: column;
   gap: 10px 0px;
+`;
+
+const userActiveStatuscontainer = css`
+  ${commonContainerStyles};
+  background-color: rgba(0, 0, 0, 0.6);
+  gap: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
 `;
 
 interface UserProps {
@@ -97,7 +109,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   const dispatch = useDispatch();
-  const user = useSelector((state:RootState)=>state.userKey)
+  const user = useSelector((state: RootState) => state.userKey);
 
   const registerUser = async () => {
     const localTime = moment.tz(moment.tz.guess()).format();
@@ -118,24 +130,29 @@ const Login: React.FC = () => {
     }
   };
 
-const loginUser = async (): Promise<APIGeneralResponseType> => {
-  try {
-    const response: APIGeneralResponseType = await axios.post("/api/user/login", {
-      username,
-      password
-    });
-    console.log(response);
-    response.pass && dispatch(fetchSession({ username }));
-    return response;
-  } catch (error) {
-    console.error(error);
-    return { pass: false, data: "An error occurred" };
-  }
-};
-  
-  const logoutUser = async ():Promise<void> => {
+  const loginUser = async (): Promise<APIGeneralResponseType> => {
     try {
-      const response: APIGeneralResponseType = await axios.get("/api/user/logout");
+      const response: APIGeneralResponseType = await axios.post(
+        "/api/user/login",
+        {
+          username,
+          password,
+        }
+      );
+      console.log(response);
+      response.pass && dispatch(fetchSession({ username }));
+      return response;
+    } catch (error) {
+      console.error(error);
+      return { pass: false, data: "An error occurred" };
+    }
+  };
+
+  const logoutUser = async (): Promise<void> => {
+    try {
+      const response: APIGeneralResponseType = await axios.get(
+        "/api/user/logout"
+      );
       response.pass && dispatch(deleteSession());
       console.log(response);
     } catch (error) {
@@ -145,24 +162,39 @@ const loginUser = async (): Promise<APIGeneralResponseType> => {
 
   useEffect(() => {
     console.log(username);
-    
   }, [username]);
 
   return (
-    <div className="flex flex-col justify-around w-full md:flex-row md:h-screen items-center">
-      <div css={loginContainer}>
-        <InputForm
-          label="Username"
-          onChangeEvent={(event) => setUsername(event.target.value)}
-        ></InputForm>
-        <InputForm
-          label="Password"
-          onChangeEvent={(event) => setPassword(event.target.value)}
-        ></InputForm>
-        <div className="flex gap-4">
-          <UserAuthButton userAction={loginUser} typeOfButton="Login" />
-          <UserAuthButton userAction={registerUser} typeOfButton="Register" />
-          <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
+    <div className="flex justify-around w-full md:flex-row md:h-screen items-center">
+      <div>
+        {/* // if user is logged in, show user.username and logout button
+      // else show login form */}
+        <div css={userActiveStatuscontainer}>
+          {user.username ? (
+            <div>{user.username} is Login</div>
+          ) : (
+            <div>Not logged in</div>
+          )}
+        </div>
+
+        <div css={loginContainer}>
+          <InputForm
+            label="Username"
+            onChangeEvent={(event) => setUsername(event.target.value)}
+          ></InputForm>
+          <InputForm
+            label="Password"
+            onChangeEvent={(event) => setPassword(event.target.value)}
+          ></InputForm>
+          <div className="flex gap-4">
+            {user.isSessionActive ? (
+              <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
+            ) : (
+              <UserAuthButton userAction={loginUser} typeOfButton="Login" />
+            )}
+
+            <UserAuthButton userAction={registerUser} typeOfButton="Register" />
+          </div>
         </div>
       </div>
       <div css={descriptionContainer}>
@@ -180,7 +212,6 @@ const loginUser = async (): Promise<APIGeneralResponseType> => {
           title="GPT Handler"
         ></ServiceButton>
       </div>
-      <h1>{user.username}</h1>
     </div>
   );
 };
