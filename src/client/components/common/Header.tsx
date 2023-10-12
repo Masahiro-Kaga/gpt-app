@@ -4,10 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import ServiceButton from "./ServiceButton";
 import { useDispatch, useSelector } from "react-redux";
-import { getHeaderHeight,deleteSession } from "../../store/slice";
+import { getHeaderHeight, deleteSession } from "../../store/slice";
 import { RootState } from "src/client/store/store";
-import { APIGeneralResponseType } from "src/client/axiosConfig";
+// import { APIGeneralResponseType, testString } from "src/client/axiosConfig";
+import { APIGeneralResponseType, testStringDIF } from "src/client/axiosConfig";
 import axios from "axios";
+// const { testString } = require('../../constants');
+import { testString,testSuperString } from "../../constants";
+// import { TestString } from "src/client/constants"; 
+// import * as some from "src/client/constants";
 
 export default function Header() {
   const user = useSelector((state: RootState) => state.userKey);
@@ -17,7 +22,15 @@ export default function Header() {
   // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
-
+  // const something: ContentsRouteType = {
+  //   to: "/contents/image-generation",
+  //   backgroundColor: "rgb(230, 77, 92)",
+  //   disabled: false,
+  //   title: "Image Generator",
+  // };
+  console.log(testString);
+  console.log(testSuperString)
+  // console.log(testStringDIF);
   useEffect(() => {
     if (headerRef.current) {
       dispatch(
@@ -79,6 +92,14 @@ export default function Header() {
             {/* <img alt="logo" src="/images/logoSmall.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
           </IconButton>
           <Box>
+            {/* {contentsRoute.map((route:ContentsRouteType) => (
+              <ServiceButton
+                to={route.to}
+                backgroundColor={route.backgroundColor}
+                disabled={route.disabled}
+                title={route.title}
+              />
+            ))} */}
             <ServiceButton
               to="/contents/image-generation"
               backgroundColor="rgb(230, 77, 92)"
@@ -90,6 +111,12 @@ export default function Header() {
               backgroundColor="rgb(0, 198, 181)"
               disabled={false}
               title="GPT Handler"
+            ></ServiceButton>
+            <ServiceButton
+              to="/contents/audio-script"
+              backgroundColor="rgb(0, 1, 181)"
+              disabled={false}
+              title="Audio Scriptor"
             ></ServiceButton>
           </Box>
           {user.isSessionActive && (

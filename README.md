@@ -74,3 +74,12 @@ CSSの定義！！！
 	その他はemotionsで。
 	枠操作、ボックス操作、一列だけのものについては、tailwindで。
 	
+constants.tsが読み込めない！訳がわからん、axiosConfigな.tsならいけてる。
+	import { testString } from "src/client/constants"; 
+	普通にwebpackでsrc/*とかの処理もされてるし、そもそもaxiosConfigなら同じ方法かつ同じようなパス指定でいけてるし。
+	->ESではできた。const { testString } = require('../../constants');として残しておきます。constants.tsも合わせて。
+	ERROR in Entry module not found: Error: Can't resolve './src'　はwebpackの問題っぽい
+	同じ階層で相対パスだとうまくいく。/src/から始めると上手くいかない。
+
+これからウェブサイトをブラッシュアッぷする時はCRAで簡単なもの作って同時に走らせて、テスト用に。
+

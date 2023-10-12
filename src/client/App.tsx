@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
 import { useCheckSession } from "./hooks/useCheckSession";
 import { APIGeneralResponseType } from "./axiosConfig";
+// import { ContentsRouteType } from "./constants";
 import axios from "axios";
 // import { setupResponseInterceptor } from "./axiosConfig";
 import { useDispatch, useSelector } from "react-redux";

@@ -17,6 +17,8 @@ export interface APIGeneralResponseType {
   data: string;
 }
 
+export const testStringDIF = "testStringDIF";
+
 // export const get = async (path: string): Promise<APIGeneralResponseType> => {
 //   const response:APIGeneralResponseType = await axios.get<APIGeneralResponseType>(path);
 //   return response; // このデータは {pass: boolean, data: string} の形式になっていると期待しています。

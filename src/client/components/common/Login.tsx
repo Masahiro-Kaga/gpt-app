@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchSession, deleteSession } from "../../store/slice";
 import { useSelector } from "react-redux";
+import { testString } from "./something";
+import { anyString } from "../anything";
 
 const commonContainerStyles = css`
   flex: 1;
@@ -176,6 +178,8 @@ const Login: React.FC = () => {
             <div>Not logged in</div>
           )}
         </div>
+        <div>{testString}</div>
+        <div>{anyString}</div>
 
         <div css={loginContainer}>
           <InputForm
