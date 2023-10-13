@@ -67,7 +67,7 @@ function App() {
             break;
 
           case 404:
-            // navigate(`/error/${error.response.status}`);
+            navigate(`/error/${error.response.status}`);
             break;
 
           case 403:

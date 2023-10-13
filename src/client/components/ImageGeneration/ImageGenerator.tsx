@@ -1,4 +1,5 @@
-import { css } from "@emotion/react";
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import {
   Box,
   Drawer,
@@ -19,8 +20,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import SendIcon from "@mui/icons-material/Send";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -72,7 +72,7 @@ const ImageGenerator: React.FC = () => {
     },
     {
       title: "Size",
-      icon: <MailIcon />,
+      icon: <AspectRatioIcon />,
       value: imageSize,
       component: (
         <Select
