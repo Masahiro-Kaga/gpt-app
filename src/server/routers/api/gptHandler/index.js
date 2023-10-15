@@ -36,3 +36,7 @@ router.post("/answer", openaiAuthorized, async(req,res)=>{
 })
 
 export default router;
+
+// instruct-gptとは？？・
+  // https://the-decoder.com/openai-releases-new-language-model-instructgpt-3-5/
+  // chat と　completionどっち使えばいいのか　ー＞https://blog.micheam.com/2023/08/09/openai-chat-completions-vs-completions/#:~:text=Completions%20API%20%E3%81%AF%20%E5%8D%98%E4%B8%80,%E3%81%93%E3%81%A8%E3%81%8C%E9%81%95%E3%81%84%E3%81%A8%E3%81%97%E3%81%A6%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82

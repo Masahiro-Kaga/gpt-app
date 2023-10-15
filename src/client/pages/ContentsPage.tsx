@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { Slide } from "@mui/material";
 import Header from "../components/common/Header";
 import MainShowWindow from "../components/common/MainShowWindow";
-import AudioScriptor from "../components/common/AudioScript/AudioScriptor";
+import AudioScriptor from "../components/AudioScript/AudioScriptor";
 
 const ContentsPage: React.FC = () => {
   const location = useLocation();
