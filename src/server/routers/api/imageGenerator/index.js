@@ -16,13 +16,13 @@ router.post("/images", async(req,res)=>{
         if (process.env.EXECUTABLE_DALL_E){
             console.time('Image load time');
         // 本番
-            // const response = await openai.createImage({
-            //     ...req.body,
-            //     // user: req.session.userId,
-            // });
+            const response = await openai.createImage({
+                ...req.body,
+                // user: req.session.userId,
+            });
         // テスト
-            const { testData_2n_1024 } = testData;
-            const response = testData_2n_1024;
+            // const { testData_2n_1024 } = testData;
+            // const response = testData_2n_1024;
             // const {  testData_1n_256 } = testData;
             // const response =  testData_1n_256;
 

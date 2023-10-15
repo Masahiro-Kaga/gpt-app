@@ -11,6 +11,8 @@ import {
   Autocomplete,
   Input,
   Button,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 
 import { useRef, useState } from "react";
@@ -29,6 +31,7 @@ const AudioScriptor: React.FC = () => {
   const [language, setLanguage] = useState<string>("en");
   const [temperature, setTemperature] = useState<number>(0.2);
   const [script, setScript] = useState<string>("Script here");
+  const [loading,setLoading] = useState<boolean>(false);
 
   interface LanguageOption {
     code: string;
@@ -109,6 +112,7 @@ const AudioScriptor: React.FC = () => {
     // formData.appendの引数はBrobとかstringとかなので、numberはtoString()で文字列に変換しなきゃいけない
     formData.append("temperature", temperature.toString()); // 追加
 
+    setLoading(true);
 
     try {
       const response = await axios.post("/api/audioScriptor/script", formData, {
@@ -125,6 +129,9 @@ const AudioScriptor: React.FC = () => {
         // that falls out of the range of 2xx
         console.error("Server response error:", error);
       }
+    } finally
+    {
+      setLoading(false);
     }
   };
 
@@ -135,7 +142,31 @@ const AudioScriptor: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full items-center justify-between overflow-auto">
+    <div className="relative flex flex-col h-full items-center justify-between overflow-auto">
+                  <Backdrop
+      sx={{
+        color: '#fff',
+        flexDirection: 'column',  // 追加
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        '& .blinkingText': {
+          animation: 'blinkingText 1.2s infinite',
+          '@keyframes blinkingText': {
+            '0%': { opacity: 0 },
+            '50%': { opacity: 1 },
+            '100%': { opacity: 0 },
+          }
+        }
+      }}
+        open={loading}
+        onClick={() => setLoading(false)} // クリックしてローディングを非表示にする（オプショナル）
+      >
+        <CircularProgress color="inherit" />
+        <Typography sx={{ mt: 2 }} className="blinkingText">
+        Now downloading, it may take 5 to 20 seconds.
+          </Typography>
+      </Backdrop>
+
+
       <div className="text-center p-10 text-2xl">Audio Scriptor</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
         <Box width={800}>

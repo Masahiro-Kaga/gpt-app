@@ -8,6 +8,8 @@ import {
   Slider,
   InputAdornment,
   Typography,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 
 import { useState } from "react";
@@ -27,6 +29,8 @@ const GptHandler: React.FC = () => {
   const [maxToken, setMaxToken] = useState<number>(300);
   const [temperature, setTemperature] = useState<number>(0.3);
   const [answer, setAnswer] = useState<string>("Answer here");
+  const [loading,setLoading] = useState<boolean>(false);
+
 
   // useEffect(() => {
   //   const number = [];
@@ -84,6 +88,8 @@ const GptHandler: React.FC = () => {
   ];
 
   const getAnswer = async () => {
+    setLoading(true);
+
     try {
       const data = { prompt, maxToken, temperature };
       const response = await axios.post(
@@ -96,11 +102,36 @@ const GptHandler: React.FC = () => {
     } catch (error) {
       console.log("Error!On GptHandler API sent");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col h-full items-center justify-between overflow-auto">
+    <div className="relative flex flex-col h-full items-center justify-between overflow-auto">
+            <Backdrop
+      sx={{
+        color: '#fff',
+        flexDirection: 'column',  // 追加
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        '& .blinkingText': {
+          animation: 'blinkingText 1.2s infinite',
+          '@keyframes blinkingText': {
+            '0%': { opacity: 0 },
+            '50%': { opacity: 1 },
+            '100%': { opacity: 0 },
+          }
+        }
+      }}
+        open={loading}
+        onClick={() => setLoading(false)} // クリックしてローディングを非表示にする（オプショナル）
+      >
+        <CircularProgress color="inherit" />
+        <Typography sx={{ mt: 2 }} className="blinkingText">
+        Now downloading, it may take 5 to 20 seconds.
+          </Typography>
+      </Backdrop>
+
       <div className="text-center p-10 text-2xl">GPT Handler</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
       <Box width={800}>

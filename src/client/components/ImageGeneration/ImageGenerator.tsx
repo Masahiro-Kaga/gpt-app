@@ -18,6 +18,8 @@ import {
   Radio,
   Typography,
   InputAdornment,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
@@ -36,8 +38,7 @@ const ImageGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [numberOfImages, setNumberOfImages] = useState<number>(1);
   const [imageSize, setImageSize] = useState<string>("256x256");
-  const [] = useState<number>();
-  const [] = useState<number>();
+  const [loading,setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const number = [];
@@ -107,6 +108,8 @@ const ImageGenerator: React.FC = () => {
     //   ],
     // });
 
+    setLoading(true);
+
     try {
       const data = { prompt, n: numberOfImages, size: imageSize };
       const response = await axios.post(
@@ -118,6 +121,8 @@ const ImageGenerator: React.FC = () => {
       setImageURLs(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -152,7 +157,30 @@ const ImageGenerator: React.FC = () => {
   // );
 
   return (
-    <div className="flex flex-col h-full items-center justify-between overflow-auto">
+    <div className="relative flex flex-col h-full items-center justify-between overflow-auto">
+      <Backdrop
+      sx={{
+        color: '#fff',
+        flexDirection: 'column',  // 追加
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        '& .blinkingText': {
+          animation: 'blinkingText 1.2s infinite',
+          '@keyframes blinkingText': {
+            '0%': { opacity: 0 },
+            '50%': { opacity: 1 },
+            '100%': { opacity: 0 },
+          }
+        }
+      }}
+        open={loading}
+        onClick={() => setLoading(false)} // クリックしてローディングを非表示にする（オプショナル）
+      >
+        <CircularProgress color="inherit" />
+        <Typography sx={{ mt: 2 }} className="blinkingText">
+        Now downloading, it may take 5 to 20 seconds.
+          </Typography>
+      </Backdrop>
+
       <div className="text-center p-10 text-2xl">Image Generator</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
         {imageURLs.data?.map((source: ImageData, index: number) => (
