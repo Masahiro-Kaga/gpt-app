@@ -295,15 +295,21 @@ const Login: React.FC = () => {
         <img src="/images/logo.png"></img>
         <ServiceButton
           to="/contents/image-generation"
-          backgroundColor="rgb(230, 77, 92)"
-          disabled={false}
+          backgroundColor="rgb(245, 186, 71)"
+          disabled={user.isSessionActive ? false : true}
           title="Image Generator"
         ></ServiceButton>
         <ServiceButton
           to="/contents/gpt-handler"
-          backgroundColor="rgb(0, 198, 181)"
-          disabled={false}
+          backgroundColor="rgb(11, 144, 166)"
+          disabled={user.isSessionActive ? false : true}
           title="GPT Handler"
+        ></ServiceButton>
+        <ServiceButton
+          to="/contents/audio-script"
+          backgroundColor="rgb(230, 144, 166)"
+          disabled={user.isSessionActive ? false : true}
+          title="Audio Scriptor"
         ></ServiceButton>
       </div>
     </div>

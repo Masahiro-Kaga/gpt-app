@@ -29,7 +29,7 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
         },
         marginRight: "10px",
         marginLeft: "10px",
-      }}
+        border: disabled ? '1px solid rgba(255, 255, 255, 0.3)' : 'none',}}
       disabled={disabled}
     >
       {title}

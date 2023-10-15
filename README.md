@@ -84,3 +84,5 @@ constants.tsが読み込めない！訳がわからん、axiosConfigな.tsなら
 これからウェブサイトをブラッシュアッぷする時はCRAで簡単なもの作って同時に走らせて、テスト用に。
 
 React Dev Toolもつかいたい！！！！
+
+https://giphy.com/search/back-to-the-future
