@@ -1,26 +1,28 @@
+import moment from "moment-timezone";
+import axios from "axios";
+
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import {
   Box,
+  Backdrop,
   Button,
+  CircularProgress,
   FormControl,
   Input,
   InputLabel,
   Modal,
   Typography,
-  CircularProgress,
-  Backdrop,
 } from "@mui/material";
-import ServiceButton from "./ServiceButton";
-import { useEffect, useState } from "react";
-import moment from "moment-timezone";
-import axios from "axios";
+
 import { APIGeneralResponseType } from "../../axiosConfig";
-import UserAuthButton from "./UserAuthButton";
-import { useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { fetchSession, deleteSession } from "../../store/slice";
-import { useSelector } from "react-redux";
+import ServiceButton from "./ServiceButton";
+import UserAuthButton from "./UserAuthButton";
 
 const commonContainerStyles = css`
   flex: 1;
@@ -48,7 +50,6 @@ const descriptionContainer = css`
 const userActiveStatusContainer = (isActive: boolean) => css`
   ${commonContainerStyles};
   background-color: rgba(0, 0, 0, 0.6);
-  gap: 20px;
   padding: 20px;
   margin-bottom: 20px;
   display: flex;
@@ -62,17 +63,18 @@ const userActiveStatusContainer = (isActive: boolean) => css`
 `;
 
 interface InputFormProps {
+  value: string;
   label: string;
   onChangeEvent: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputForm: React.FC<InputFormProps> = ({ label, onChangeEvent }) => {
-  return (
+const InputForm: React.FC<InputFormProps> = ({ value, label, onChangeEvent }) => (
     <FormControl sx={{ margin: "5px 20px", color: "white" }}>
       <InputLabel sx={{ color: "white", "&.Mui-focused": { color: "white" } }}>
         {label}
       </InputLabel>
       <Input
+        value={value}
         sx={{
           "&:before, &:hover:not(.Mui-disabled):before, &:after": {
             borderBottomColor: "white",
@@ -82,10 +84,10 @@ const InputForm: React.FC<InputFormProps> = ({ label, onChangeEvent }) => {
           },
         }}
         onChange={onChangeEvent}
+        
       />
     </FormControl>
-  );
-};
+)
 
 interface ModalProps {
   open: boolean;
@@ -123,6 +125,8 @@ const Login: React.FC = () => {
         title: response.pass ? "Success!" : "Failed",
         message: response.pass ? "You are now Registered!" : response.data,
       });
+      setUsername("");
+      setPassword("");
     } catch (error) {
       ;
       ;
@@ -139,8 +143,6 @@ const Login: React.FC = () => {
           password,
         }
       );
-      ;
-      ;
       response.pass && dispatch(fetchSession({ username }));
       setLogInOutModal({
         open: true,
@@ -176,12 +178,8 @@ const Login: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    ;
-  }, [username]);
-
   return (
-    <div className="relative flex justify-around w-full md:flex-row md:h-screen items-center">
+    <div className="relative flex flex-col justify-around w-full md:flex-row md:h-screen items-center">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
@@ -194,9 +192,7 @@ const Login: React.FC = () => {
           <div>
             User Status:
             {user.username ? (
-              <span className="text-green-400">
-                Logged in as {user.username}
-              </span>
+              <span className="text-green-400"> Logged in as {user.username}</span>
             ) : (
               <span className="text-red-500"> Not logged in</span>
             )}
@@ -204,10 +200,12 @@ const Login: React.FC = () => {
         </div>
         <div css={loginContainer}>
           <InputForm
+            value={username}
             label="Username"
             onChangeEvent={(event) => setUsername(event.target.value)}
           ></InputForm>
           <InputForm
+            value={password}
             label="Password"
             onChangeEvent={(event) => setPassword(event.target.value)}
           ></InputForm>
@@ -220,6 +218,27 @@ const Login: React.FC = () => {
             <UserAuthButton userAction={registerUser} typeOfButton="Register" />
           </div>
         </div>
+      </div>
+      <div css={descriptionContainer}>
+        <img src="/images/logo.png"></img>
+        <ServiceButton
+          to="/contents/image-generation"
+          backgroundColor="rgb(245, 186, 71)"
+          disabled={user.isSessionActive ? false : true}
+          title="Image Generator"
+        ></ServiceButton>
+        <ServiceButton
+          to="/contents/gpt-handler"
+          backgroundColor="rgb(11, 144, 166)"
+          disabled={user.isSessionActive ? false : true}
+          title="GPT Handler"
+        ></ServiceButton>
+        <ServiceButton
+          to="/contents/audio-script"
+          backgroundColor="rgb(230, 144, 166)"
+          disabled={user.isSessionActive ? false : true}
+          title="Audio Scriptor"
+        ></ServiceButton>
       </div>
       <Modal
         open={logInOutModal.open}
@@ -259,31 +278,10 @@ const Login: React.FC = () => {
               setLogInOutModal({ open: false, title: "", message: "" })
             }
           >
-            Close Modal
+            Close
           </Button>
         </Box>
       </Modal>
-      <div css={descriptionContainer}>
-        <img src="/images/logo.png"></img>
-        <ServiceButton
-          to="/contents/image-generation"
-          backgroundColor="rgb(245, 186, 71)"
-          disabled={user.isSessionActive ? false : true}
-          title="Image Generator"
-        ></ServiceButton>
-        <ServiceButton
-          to="/contents/gpt-handler"
-          backgroundColor="rgb(11, 144, 166)"
-          disabled={user.isSessionActive ? false : true}
-          title="GPT Handler"
-        ></ServiceButton>
-        <ServiceButton
-          to="/contents/audio-script"
-          backgroundColor="rgb(230, 144, 166)"
-          disabled={user.isSessionActive ? false : true}
-          title="Audio Scriptor"
-        ></ServiceButton>
-      </div>
     </div>
   );
 };

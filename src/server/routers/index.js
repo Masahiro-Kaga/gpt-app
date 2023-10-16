@@ -5,11 +5,9 @@ import express from  'express';
 import cookieParser from  'cookie-parser';
 import mongoose from  'mongoose';
 import session from  'express-session';
-// requireのバージョンはまた違う書き方なので注意。
 import MongoStore from 'connect-mongo'
-
 // import helmet from  'helmet';
-// ( session );
+
 /**
  * Static class for updating different routing components.
  */
@@ -28,27 +26,11 @@ export class RouteHandler {
         process.env.NODE_ENV === 'development' && origin.push( `${process.env.REACT_APP_URL}:${process.env.REACT_APP_CLIENT_PORT || 3000}` );
         const corsSettings = { origin };
         process.env.NODE_ENV === 'development' && ( corsSettings.credentials = true ); // Access-Control-Allow-Credentials when axios sent withCredentials.
-        // const app = express();
-        // app.use( cors( {origin: 'http://localhost:3000', credentials: true} ) );
-        // router.use( cors( {origin: 'http://localhost:3000', credentials: true} ) );
 
         router.use( cors( corsSettings ) );
-
-        
-        
-		  
-		// Static Routes.
-        
-        // なんか、http://localhost:3000/images/logoSmall.pngでアクセスできるから、次のやつは特に必要ないみたい。てか静的ホスティングっていうみたい。
-        // router.use( '/assets', express.static( "../../../public/images" ) );
-
-		// Cookie Parser creates req.session in express-session.
-		// const secure = process.env.URL.includes( 'https' );
-		// router.use( express.json( { limit: '50mb' } ) );
 		router.use( cookieParser() );
+
 		if ( mongoose !== undefined && mongoose.connection !== undefined ) {
-            
-            
 			sessionMiddleware = session( {
 				secret: process.env.SESSION_SECRET,
 				resave: false,
@@ -60,10 +42,6 @@ export class RouteHandler {
                     httpOnly:true,
 					maxAge: +( process.env.SESSION_TIMEOUT || 4 * 60 * 60 * 1000 ),
 				},
-                // requireを使う時は下のとおりだと思う。https://stackoverflow.com/questions/66654037/mongo-connect-error-with-mongo-connectsession
-				// store: new MongoStore( {
-				// 	mongooseConnection: mongoose.connection,
-				// } ),
                 store: MongoStore.create({
                     mongoUrl: connectDbUrl
                 })
@@ -107,26 +85,22 @@ export class RouteHandler {
             }
           }
         }
-            
-		// Joi
-		// Handle ≈≈≈ when passError = true.
+
 		router.use( ( err, req, res, next ) => {
 			if ( err && err.error && err.error.isJoi ) {
-			// we had a joi error, let's return a custom 400 json response
+				// we had a joi error, let's return a custom 400 json response
 				res.json( {
 					pass: false,
 					data: 'Validation errors please see details.',
 					errors: err.error.details.map( d => d.message ),
 				} );
 			} else {
-			// pass on to another error handler
+				// pass on to another error handler
 				next( err );
 			}
 		} );
 
-		// エンドポイントなければ、ここ。
 		router.use((req,res) => {
-			//   // ながーいの出てくるよ。
 			res.status(404).json({path:false, data:`Endpoint ${req.url} not found.`})
 		  })    
 	  

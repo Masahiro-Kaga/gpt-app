@@ -1,8 +1,9 @@
+import React, { ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { ReactNode } from "react";
-import { RootState } from "../../store/store";
-import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 
 interface MainShowWindowProps {

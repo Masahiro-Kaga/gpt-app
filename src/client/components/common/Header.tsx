@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { AppBar, Box, Toolbar, Button, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
@@ -6,19 +6,15 @@ import ServiceButton from "./ServiceButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getHeaderHeight, deleteSession } from "../../store/slice";
 import { RootState } from "src/client/store/store";
-import { APIGeneralResponseType, testStringDIF } from "src/client/axiosConfig";
+import { APIGeneralResponseType } from "src/client/axiosConfig";
 import axios from "axios";
-import { testString,testSuperString } from "../../constants";
 
 export default function Header() {
   const user = useSelector((state: RootState) => state.userKey);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   
-  const headerRef = useRef<HTMLDivElement>(null);
-              ;
-  
+  const headerRef = useRef<HTMLDivElement>(null);  
     useEffect(() => {
     if (headerRef.current) {
       dispatch(
@@ -76,17 +72,8 @@ export default function Header() {
               sx={{ borderRadius: 0 }}
               style={{ width: "100%", objectFit: "contain" }}
             />
-            {/* <img alt="logo" src="/images/logoSmall.png" style={{ width: 10, height: 10, objectFit: 'cover'}}/> */}
           </IconButton>
           <Box>
-            {/* {contentsRoute.map((route:ContentsRouteType) => (
-              <ServiceButton
-                to={route.to}
-                backgroundColor={route.backgroundColor}
-                disabled={route.disabled}
-                title={route.title}
-              />
-            ))} */}
             <ServiceButton
               to="/contents/image-generation"
               backgroundColor="rgb(230, 77, 92)"

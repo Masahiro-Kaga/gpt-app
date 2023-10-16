@@ -1,27 +1,19 @@
 import * as React from "react";
+
 import {
   Box,
   Drawer,
   Button,
   List,
-  Divider,
   ListItem,
-  ListItemButton,
   ListItemIcon,
-  ListItemText,
-  Slider,
-  Select,
-  MenuItem,
-  Radio,
   Typography,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { Item } from "src/client/types";
 
 interface SettingDrawerProps {
   children: React.ReactNode;
-  items:  Item[]
+  items: Item[];
 }
 
 const SettingDrawer: React.FC<SettingDrawerProps> = ({ children, items }) => {

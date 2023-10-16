@@ -4,7 +4,6 @@ import GptHandler from "../components/GptHandle/GptHandler";
 import BackgroundImage from "../components/common/BackgroundImage";
 import { useLocation } from "react-router-dom";
 import { Slide } from "@mui/material";
-import Header from "../components/common/Header";
 import MainShowWindow from "../components/common/MainShowWindow";
 import AudioScriptor from "../components/AudioScript/AudioScriptor";
 

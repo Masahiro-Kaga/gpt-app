@@ -1,5 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import axios from "axios";
+
+import { useState } from "react";
+
 import {
   Box,
   Divider,
@@ -11,31 +13,19 @@ import {
   Backdrop,
   CircularProgress,
 } from "@mui/material";
-
-import { useState } from "react";
-import axios from "axios";
-import SettingDrawer from "../common/SettingDrawer";
-import { Item } from "src/client/types";
 import SendIcon from "@mui/icons-material/Send";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 
-interface ImageData {
-  url: string;
-}
+import SettingDrawer from "../common/SettingDrawer";
+import { Item } from "src/client/types";
 
 const GptHandler: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [maxToken, setMaxToken] = useState<number>(300);
   const [temperature, setTemperature] = useState<number>(0.3);
   const [answer, setAnswer] = useState<string>("Answer here");
-  const [loading,setLoading] = useState<boolean>(false);
-
-
-                  
-  const [imageURLs, setImageURLs] = useState<{ data: ImageData[] }>({
-    data: [],
-  });
+  const [loading, setLoading] = useState<boolean>(false);
 
   const items: Item[] = [
     {
@@ -70,27 +60,23 @@ const GptHandler: React.FC = () => {
             step={0.1}
             valueLabelDisplay="off"
             defaultValue={1.0}
-              />{" "}
+          />{" "}
           <Typography gutterBottom>Value: {temperature}</Typography>
         </Box>
       ),
     },
-      ];
+  ];
 
   const getAnswer = async () => {
     setLoading(true);
 
     try {
       const data = { prompt, maxToken, temperature };
-      const response = await axios.post(
-        "/api/gptHandler/answer",
-        data,{ timeout: 10000 }
-      );
-      ;
-      ;
+      const response = await axios.post("/api/gptHandler/answer", data, {
+        timeout: 10000,
+      });
       setAnswer(response.data);
     } catch (error) {
-      ;
       console.error(error);
     } finally {
       setLoading(false);
@@ -99,32 +85,34 @@ const GptHandler: React.FC = () => {
 
   return (
     <div className="relative flex flex-col h-full items-center justify-between overflow-auto">
-            <Backdrop
-      sx={{
-        color: '#fff',
-        flexDirection: 'column',          zIndex: (theme) => theme.zIndex.drawer + 1,
-        '& .blinkingText': {
-          animation: 'blinkingText 1.2s infinite',
-          '@keyframes blinkingText': {
-            '0%': { opacity: 0 },
-            '50%': { opacity: 1 },
-            '100%': { opacity: 0 },
-          }
-        }
-      }}
+      <Backdrop
+        sx={{
+          color: "#fff",
+          flexDirection: "column",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          "& .blinkingText": {
+            animation: "blinkingText 1.2s infinite",
+            "@keyframes blinkingText": {
+              "0%": { opacity: 0 },
+              "50%": { opacity: 1 },
+              "100%": { opacity: 0 },
+            },
+          },
+        }}
         open={loading}
-        onClick={() => setLoading(false)}       >
+        onClick={() => setLoading(false)}
+      >
         <CircularProgress color="inherit" />
         <Typography sx={{ mt: 2 }} className="blinkingText">
-        Now downloading, it may take 5 to 20 seconds.
-          </Typography>
+          Now downloading, it may take 5 to 20 seconds.
+        </Typography>
       </Backdrop>
 
       <div className="text-center p-10 text-2xl">GPT Handler</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
-      <Box width={800}>
-        <div>{answer}</div>
-      </Box>
+        <Box width={800}>
+          <div>{answer}</div>
+        </Box>
       </section>
       <div className="w-full">
         <Divider></Divider>

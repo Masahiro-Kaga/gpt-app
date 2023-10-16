@@ -1,32 +1,23 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+import axios from "axios";
+
+import { useEffect, useState } from "react";
+
 import {
   Box,
-  Drawer,
-  Button,
-  List,
   Divider,
-  ListItem,
   IconButton,
   TextField,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Slider,
   Select,
   MenuItem,
-  Radio,
   Typography,
   InputAdornment,
   Backdrop,
   CircularProgress,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import AspectRatioIcon from "@mui/icons-material/AspectRatio";
 import SendIcon from "@mui/icons-material/Send";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import logo from "../../logo/logo.png";
+
 import SettingDrawer from "../common/SettingDrawer";
 import { Item } from "src/client/types";
 
@@ -38,7 +29,7 @@ const ImageGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [numberOfImages, setNumberOfImages] = useState<number>(1);
   const [imageSize, setImageSize] = useState<string>("256x256");
-  const [loading,setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const number = [];
@@ -86,20 +77,15 @@ const ImageGenerator: React.FC = () => {
         </Select>
       ),
     },
-      ];
+  ];
 
   const getImages = async () => {
-                                                                    
     setLoading(true);
-
     try {
       const data = { prompt, n: numberOfImages, size: imageSize };
-      const response = await axios.post(
-        "/api/imageGenerator/images",
-        data,{ timeout: 10000 }
-      );
-      ;
-      ;
+      const response = await axios.post("/api/imageGenerator/images", data, {
+        timeout: 10000,
+      });
       setImageURLs(response.data);
     } catch (error) {
       console.error(error);
@@ -108,29 +94,29 @@ const ImageGenerator: React.FC = () => {
     }
   };
 
-                                      
-                  
   return (
     <div className="relative flex flex-col h-full items-center justify-between overflow-auto">
       <Backdrop
-      sx={{
-        color: '#fff',
-        flexDirection: 'column',          zIndex: (theme) => theme.zIndex.drawer + 1,
-        '& .blinkingText': {
-          animation: 'blinkingText 1.2s infinite',
-          '@keyframes blinkingText': {
-            '0%': { opacity: 0 },
-            '50%': { opacity: 1 },
-            '100%': { opacity: 0 },
-          }
-        }
-      }}
+        sx={{
+          color: "#fff",
+          flexDirection: "column",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          "& .blinkingText": {
+            animation: "blinkingText 1.2s infinite",
+            "@keyframes blinkingText": {
+              "0%": { opacity: 0 },
+              "50%": { opacity: 1 },
+              "100%": { opacity: 0 },
+            },
+          },
+        }}
         open={loading}
-        onClick={() => setLoading(false)}       >
+        onClick={() => setLoading(false)}
+      >
         <CircularProgress color="inherit" />
         <Typography sx={{ mt: 2 }} className="blinkingText">
-        Now downloading, it may take 5 to 20 seconds.
-          </Typography>
+          Now downloading, it may take 5 to 20 seconds.
+        </Typography>
       </Backdrop>
 
       <div className="text-center p-10 text-2xl">Image Generator</div>
@@ -149,7 +135,7 @@ const ImageGenerator: React.FC = () => {
             label="Input prompt..."
             className=""
             value={prompt}
-                        onChange={(event) => setPrompt(event.target.value)}
+            onChange={(event) => setPrompt(event.target.value)}
             sx={{
               margin: "0px",
               width: "800px",
@@ -169,23 +155,6 @@ const ImageGenerator: React.FC = () => {
               ),
             }}
           ></TextField>
-
-          {/* <Button
-            onClick={getImages}
-            variant="contained"
-            color="primary"
-            endIcon={<SendIcon />}
-          >
-            Send
-          </Button> */}
-
-          {/* <IconButton onClick={getImages} color="primary">
-            <SendIcon />
-          </IconButton> */}
-
-          {/* <Button onClick={getImages}>
-            Create
-          </Button> */}
         </div>
         <div className="flex m-4 justify-center">
           <Box
@@ -209,9 +178,6 @@ const ImageGenerator: React.FC = () => {
             </Box>
           </Box>
         </div>
-        {/* <figure>
-             <img src="ANY IMAGE HERE" alt="" />
-            </figure> */}
       </div>
     </div>
   );

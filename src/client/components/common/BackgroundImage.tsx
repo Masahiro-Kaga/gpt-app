@@ -1,7 +1,7 @@
+import React from "react";
+
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-
-import React, { ReactNode } from "react";
 
 const backgroundStyles = (backgroundImageUrl: string) => css`
   position: fixed;
@@ -11,7 +11,6 @@ const backgroundStyles = (backgroundImageUrl: string) => css`
   height: 100%;
   z-index: -1;
   background: url("${backgroundImageUrl}") no-repeat center center / cover;
-  /* filter: grayscale(100%) brightness(0.5);; */
 `;
 
 interface BackgroundProps {

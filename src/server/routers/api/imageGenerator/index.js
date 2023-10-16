@@ -1,29 +1,32 @@
 import express from "express";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+
+import { openaiAuthorized } from "../../middleware/index";
+
 dotenv.config();
 
 const router = express.Router();
 
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-    apiKey: process.env.CHATGPT_APIKEY
-})
-const openai = new OpenAIApi(configuration);
+router.post("/images", openaiAuthorized, async (req, res) => {
+  const openai = req.user.openai;
 
-router.post("/images", async(req,res)=>{
+  console.log("Check env file if it doesn't work.")
+  if (process.env.EXECUTABLE_DALL_E === "true") {
+    console.time("Image load time");
     try {
-        if (process.env.EXECUTABLE_DALL_E === "true"){
-            console.time('Image load time');
-            res.json({pass:true,data:response.data});                        
-            console.timeEnd('Image load time');
-        } else {
-            res.json({ psss:true, data: [{test:true}] });
-        }
+      const response = await openai.createImage({
+        ...req.body,
+        // user: req.session.userId,
+      });
+      res.json({ pass: true, data: response.data });
     } catch (error) {
-        console.error(error)
+      console.error(error);
+    } finally {
+      console.timeEnd("Image load time");
     }
-})
+  } else {
+    res.json({ psss: true, data: [{ test: true }] });
+  }
+});
 
 export default router;
-
-                                                            

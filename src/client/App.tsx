@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+
+import { useEffect } from "react";
 import {
   Routes,
   Route,
@@ -6,36 +8,27 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { APIGeneralResponseType } from "./axiosConfig";
+import { fetchSession, deleteSession } from "./store/slice";
+
 import ContentsPage from "./pages/ContentsPage";
 import Header from "./components/common/Header";
-import Footer from "./components/common/Footer";
 import LoginPage from "./pages/LoginPage";
-import MainShowWindow from "./components/common/MainShowWindow";
-import { useCheckSession } from "./hooks/useCheckSession";
-import { APIGeneralResponseType } from "./axiosConfig";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchSession, deleteSession } from "./store/slice";
-import { RootState } from "./store/store";
 import ErrorPage from "./pages/ErrorPage";
 
-;
-
-function App() {
+const App:React.FC = () =>{
   const navigate = useNavigate();
-  ;
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.userKey);
   const location = useLocation();
 
-    useEffect(() => {
+  useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use(
       (response) => {
-        ;         ;         return response.data;
+        return response.data;
       },
       (error) => {
-                        ;
-        ;
         if (error.code === "ECONNABORTED") {
           return { pass: false, data: "Request timed out, No response." };
         }
@@ -51,8 +44,6 @@ function App() {
               "Session Expired. Logging out and redirecting to 440 page."
             );
             dispatch(deleteSession());
-                        ;
-            ;
             if (location.pathname !== "/") {
               navigate(`/error/${error.response.status}`);
             }
@@ -63,13 +54,12 @@ function App() {
             break;
 
           case 403:
-                        break;
+            break;
 
           case 401:
-                        break;
+            break;
 
           default:
-            ;
         }
         return { pass: false, data: error.response.data };
       }
@@ -80,19 +70,18 @@ function App() {
   }, [navigate]);
 
   useEffect(() => {
-        const fetchData = async () => {
+    const fetchData = async () => {
       try {
         const response: APIGeneralResponseType = await axios.get(
           "/api/user/check-session"
         );
-        ;
-        ;
-        ;
-        if (response.pass === null) return;                                                 if (response.pass === true) {
+        if (response.pass === null) return;
+        if (response.pass === true) {
           dispatch(fetchSession({ username: response.data }));
         }
       } catch (error) {
-                throw error;       }
+        throw error;
+      }
     };
     fetchData();
   }, [location.pathname]);
@@ -106,7 +95,6 @@ function App() {
           <>
             <Header />
             <Outlet />
-            {/* <Footer /> */}
           </>
         }
       >
@@ -118,4 +106,3 @@ function App() {
 }
 
 export default App;
-
