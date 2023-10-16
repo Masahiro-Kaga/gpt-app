@@ -1,88 +1,99 @@
-// SCSSインストール済み。ファイルも作成済み。だが、やはりemotion/styledでやろうと思っている。
-// BGイメージ、SVGにするか、ボヤけてるから。ロゴは逆にSVGからJPEGにするか。
-// ページ読み込み時に何かかっこいいアニメーションが欲しい。
-// ログイン機能、sessionを用いて。
-// ホーム画面も同じく、バックグラウンドで何かロボットの絵とか説明とか。
-// Video 3:45:36、次はImage Variationの部分。
+<h1 align="center">
+Portfolio - Diary web app
+</h1>
+<h3 align="center">
+📓  Take a note about your daydream anytime💭
+</h3>
 
-GPT App
+<p align="right"> 
+<img src="https://shields-io-visitor-counter.herokuapp.com/badge?page=MasahiroKaga.shields-io-visitor-counter&color=1D70B8&logo=GitHub&logoColor=FFFFFF&style=flat-square"></img>
+<img src="http://img.shields.io/badge/license-MIT-blue.svg"></img>
 
-使用モデル
-	・GPT-3.5 : 自然言語とコードを理解および生成する最新モデル。
-	・DALL-E : 自然言語から画像を生成・編集するモデル
-	・Whisper : 音声をテキストに変換するモデル
-	<!-- ・Embeddings : 埋め込み (ベクトル表現) を生成するモデル -->
-	<!-- ・Codex : コードを理解および生成するモデル -->
-	<!-- ・Moderation : センシティブおよび 安全でない文章を検出するモデル -->
+</p>
 
+## URL
 
-作業
-- [ ]: Headerのデザイン
-- [ ]: Sidebarのデザイン
-- [ ]: 全ページのベース作成とRooterを設定
-- [ ]: Footerのデザイン
-- [ ]: Login機能
-- [ ]: データベースの構築
-- [ ]:
-- [ ]:
+&emsp;[Diary note app - https://note-app-masamern.herokuapp.com/](https://note-app-masamern.herokuapp.com/)
 
+<br>
 
-[GPT-3.5]
-- [ ]: ページデザイン
-- [ ]: サイドメニューの設定項目
+## Features
 
+- MERN stack.
+- Redux to manage state.
+- Use axios for RestAPI.
+- Cloudinary to save photo.
+- Search function for bunch of saved diaries.
+- React Bootstrap is used for styling.
+- Use Mongodb as database.
+- Set Registration and authentication system with web token.
+- Validation works.
+- Fully responsive.
 
-[DALL-E]
-- [ ]: ページデザイン
-- [ ]: サイドメニューの設定項目
-- [ ]: Loading機能
-- [ ]: 画像ダウンロード機能
-- 
+<br>
 
+## Demo
 
-[Whisper]
-- [ ]: ページデザイン
-- [ ]: サイドメニューの設定項目
+<br>
 
+1. Sign up(Mongodb is active, so you can sign up.)
+<div>
+    <img src="public/demo_gif/01_signup.gif" width="100%" height="auto">
+</div>
+<br>
 
+2. Login with email and password.
+<div>
+    <img src="public/demo_gif/02_login_and_validation.gif" width="100%" height="auto">
+</div>
+<br>
 
+3. Write diary as a login user.
+<div>
+    <img src="public/demo_gif/03_write_diary.gif" width="100%" height="auto">
+</div>
+<br>
 
-Localでmongodbを起動する。
- - brew services start mongodb/brew/mongodb-community
-Mongo bashを利用する。
- - (mongodbを起動後)mongosh
-Localでmongodbを停止する。
- - brew services stop mongodb/brew/mongodb-community
-Localでmondodbが動いてるかどうか確認する。
- - brew services list
+4. Edit and delete diary.
+<div>
+    <img src="public/demo_gif/04_edit_and_delete.gif" width="100%" height="auto">
+</div>
+<br>
 
-mongo compassで、ローカルでmongo動かしてて、接続切るの忘れてcompass経由でDockerのmongoにアクセスしようとしたら、authentication failedになる。authentication情報は正しいのに、そういう文言になるので、注意。
+5. Update profile.
+<div>
+    <img src="public/demo_gif/05_update_profile.gif" width="100%" height="auto">
+</div>
+<br>
 
-compassで繋げるときのURL
-docker　 mongodb://root:gpt_mongo@localhost:27017/dev?authMechanism=DEFAULT&authSource=admin&directConnection=true
-ローカル　mongodb://localhost:27017/dev
-dockerはmongo:27017で繋がってるけど、ローカルから繋げる時はフォワードされてるから、オリジナルのlocalhost:20717で接続する。
+6. Search diary.
+<div>
+    <img src="public/demo_gif/06_search_diary.gif" width="100%" height="auto">
+</div>
+<br>
 
-dockerのyml直した時に、特にmongoの部分だと、docker downしてもキャッシュが残ってしまう場合あるので、docker-compose down -vで捨てること。
+## Proud of
 
-mkcertの利用も検討。
-helmetも。
+- Applied saving photo function with "Cloudinary".
+- State management with Redux.
+- Run client and server with using "concurrently" module.
+- No need to change environment variables when we run this program because I have set appropriate cors option in server side.
 
+<br>
 
-CSSの定義！！！
-	MUIを使うとき→使い回して、いろんなところで使う部品・コンポーネントがあるとき。
-	その他はemotionsで。
-	枠操作、ボックス操作、一列だけのものについては、tailwindで。
-	
-constants.tsが読み込めない！訳がわからん、axiosConfigな.tsならいけてる。
-	import { testString } from "src/client/constants"; 
-	普通にwebpackでsrc/*とかの処理もされてるし、そもそもaxiosConfigなら同じ方法かつ同じようなパス指定でいけてるし。
-	->ESではできた。const { testString } = require('../../constants');として残しておきます。constants.tsも合わせて。
-	ERROR in Entry module not found: Error: Can't resolve './src'　はwebpackの問題っぽい
-	同じ階層で相対パスだとうまくいく。/src/から始めると上手くいかない。
+## Usage
 
-これからウェブサイトをブラッシュアッぷする時はCRAで簡単なもの作って同時に走らせて、テスト用に。
+&emsp;On the terminal under "portfolio_note-app" folder, hit the command below to launch web page on your local environment.
 
-React Dev Toolもつかいたい！！！！
+```
+npm run dev
+```
 
-https://giphy.com/search/back-to-the-future
+&emsp;Since Concurrently in installed as a module, client and server side programs will run at the same time.
+
+<br>
+
+## Deploy
+
+- Heroku(For client and server side)
+  
