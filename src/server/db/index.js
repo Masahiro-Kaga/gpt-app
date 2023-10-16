@@ -1,18 +1,10 @@
 import mongoose from "mongoose";
-// mongoose.set( 'debug', true ); // turn on debug
 import fs from "fs";
 import path from "path";
 import chalk from 'chalk';
 
 const Collections = {};
 
-// Ver 6.0から標準でこの設定。型定義セットも既に存在しないのでエラー出る。
-// const mongooseConfig = {
-// 	useNewUrlParser: true,
-// 	useUnifiedTopology: true,
-// 	useCreateIndex: true,
-// 	useFindAndModify: false,
-// };
 
 /**
  * Static class for connecting to DB and making calls.
@@ -50,20 +42,10 @@ export class DBHandler {
 
 
 
-    // const database = !process.env.DOCKER_ENV ? args.database.replace('mongo','localhost').split('/')[0] + '/' : args.database ;
-
-    // let url;
-    // if(!process.env.DOCKER_ENV){
-    //   url = `${driver}${username}:${password}@${database}`;
-    // }else{
-    //   url = `${driver}${database}`
-    // }
-
-    // const url = `${driver}${username}:${password}@${database}`;
-    // const url = "mongodb://localhost:27017/dev?authMechanism=DEFAULT&authSource=admin&directConnection=true";
-
-    // mongoose.Promise = global.Promise;
-    console.log("url???");
+    
+                        
+        
+        console.log("url???");
     console.log(url);
 
     try {
@@ -131,32 +113,10 @@ function colorLog(
 
   console.log(colors[color](value));
 
-  // alias.
-  // switch (color) {
-  //   case "green":
-  //     color = "\x1b[32m";
-  //     break;
-
-  //   case "red":
-  //     color = "\x1b[31m";
-  //     break;
-
-  //   case "orange":
-  //     color = "\x1b[35m";
-  //     break;
-
-  //   case "cyan":
-  //     color = "\x1b[36m";
-  //     break;
-
-  //   case "blue":
-  //     color = "\x1b[34m";
-  //     break;
-
-  //   default:
-  //     color = "\x1b[0m";
-  // }
-
-  // console.log(color + value); // display with color.
-  // console.log(color + value + "\x1b[0m"); // reset.
-}
+          
+      
+      
+      
+      
+      
+    }

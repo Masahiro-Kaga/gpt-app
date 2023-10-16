@@ -1,7 +1,6 @@
 {
     "parserOptions": {
-    // 最新ECMAバージョンは、2020
-    "ecmaVersion": 2020,
+        "ecmaVersion": 2020,
     "sourceType": "module"
     }
 }

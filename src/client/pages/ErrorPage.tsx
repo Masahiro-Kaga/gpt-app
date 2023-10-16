@@ -54,8 +54,7 @@ const ErrorPage: React.FC = () => {
       <BackgroundImage url="/images/background-images/error-bg.gif" classOption="opacity-80 brightness-50 grayscale"/>
       <Fade
         key={key}
-        // direction="right"
-        in={true}
+                in={true}
         timeout={1000}
         mountOnEnter
         unmountOnExit

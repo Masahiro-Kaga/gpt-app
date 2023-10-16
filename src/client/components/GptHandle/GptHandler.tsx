@@ -32,16 +32,7 @@ const GptHandler: React.FC = () => {
   const [loading,setLoading] = useState<boolean>(false);
 
 
-  // useEffect(() => {
-  //   const number = [];
-  //   for (let i = 0; i < numberOfImages; i++) {
-  //     number.push({ url: "/images/place-holder/placeholder.png" });
-  //   }
-  //   setImageURLs({
-  //     data: number,
-  //   });
-  // }, [numberOfImages]);
-
+                  
   const [imageURLs, setImageURLs] = useState<{ data: ImageData[] }>({
     data: [],
   });
@@ -84,8 +75,7 @@ const GptHandler: React.FC = () => {
         </Box>
       ),
     },
-    // ... 他のアイテムを追加可能
-  ];
+      ];
 
   const getAnswer = async () => {
     setLoading(true);
@@ -112,8 +102,7 @@ const GptHandler: React.FC = () => {
             <Backdrop
       sx={{
         color: '#fff',
-        flexDirection: 'column',  // 追加
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        flexDirection: 'column',          zIndex: (theme) => theme.zIndex.drawer + 1,
         '& .blinkingText': {
           animation: 'blinkingText 1.2s infinite',
           '@keyframes blinkingText': {
@@ -124,8 +113,7 @@ const GptHandler: React.FC = () => {
         }
       }}
         open={loading}
-        onClick={() => setLoading(false)} // クリックしてローディングを非表示にする（オプショナル）
-      >
+        onClick={() => setLoading(false)}       >
         <CircularProgress color="inherit" />
         <Typography sx={{ mt: 2 }} className="blinkingText">
         Now downloading, it may take 5 to 20 seconds.

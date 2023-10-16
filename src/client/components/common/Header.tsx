@@ -6,32 +6,20 @@ import ServiceButton from "./ServiceButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getHeaderHeight, deleteSession } from "../../store/slice";
 import { RootState } from "src/client/store/store";
-// import { APIGeneralResponseType, testString } from "src/client/axiosConfig";
 import { APIGeneralResponseType, testStringDIF } from "src/client/axiosConfig";
 import axios from "axios";
-// const { testString } = require('../../constants');
 import { testString,testSuperString } from "../../constants";
-// import { TestString } from "src/client/constants"; 
-// import * as some from "src/client/constants";
 
 export default function Header() {
   const user = useSelector((state: RootState) => state.userKey);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  const headerRef = useRef<HTMLDivElement>(null);
-  // const something: ContentsRouteType = {
-  //   to: "/contents/image-generation",
-  //   backgroundColor: "rgb(230, 77, 92)",
-  //   disabled: false,
-  //   title: "Image Generator",
-  // };
-  ;
   
-  // ;
-  useEffect(() => {
+  const headerRef = useRef<HTMLDivElement>(null);
+              ;
+  
+    useEffect(() => {
     if (headerRef.current) {
       dispatch(
         getHeaderHeight({ headerHeight: headerRef.current.offsetHeight })
@@ -52,8 +40,7 @@ export default function Header() {
     }
   };
 
-  // const loginHandler = (loginOrOut: boolean) => setIsLoggedIn(loginOrOut);
-
+  
   return (
     <Box
       ref={headerRef}

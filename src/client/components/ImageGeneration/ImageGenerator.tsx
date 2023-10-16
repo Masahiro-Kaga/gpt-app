@@ -86,28 +86,10 @@ const ImageGenerator: React.FC = () => {
         </Select>
       ),
     },
-    // ... 他のアイテムを追加可能
-  ];
+      ];
 
   const getImages = async () => {
-    // For the test.
-    // setImageURLs({
-    //   data: [
-    //     {
-    //       url: "/images/background-images/proposed_1.jpeg",
-    //     },
-    //     {
-    //       url: "/images/background-images/proposed_1.jpeg",
-    //     },
-    //     {
-    //       url: "/images/background-images/proposed_1.jpeg",
-    //     },
-    //     {
-    //       url: "/images/background-images/proposed_1.jpeg",
-    //     },
-    //   ],
-    // });
-
+                                                                    
     setLoading(true);
 
     try {
@@ -126,43 +108,14 @@ const ImageGenerator: React.FC = () => {
     }
   };
 
-  // return (
-  //   <div className="relative h-full">
-  //     <div className="text-center p-10 text-2xl">Image Generator</div>
-  //     <section className="grid grid-cols-2 md:grid-cols-4 m-5">
-  //       {imageURLs.data?.map((source: ImageData, index: number) => (
-  //         <figure key={index} className="w-full max-w-xl m-auto">
-  //           <img src={source.url} className="grayscale opacity-30"></img>
-  //           {/* <div>{source.url}</div> */}
-  //         </figure>
-  //       ))}
-  //     </section>
-  //     <div className="absolute bottom-0 h-20">
-  //       <TextField
-  //         label="Input prompt..."
-  //         className=""
-  //         value={iprompt}
-  //         // placeholder="Input prompt"
-  //         onChange={(event) => setPrompt(event.target.value)}
-  //       ></TextField>
-
-  //       <Button variant="outlined" onClick={getImages}>
-  //         Create
-  //       </Button>
-  //       {/* <figure>
-  //            <img src="ANY IMAGE HERE" alt="" />
-  //           </figure> */}
-  //     </div>
-  //   </div>
-  // );
-
+                                      
+                  
   return (
     <div className="relative flex flex-col h-full items-center justify-between overflow-auto">
       <Backdrop
       sx={{
         color: '#fff',
-        flexDirection: 'column',  // 追加
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        flexDirection: 'column',          zIndex: (theme) => theme.zIndex.drawer + 1,
         '& .blinkingText': {
           animation: 'blinkingText 1.2s infinite',
           '@keyframes blinkingText': {
@@ -173,8 +126,7 @@ const ImageGenerator: React.FC = () => {
         }
       }}
         open={loading}
-        onClick={() => setLoading(false)} // クリックしてローディングを非表示にする（オプショナル）
-      >
+        onClick={() => setLoading(false)}       >
         <CircularProgress color="inherit" />
         <Typography sx={{ mt: 2 }} className="blinkingText">
         Now downloading, it may take 5 to 20 seconds.
@@ -197,8 +149,7 @@ const ImageGenerator: React.FC = () => {
             label="Input prompt..."
             className=""
             value={prompt}
-            // placeholder="Input prompt"
-            onChange={(event) => setPrompt(event.target.value)}
+                        onChange={(event) => setPrompt(event.target.value)}
             sx={{
               margin: "0px",
               width: "800px",

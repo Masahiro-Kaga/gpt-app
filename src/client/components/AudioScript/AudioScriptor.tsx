@@ -108,10 +108,7 @@ const AudioScriptor: React.FC = () => {
 
     const formData = new FormData();
     formData.append("audio", file);
-    formData.append("language", language); // 追加
-    // formData.appendの引数はBrobとかstringとかなので、numberはtoString()で文字列に変換しなきゃいけない
-    formData.append("temperature", temperature.toString()); // 追加
-
+    formData.append("language", language);         formData.append("temperature", temperature.toString()); 
     setLoading(true);
 
     try {
@@ -125,9 +122,7 @@ const AudioScriptor: React.FC = () => {
     } catch (error) {
       console.error("Axios error:", error);
       if (error) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error("Server response error:", error);
+                        console.error("Server response error:", error);
       }
     } finally
     {
@@ -146,8 +141,7 @@ const AudioScriptor: React.FC = () => {
                   <Backdrop
       sx={{
         color: '#fff',
-        flexDirection: 'column',  // 追加
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        flexDirection: 'column',          zIndex: (theme) => theme.zIndex.drawer + 1,
         '& .blinkingText': {
           animation: 'blinkingText 1.2s infinite',
           '@keyframes blinkingText': {
@@ -158,8 +152,7 @@ const AudioScriptor: React.FC = () => {
         }
       }}
         open={loading}
-        onClick={() => setLoading(false)} // クリックしてローディングを非表示にする（オプショナル）
-      >
+        onClick={() => setLoading(false)}       >
         <CircularProgress color="inherit" />
         <Typography sx={{ mt: 2 }} className="blinkingText">
         Now downloading, it may take 5 to 20 seconds.

@@ -13,8 +13,7 @@ const ContentsPage: React.FC = () => {
   const [key, setKey] = useState(Math.random());
 
   useEffect(() => {
-    setKey(Math.random()); // ロケーションが変わるたびに新しいキーを生成
-  }, [location]);
+    setKey(Math.random());   }, [location]);
 
   let CurrentPage;
 

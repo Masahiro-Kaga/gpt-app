@@ -34,25 +34,18 @@ router.post("/login", async (req,res)=> {
       console.error(`User login validation error: ${error.message}`)
       return res.status(401).json(`User login validation error: ${error.message}`)
     }
-    // if(!req.body.username) return res.status(401).json({pass: false, data: "Bad Request. Username is required."})
-
-    // もしユーザーいなければnullを返す。
-    const user = await User.findOne( {username:req.body.username} );
-    // if(!user) return res.status(401).json("Unauthorized, User not found.")
-    const isValidPassword = user && await bcrypt.compare(req.body.password, user.password);
-    // if(!isValidPassword) return res.status(401).json(:"Unauthorized, Invalid password.")
-    // 逆に、エラーの内容を明らかにさせないというのもセキュリティ上の対策。
-    if(!user || !isValidPassword){
+    
+        const user = await User.findOne( {username:req.body.username} );
+        const isValidPassword = user && await bcrypt.compare(req.body.password, user.password);
+            if(!user || !isValidPassword){
       
       return res.status(401).json("Unauthorized. Invalid credentials.")
     }
-    // Bittreoでは、fetchLatestSessionDataで、セッションから全部のuser情報を引っ張ってきて、setUserでさらにストアしてた。
-    req.session.userId = user._id;
+        req.session.userId = user._id;
     req.session.username = user.username;
     res.json( {pass:true,data:"Successful to login."});
   } catch (error) {
-    // エラーステータスを投げれば、axiosConfigで設定したところにいって{pass/data}で処理してくれる。
-    console.error(`Login error: ${error.message}`);
+        console.error(`Login error: ${error.message}`);
     return res.status(500).json("Internal Server Error while user is logging in.")
   }
 })

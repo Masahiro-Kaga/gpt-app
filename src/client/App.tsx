@@ -13,9 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import MainShowWindow from "./components/common/MainShowWindow";
 import { useCheckSession } from "./hooks/useCheckSession";
 import { APIGeneralResponseType } from "./axiosConfig";
-// import { ContentsRouteType } from "./constants";
 import axios from "axios";
-// import { setupResponseInterceptor } from "./axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSession, deleteSession } from "./store/slice";
 import { RootState } from "./store/store";
@@ -30,18 +28,13 @@ function App() {
   const user = useSelector((state: RootState) => state.userKey);
   const location = useLocation();
 
-  // Any status code that lie within the range of 2xx cause this function to trigger.
-  useEffect(() => {
+    useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use(
       (response) => {
-        ; // ここでレスポンスデータをログに出力
-        ; // ここでレスポンスデータをログに出力
-        return response.data;
+        ;         ;         return response.data;
       },
       (error) => {
-        // const navigate = useNavigate();
-        // const dispatch = useDispatch();
-        ;
+                        ;
         ;
         if (error.code === "ECONNABORTED") {
           return { pass: false, data: "Request timed out, No response." };
@@ -58,8 +51,7 @@ function App() {
               "Session Expired. Logging out and redirecting to 440 page."
             );
             dispatch(deleteSession());
-            // dispatch(setUser(null));
-            ;
+                        ;
             ;
             if (location.pathname !== "/") {
               navigate(`/error/${error.response.status}`);
@@ -71,12 +63,10 @@ function App() {
             break;
 
           case 403:
-            // navigate(`/error/${error.response.status}`);
-            break;
+                        break;
 
           case 401:
-            // navigate(`/error/${error.response.status}`);
-            break;
+                        break;
 
           default:
             ;
@@ -90,8 +80,7 @@ function App() {
   }, [navigate]);
 
   useEffect(() => {
-    // こうしないとasync/await設定不可らしい。useEffect(async　はエラー。
-    const fetchData = async () => {
+        const fetchData = async () => {
       try {
         const response: APIGeneralResponseType = await axios.get(
           "/api/user/check-session"
@@ -99,19 +88,11 @@ function App() {
         ;
         ;
         ;
-        if (response.pass === null) return; // APIの結果を待つ
-        // if (!response.pass) {
-        //   ;
-        //   navigate("/");
-        //   return;
-        // }
-        if (response.pass === true) {
+        if (response.pass === null) return;                                                 if (response.pass === true) {
           dispatch(fetchSession({ username: response.data }));
         }
       } catch (error) {
-        //また、throwを使用するかどうかについては、createAsyncThunk内でエラーをキャッチしてReduxのrejectedアクションをディスパッチするために必要です。インターセプターでエラー処理を完結させる場合、createAsyncThunkでのthrowは必要ありません。 だそうです。
-        throw error; // これが、fetchLatestSessionData.rejectedを働かせる。
-      }
+                throw error;       }
     };
     fetchData();
   }, [location.pathname]);
@@ -138,12 +119,3 @@ function App() {
 
 export default App;
 
-// Open AIのAPIを使って、ウェブアプリを作成中です。次の条件で素敵なバックグラウンドイメージとヘッダー、フッター、サイドバーのイメージを作ってください。
-// ・老若男女ともにウケそうなもの。
-// ・全体的に、近代的なイメージ。
-// ・ロボットっぽいイラストが入っているもの。
-// ・ヘッダーには、Image generator, Sound catcher, Chat Answerのタブがあり、ログインの項目もある。
-// ・ヘッダーの左には、アプリの名前が入っている。アプリの名前も考えてください（英語で）。
-// ・とりあえず、image-generatorのページのimageをバックグラウンド画像として作成してください。Sound catcher, Chat Answerに関しては、後でお願いします。
-// ・フッターはヘッダーに合わせて、かっこいい感じにしてください。
-// ・サイドバーも同じく。

@@ -2,8 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react'
 
 interface UserAuthButtonProps {
-    // userAction: (event: React.MouseEvent<HTMLElement>) => void;
-    userAction: () => void;
+        userAction: () => void;
     typeOfButton: string;
   }
   

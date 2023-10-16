@@ -6,8 +6,7 @@ dotenv.config();
 
 export const openaiAuthorized = (req, res, next) => {
     
-    // next();
-    try {
+        try {
         
         if (!process.env.CHATGPT_APIKEY) {
             throw new Error("API key not found");
