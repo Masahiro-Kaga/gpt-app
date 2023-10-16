@@ -34,8 +34,8 @@ export class RouteHandler {
 
         router.use( cors( corsSettings ) );
 
-        console.log('corsSettings???');
-        console.log(corsSettings);
+        
+        
 		  
 		// Static Routes.
         
@@ -47,8 +47,8 @@ export class RouteHandler {
 		// router.use( express.json( { limit: '50mb' } ) );
 		router.use( cookieParser() );
 		if ( mongoose !== undefined && mongoose.connection !== undefined ) {
-            console.log('connectDbUrl?????');
-            console.log(connectDbUrl);
+            
+            
 			sessionMiddleware = session( {
 				secret: process.env.SESSION_SECRET,
 				resave: false,
@@ -126,7 +126,7 @@ export class RouteHandler {
 
 		// エンドポイントなければ、ここ。
 		router.use((req,res) => {
-			// console.log(req);  // ながーいの出てくるよ。
+			//   // ながーいの出てくるよ。
 			res.status(404).json({path:false, data:`Endpoint ${req.url} not found.`})
 		  })    
 	  

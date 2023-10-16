@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.post("/", validateUser, async ( req,res ) => {
   try {
-    console.log('req.headers???');
-    console.log(req.headers);
+    
+    
     const { error, value } = UserValidationSchema.validate(req.body, { abortEarly: false });
     if (error) {
       console.error(`User login validation error: ${error.message}`)
@@ -30,7 +30,7 @@ router.post("/login", async (req,res)=> {
   try {
     const { error, value } = UserLoginValidationSchema.validate(req.body, { abortEarly: false });
     if (error) {
-      console.log(error)
+      
       console.error(`User login validation error: ${error.message}`)
       return res.status(401).json(`User login validation error: ${error.message}`)
     }
@@ -43,7 +43,7 @@ router.post("/login", async (req,res)=> {
     // if(!isValidPassword) return res.status(401).json(:"Unauthorized, Invalid password.")
     // 逆に、エラーの内容を明らかにさせないというのもセキュリティ上の対策。
     if(!user || !isValidPassword){
-      console.log("Login error: Unauthorized. Invalid credentials.")
+      
       return res.status(401).json("Unauthorized. Invalid credentials.")
     }
     // Bittreoでは、fetchLatestSessionDataで、セッションから全部のuser情報を引っ張ってきて、setUserでさらにストアしてた。
@@ -71,15 +71,15 @@ router.get("/logout", async (req,res)=> {
 })
 
 router.get("/check-session", async (req,res)=> {
-  console.log(req.session)
+  
   try {
     if(req.session && req.session.userId){
       const user = await User.findOne( {_id:req.session.userId} );
       if(!user){
-        console.log("Session error: Unauthorized. Invalid credentials.")
+        
         return res.status(401).json("Unauthorized. Invalid credentials.")
       } 
-      console.log(user.username)
+      
       return res.json({pass:true,data:user.username});
     }
     if(req.session && !("userId" in req.session)) {

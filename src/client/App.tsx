@@ -21,11 +21,11 @@ import { fetchSession, deleteSession } from "./store/slice";
 import { RootState } from "./store/store";
 import ErrorPage from "./pages/ErrorPage";
 
-console.log("First Render!");
+;
 
 function App() {
   const navigate = useNavigate();
-  console.log("are you there");
+  ;
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.userKey);
   const location = useLocation();
@@ -34,15 +34,15 @@ function App() {
   useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use(
       (response) => {
-        console.log(response.data); // ここでレスポンスデータをログに出力
-        console.log("YYYYYY"); // ここでレスポンスデータをログに出力
+        ; // ここでレスポンスデータをログに出力
+        ; // ここでレスポンスデータをログに出力
         return response.data;
       },
       (error) => {
         // const navigate = useNavigate();
         // const dispatch = useDispatch();
-        console.log("Axios error???");
-        console.log(error);
+        ;
+        ;
         if (error.code === "ECONNABORTED") {
           return { pass: false, data: "Request timed out, No response." };
         }
@@ -59,8 +59,8 @@ function App() {
             );
             dispatch(deleteSession());
             // dispatch(setUser(null));
-            console.log("location???");
-            console.log(location);
+            ;
+            ;
             if (location.pathname !== "/") {
               navigate(`/error/${error.response.status}`);
             }
@@ -79,7 +79,7 @@ function App() {
             break;
 
           default:
-            console.log(`Unhandled server response ${error.response.status}`);
+            ;
         }
         return { pass: false, data: error.response.data };
       }
@@ -96,12 +96,12 @@ function App() {
         const response: APIGeneralResponseType = await axios.get(
           "/api/user/check-session"
         );
-        console.log("response???");
-        console.log(response);
-        console.log("response fetched");
+        ;
+        ;
+        ;
         if (response.pass === null) return; // APIの結果を待つ
         // if (!response.pass) {
-        //   console.log("useEffect to fetch session works");
+        //   ;
         //   navigate("/");
         //   return;
         // }

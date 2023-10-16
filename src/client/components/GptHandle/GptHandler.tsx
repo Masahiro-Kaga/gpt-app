@@ -96,11 +96,11 @@ const GptHandler: React.FC = () => {
         "/api/gptHandler/answer",
         data,{ timeout: 10000 }
       );
-      console.log("Clicked!");
-      console.log(response.data);
+      ;
+      ;
       setAnswer(response.data);
     } catch (error) {
-      console.log("Error!On GptHandler API sent");
+      ;
       console.error(error);
     } finally {
       setLoading(false);

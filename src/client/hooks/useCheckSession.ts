@@ -14,24 +14,24 @@ export function useCheckSession(pass: boolean | null) {
   const navigate = useNavigate();
 
   //   useEffect(() => {
-  //     console.log("001user.isSessionActive???");
-  //     console.log(user.isSessionActive);
+  //     ;
+  //     ;
   //     dispatch(fetchLatestSessionData());
-  //     console.log("002user.isSessionActive???");
-  //     console.log(user.isSessionActive);
+  //     ;
+  //     ;
   //     if (!user.isSessionActive) {
-  //       console.log("useEffect to fetch session works");
+  //       ;
   //       navigate("/");
   //     }
   //   }, []);
 
   //   useEffect(() => {
   //     const fetchData = async () => {
-  //       console.log("001user.isSessionActive???", user.isSessionActive);
+  //       ;
   //       await dispatch(fetchLatestSessionData());
-  //       console.log("002user.isSessionActive???", user.isSessionActive);
+  //       ;
   //       if (!user.isSessionActive) {
-  //         console.log("useEffect to fetch session works");
+  //         ;
   //         navigate("/");
   //       }
   //     };
@@ -45,7 +45,7 @@ export function useCheckSession(pass: boolean | null) {
     // このやり方は標準、とのこと。
     if (pass === null) return; // APIの結果を待つ
     if (!pass) {
-      console.log("useEffect to fetch session works");
+      ;
       navigate("/");
     }
   }, [pass]);

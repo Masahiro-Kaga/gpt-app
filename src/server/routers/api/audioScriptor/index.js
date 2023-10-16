@@ -22,33 +22,33 @@ router.post("/script", openaiAuthorized, upload.single('audio'), async(req,res)=
         // bufferStream.push(audioBuffer);
         // bufferStream.push(null); // ストリームの終端を示す
 
-        // console.log("bufferStream???")
+        // 
         // console.dir(bufferStream, {depth:4})
 
     // Test 2
         const bufferStream = Readable.from(audioBuffer);
         // Githubの中の天才によると、pathを入れることでOpenAIをあざむけるらしい。
         bufferStream.path = req.file.originalname;
-        console.log("bufferStream???")
+        
         console.dir(bufferStream, {depth:4})
 
     // Test 3
-    console.log('req.file???')
-    console.log(req.file)
+    
+    
     const language = req.body.language; // Access 'language' variable
     const temperature = req.body.temperature; // Access 'temperature' variable
 
         // const filePath = req.file.path;
-        // console.log("file path???")
-        // console.log(filePath)
+        // 
+        // 
         // const fileStream = fs.createReadStream(req.file.path);
-        // console.log("fileStream???")
+        // 
         // console.dir(fileStream, {depth:4})
 
 
         // const audioRealFileStream = fs.createReadStream("src/server/routers/api/audioScriptor/test2.mp3");
 
-        // console.log("audioRealFileStream???")
+        // 
         // console.dir(audioRealFileStream, {depth:4})
 
     // 次のとおり、ファイルから直接、は問題ない。メモリストレージにはバッファでしか保存できないから、バッファをストリームに変換する必要がある。
@@ -57,7 +57,7 @@ router.post("/script", openaiAuthorized, upload.single('audio'), async(req,res)=
        
         // const script = await openai.createTranscription( bufferStream,"whisper-1");
 
-        console.log(req.body);
+        
        
         const script = await openai.createTranscription(
             bufferStream,
@@ -80,7 +80,7 @@ router.post("/script", openaiAuthorized, upload.single('audio'), async(req,res)=
 
         res.json({pass:true,data:script.data.text})
     } catch (error) {
-        console.log(error);
+        
         res.json({pass:false,data:"Test unsuccessful"})
         
     }

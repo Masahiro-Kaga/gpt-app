@@ -13,7 +13,7 @@ export const fetchLatestSessionData = createAsyncThunk(
   async (): Promise<APIGeneralResponseType> => {
     try {
       const response: APIGeneralResponseType = await axios.get("/api/user/check-session");
-      console.log(response)
+      
       return response;  
     } catch (error) {
     //また、throwを使用するかどうかについては、createAsyncThunk内でエラーをキャッチしてReduxのrejectedアクションをディスパッチするために必要です。インターセプターでエラー処理を完結させる場合、createAsyncThunkでのthrowは必要ありません。 だそうです。
@@ -39,9 +39,9 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLatestSessionData.fulfilled, (state,action) => {
-      // console.log("action???")
+      // 
       // このコンソールみたら、ちょっと仕組みがわかる、かも？
-      // console.log(action)
+      // 
       if(action.payload.pass){
         state.isSessionActive = true;
         state.username = action.payload.data;

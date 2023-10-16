@@ -8,15 +8,15 @@ const router = express.Router();
 
 // router.post("/answer", async(req,res)=>{
 router.post("/answer", openaiAuthorized, async(req,res)=>{
-    console.log('req.body???');
-    console.log(req.body);
-    console.log(req.user);
+    
+    
+    
     const openai = req.user.openai;
     // const response = await openai.listEngines();
 
-    // console.log("openai???");
-    // console.log(openai);
-    // console.log("response.data???");
+    // 
+    // 
+    // 
     // console.dir(response.data, {depth:4});
 
     const completion = await openai.createCompletion({
@@ -25,7 +25,7 @@ router.post("/answer", openaiAuthorized, async(req,res)=>{
         max_tokens: req.body.maxToken,
         temperature: req.body.temperature,
       });
-    console.log("completion.data???")
+    
     console.dir(completion.data, {depth:4})
     const answer = completion.data.choices[0].text;
     res.json({pass:true,data:answer});

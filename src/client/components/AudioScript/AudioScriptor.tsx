@@ -121,7 +121,7 @@ const AudioScriptor: React.FC = () => {
         },timeout: 10000,
       });
       setScript(response.data);
-      console.log(response.data);
+      ;
     } catch (error) {
       console.error("Axios error:", error);
       if (error) {

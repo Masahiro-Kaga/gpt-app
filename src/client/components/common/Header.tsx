@@ -28,9 +28,9 @@ export default function Header() {
   //   disabled: false,
   //   title: "Image Generator",
   // };
-  console.log(testString);
-  console.log(testSuperString)
-  // console.log(testStringDIF);
+  ;
+  
+  // ;
   useEffect(() => {
     if (headerRef.current) {
       dispatch(
@@ -46,7 +46,7 @@ export default function Header() {
       );
       response.pass && dispatch(deleteSession());
       navigate("/");
-      console.log(response);
+      ;
     } catch (error) {
       console.error(error);
     }

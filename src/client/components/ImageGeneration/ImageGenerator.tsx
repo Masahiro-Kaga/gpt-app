@@ -116,8 +116,8 @@ const ImageGenerator: React.FC = () => {
         "/api/imageGenerator/images",
         data,{ timeout: 10000 }
       );
-      console.log("Clicked!");
-      console.log(response.data);
+      ;
+      ;
       setImageURLs(response.data);
     } catch (error) {
       console.error(error);
