@@ -12,7 +12,7 @@ const ContentsPage: React.FC = () => {
   const [key, setKey] = useState(Math.random());
 
   useEffect(() => {
-    setKey(Math.random());   }, [location]);
+    setKey(Math.random());}, [location]);
 
   let CurrentPage;
 
