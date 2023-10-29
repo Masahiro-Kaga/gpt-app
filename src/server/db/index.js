@@ -22,11 +22,16 @@ export class DBHandler {
 
     const { database, url } = (() => {
       if (!process.env.DOCKER_ENV) {
-        const databaseName =
-          args.database.replace("mongo", "localhost").split("/")[0] + "/dev";
+
+        // const databaseName =
+        //   args.database.replace("mongo", "localhost").split("/")[0] + "/dev";
+        // return {
+        //   database: databaseName,
+        //   url: `${driver}${databaseName}`,
+        // };
         return {
-          database: databaseName,
-          url: `${driver}${databaseName}`,
+          database: "DeployTestEC2",
+          url: process.env.MONGODB_ATLAS,
         };
       } else {
         return {
