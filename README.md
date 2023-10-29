@@ -40,62 +40,62 @@ Portfolio - Open AI Play Ground
 <br>
 
 1. User registration, login, and logout functionalities. Redux manages access rights to other pages.  
-<div align="center">
+<!-- <div align="center">
 	<video width="900" height="auto" controls>
 		<source src="public/demo/01_signup.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+</div> -->
 
 <br>
 
 2. Demonstrating login and session persistence (session data is visible in both the database and browser inspection).
-<div align="center">
+<!-- <div align="center">
 	<video width="900" height="auto" controls>
 		<source src="public/demo/02_login_session.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+</div> -->
 
 <br>
 
 3. Image generation feature.
-<div align="center">
+<!-- <div align="center">
 	<video width="900" height="auto" controls>
 		<source src="public/demo/03_image_generator.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+</div> -->
 
 <br>
 
 4. Chatting with AI functionality.
-<div align="center">
+<!-- <div align="center">
 	<video width="900" height="auto" controls>
 		<source src="public/demo/04_gpt_handler.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+</div> -->
 
 <br>
 
 5. Audio transcription from audio files.
-<div align="center">
+<!-- <div align="center">
 	<video width="900" height="auto" controls>
 		<source src="public/demo/05_audio_scriptor.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+</div> -->
 
 <br>
 
 6. Error handling for unauthorized user access to service pages without logging in.
-<div align="center">
+<!-- <div align="center">
 	<video width="900" height="auto" controls>
 		<source src="public/demo/06_error_page.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+</div> -->
 
 <br>
 
