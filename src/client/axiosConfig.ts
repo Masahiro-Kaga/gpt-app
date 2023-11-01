@@ -5,6 +5,7 @@ if (process.env.NODE_ENV === "development") {
 }else if(process.env.NODE_ENV === "production"){
   axios.defaults.baseURL = "https://mkportfolio.link";
 }
+axios.defaults.withCredentials = true; // Allows for CORS cookies.
 
 axios.defaults.timeout = 2000;
 
