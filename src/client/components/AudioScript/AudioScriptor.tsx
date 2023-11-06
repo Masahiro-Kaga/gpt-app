@@ -25,7 +25,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 const AudioScriptor: React.FC = () => {
   const [language, setLanguage] = useState<string>("en");
   const [temperature, setTemperature] = useState<number>(0.2);
-  const [script, setScript] = useState<string>("Script here");
+  const [script, setScript] = useState<string>("🤖Let's get the transcript by smart AI🎤");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -157,7 +157,7 @@ const AudioScriptor: React.FC = () => {
 
       <div className="text-center p-10 text-2xl">Audio Scriptor</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
-        <Box width={800}>
+        <Box maxWidth={800}>
           <div>{script}</div>
         </Box>
       </section>

@@ -22,9 +22,9 @@ import { Item } from "src/client/types";
 
 const GptHandler: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
-  const [maxToken, setMaxToken] = useState<number>(300);
+  const [maxToken, setMaxToken] = useState<number>(500);
   const [temperature, setTemperature] = useState<number>(0.3);
-  const [answer, setAnswer] = useState<string>("Answer here");
+  const [answer, setAnswer] = useState<string>("🤖Let's get the answer by smart AI😀");
   const [loading, setLoading] = useState<boolean>(false);
 
   const items: Item[] = [
@@ -110,7 +110,7 @@ const GptHandler: React.FC = () => {
 
       <div className="text-center p-10 text-2xl">GPT Handler</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
-        <Box width={800}>
+        <Box maxWidth={800}>
           <div>{answer}</div>
         </Box>
       </section>

@@ -119,17 +119,17 @@ const ImageGenerator: React.FC = () => {
         </Typography>
       </Backdrop>
 
-      <div className="text-center p-10 text-2xl">Image Generator</div>
+      <div className="text-center py-6 text-2xl">Image Generator</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
         {imageURLs.data?.map((source: ImageData, index: number) => (
           <figure key={index} className="">
-            <img src={source.url} className="max-h-80"></img>
+            <img src={source.url} className="max-h-60"></img>
             {/* <div>{source.url}</div> */}
           </figure>
         ))}
       </section>
       <div className="w-full">
-        <Divider></Divider>
+        <Divider sx={{marginTop:"10px"}}></Divider>
         <div className="flex m-4 justify-center">
           <TextField
             label="Input prompt..."
