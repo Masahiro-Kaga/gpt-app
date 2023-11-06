@@ -30,7 +30,7 @@ class DBHandler {
         //   url: `${driver}${databaseName}`,
         // };
         return {
-          database: "DeployTestEC2",
+          database: "Deploy MongoDB Atlas Cluster",
           url: process.env.MONGODB_ATLAS,
         };
       } else {
