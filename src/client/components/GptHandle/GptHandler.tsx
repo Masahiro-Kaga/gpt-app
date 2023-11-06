@@ -18,6 +18,7 @@ import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 
 import SettingDrawer from "../common/SettingDrawer";
+import CommonModal from "../common/CommonModal";
 import { Item } from "src/client/types";
 
 const GptHandler: React.FC = () => {
@@ -26,6 +27,11 @@ const GptHandler: React.FC = () => {
   const [temperature, setTemperature] = useState<number>(0.3);
   const [answer, setAnswer] = useState<string>("🤖Let's get the answer by smart AI😀");
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    message: "",
+  });
 
   const items: Item[] = [
     {
@@ -71,16 +77,38 @@ const GptHandler: React.FC = () => {
     setLoading(true);
 
     try {
-      const data = { prompt, maxToken, temperature };
+      const data = { prompt, maxToken, temperature, serviceType: "gptHandler" };
       const response = await axios.post("/api/gptHandler/answer", data, {
         timeout: 10000,
       });
-      setAnswer(response.data);
+      if (response.data === "Over usage.") {
+        handleOpenModal(
+          "User cannot request twice or more.",
+          "Ask developer to remove the usage restriction."
+        );
+      } else if (response.data === "Same IP."){
+        handleOpenModal(
+          "User cannot request from the same IP as others.",
+          "Ask developer to remove the IP restriction."
+        );
+      } else {
+        setAnswer(response.data);
+      }
     } catch (error) {
       console.error(error);
     } finally {
+      setPrompt("");
       setLoading(false);
     }
+  };
+
+  const handleOpenModal = (title: string, message: string) => {
+    setModalContent({ title, message });
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -107,6 +135,13 @@ const GptHandler: React.FC = () => {
           Now downloading, it may take 5 to 20 seconds.
         </Typography>
       </Backdrop>
+
+      <CommonModal
+        open={modalOpen}
+        title={modalContent.title}
+        message={modalContent.message}
+        onClose={handleCloseModal}
+      ></CommonModal>
 
       <div className="text-center p-10 text-2xl">GPT Handler</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
