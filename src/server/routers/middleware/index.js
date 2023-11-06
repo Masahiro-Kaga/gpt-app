@@ -1,10 +1,10 @@
-import dotenv from "dotenv";
-import { Configuration, OpenAIApi } from "openai";
-import User from "../../models/User.model";
+const dotenv = require("dotenv");
+const { Configuration, OpenAIApi } = require("openai");
+const User = require("../../models/User.model");
 
 dotenv.config();
 
-export const openaiAuthorized = (req, res, next) => {
+const openaiAuthorized = (req, res, next) => {
   try {
     if (!process.env.CHATGPT_APIKEY) {
       throw new Error("API key not found");
@@ -27,7 +27,7 @@ export const openaiAuthorized = (req, res, next) => {
   }
 };
 
-export const usageRestrictions = async (req, res, next) => {
+const usageRestrictions = async (req, res, next) => {
   // Make sure there is a username in the session to look up the user.
   if (!req.session.username) {
     return res.status(401).json({ pass: false, data: "No session found." });
@@ -39,7 +39,7 @@ export const usageRestrictions = async (req, res, next) => {
     return res.status(404).json({ pass: false, data: "User not found." });
   }
 
-  // Fetch the client IP address from the request headers or socket info.
+  // Fetch the client IP address = require(the request headers or socket info.
   const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   
   // Optionally update the user's IP address if you want to keep track of it.
@@ -76,3 +76,5 @@ export const usageRestrictions = async (req, res, next) => {
   // If all checks pass, call next() to continue to the next middleware or route handler.
   next();
 };
+
+module.exports = { openaiAuthorized, usageRestrictions };

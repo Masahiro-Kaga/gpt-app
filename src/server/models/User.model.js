@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-import Joi from "joi";
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const Joi = require("joi");
 const { Schema } = mongoose;
 
 const SALT_WORK_FACTOR = 10;
@@ -51,14 +51,14 @@ const UserSchema = new Schema({
   }
 });
 
-export const UserValidationSchema = Joi.object({
+const UserValidationSchema = Joi.object({
   username: Joi.string().min(3).max(30),
   password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
   accessedRegion: Joi.string().min(1).max(100),
   localTime: Joi.date().iso()
 });
 
-export const UserLoginValidationSchema = Joi.object({
+const UserLoginValidationSchema = Joi.object({
   username: Joi.string().required(),
   password: Joi.string().required(),
 });
@@ -84,4 +84,6 @@ UserSchema.pre("save", async function userPasswordHash(next) {
   }
 });
 
-export default mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
+module.exports.UserValidationSchema = UserValidationSchema;
+module.exports.UserLoginValidationSchema = UserLoginValidationSchema;

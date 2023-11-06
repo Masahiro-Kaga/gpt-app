@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
-import chalk from "chalk";
+const mongoose = require("mongoose");
+const chalk = require("chalk");
 
 /**
  * Static class for connecting to DB and making calls.
  */
-export class DBHandler {
+class DBHandler {
   /**
    * Initialize the mongoose connection and enable for Promises.
    *
@@ -76,3 +76,5 @@ function colorLog(color, value) {
 
   console.log(colors[color](value));
 }
+
+module.exports = { DBHandler };

@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
-import express from "express";
-import path from "path";
-import "module-alias/register";
+const dotenv = require("dotenv");
+const express = require("express");
+const path = require("path");
+require("module-alias/register");
 
 global.globalDir = path.resolve(__dirname, "../..");
 global.serverDir = path.resolve(__dirname);
@@ -12,8 +12,8 @@ dotenv.config();
 const port = process.env.REACT_APP_SERVER_PORT;
 const app = express();
 
-import { DBHandler } from "./db";
-import { RouteHandler } from "./routers";
+const { DBHandler } = require("./db");
+const { RouteHandler } = require("./routers");
 
 app.use(express.json());
 

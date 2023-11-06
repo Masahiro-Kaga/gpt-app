@@ -1,6 +1,7 @@
-import User from "@models/User.model";
+// const User = require("@models/User.model");
+const User = require("../../../models/User.model");
 
-export const validateUser = async (req, res, next) => {
+const validateUser = async (req, res, next) => {
   const existingUser = await User.findOne({ username: req.body.username });
 
   if (existingUser) {
@@ -8,3 +9,5 @@ export const validateUser = async (req, res, next) => {
   }
   next();
 };
+
+module.exports = validateUser;

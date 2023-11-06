@@ -1,13 +1,13 @@
-import express from "express";
-import dotenv from "dotenv";
-import bcrypt from "bcryptjs";
+const express = require("express");
+const dotenv = require("dotenv");
+const bcrypt = require("bcryptjs");
 
-import { validateUser } from "./middleware";
-import User from "../../../models/User.model";
-import {
+const validateUser = require("./middleware");
+const User = require("../../../models/User.model");
+const {
   UserValidationSchema,
   UserLoginValidationSchema,
-} from "../../../models/User.model";
+} = require("../../../models/User.model");
 
 dotenv.config();
 
@@ -101,4 +101,4 @@ router.get("/check-session", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

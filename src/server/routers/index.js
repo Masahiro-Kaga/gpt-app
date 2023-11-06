@@ -1,17 +1,17 @@
-import cors from  'cors';
-import path from  'path';
-import fs from  'fs';
-import express from  'express';
-import cookieParser from  'cookie-parser';
-import mongoose from  'mongoose';
-import session from  'express-session';
-import MongoStore from 'connect-mongo'
-// import helmet from  'helmet';
+const cors = require( 'cors');
+const path = require( 'path');
+const fs = require( 'fs');
+const express = require( 'express');
+const cookieParser = require( 'cookie-parser');
+const mongoose = require( 'mongoose');
+const session = require( 'express-session');
+const MongoStore = require('connect-mongo')
+// const helmet = require( 'helmet');
 
 /**
  * Static class for updating different routing components.
  */
-export class RouteHandler {
+class RouteHandler {
 	/**
 	 * Grab all middleware route configs.
 	 *
@@ -25,7 +25,7 @@ export class RouteHandler {
 		// 	router.set('trust proxy', 1); // trust first proxy
 		// }
 
-        // Allow CORS from same origin.
+        // Allow CORS = require(same origin.
 		// const origin = [];
         // process.env.NODE_ENV === 'development' && origin.push( `${process.env.REACT_APP_URL}:${process.env.REACT_APP_CLIENT_PORT || 3000}` );
 		const origin = ["http://localhost:8000","http://localhost:3000","https://mkportfolio.link"];
@@ -84,15 +84,14 @@ export class RouteHandler {
             if (apiRateLimitMiddleware !== false) {
               router.use(`/${type}/${endpoint}/`, apiRateLimitMiddleware);
             }
-      
             try {
-            const importedModule = await import(`./${type}/${r}`);
-            router.use(`/${type}/${endpoint}`, importedModule.default); // ここで .default を使っていることに注意
-            } catch (error) {
+				const importedModule = await require(`./${type}/${endpoint}`);
+				router.use(`/${type}/${endpoint}/`, importedModule);
+			} catch (error) {
               console.error(`Error importing module: ./${type}/${r}`, error);
             }
           }
-        }
+        } 
 
 		router.use( ( err, req, res, next ) => {
 			if ( err && err.error && err.error.isJoi ) {
@@ -116,3 +115,4 @@ export class RouteHandler {
 	}
 }
 
+module.exports = { RouteHandler };

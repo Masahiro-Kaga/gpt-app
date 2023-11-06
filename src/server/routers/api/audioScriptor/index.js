@@ -1,9 +1,9 @@
-import express from "express";
-import dotenv from "dotenv";
-import multer from "multer";
-import { Readable } from "stream";
+const express = require("express");
+const dotenv = require("dotenv");
+const multer = require("multer");
+const { Readable } = require("stream");
 
-import { openaiAuthorized, usageRestrictions } from "../../middleware/index";
+const { openaiAuthorized, usageRestrictions } = require("../../middleware/index");
 
 dotenv.config();
 
@@ -47,9 +47,9 @@ router.post( "/script", openaiAuthorized, upload.single("audio"), usageRestricti
         console.timeEnd("Audio load time");
       }
     } else {
-      res.json({ psss: true, data: [{ test: true }] });
+      res.json({ pass: true, data: [{ test: true }] });
     }
   }
 );
 
-export default router;
+module.exports = router;

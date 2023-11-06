@@ -1,7 +1,7 @@
-import express from "express";
-import dotenv from "dotenv";
+const express = require("express");
+const dotenv = require("dotenv");
 
-import { openaiAuthorized, usageRestrictions } from "../../middleware/index";
+const { openaiAuthorized, usageRestrictions } = require("../../middleware/index");
 
 dotenv.config();
 
@@ -31,8 +31,8 @@ router.post("/images", openaiAuthorized, usageRestrictions, async (req, res) => 
       console.timeEnd("Image load time");
     }
   } else {
-    res.json({ psss: true, data: [{ test: true }] });
+    res.json({ pass: true, data: [{ test: true }] });
   }
 });
 
-export default router;
+module.exports = router;
