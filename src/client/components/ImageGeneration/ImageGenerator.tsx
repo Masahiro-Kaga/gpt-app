@@ -18,6 +18,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import AspectRatioIcon from "@mui/icons-material/AspectRatio";
 import SendIcon from "@mui/icons-material/Send";
 
+import CommonModal from "../common/CommonModal";
 import SettingDrawer from "../common/SettingDrawer";
 import { Item } from "src/client/types";
 
@@ -30,6 +31,11 @@ const ImageGenerator: React.FC = () => {
   const [numberOfImages, setNumberOfImages] = useState<number>(1);
   const [imageSize, setImageSize] = useState<string>("256x256");
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    message: "",
+  });
 
   useEffect(() => {
     const number = [];
@@ -82,16 +88,38 @@ const ImageGenerator: React.FC = () => {
   const getImages = async () => {
     setLoading(true);
     try {
-      const data = { prompt, n: numberOfImages, size: imageSize };
+      const data = { prompt, n: numberOfImages, size: imageSize, serviceType: "imageGenerator" };
       const response = await axios.post("/api/imageGenerator/images", data, {
         timeout: 10000,
       });
-      setImageURLs(response.data);
+      if (response.data === "Over usage.") {
+        handleOpenModal(
+          "User cannot request twice or more.",
+          "Ask developer to remove the usage restriction."
+        );
+      } else if (response.data === "Same IP."){
+        handleOpenModal(
+          "User cannot request from the same IP as others.",
+          "Ask developer to remove the IP restriction."
+        );
+      } else {
+        setImageURLs(response.data);
+      }
     } catch (error) {
       console.error(error);
     } finally {
+      setPrompt("");
       setLoading(false);
     }
+  };
+
+  const handleOpenModal = (title: string, message: string) => {
+    setModalContent({ title, message });
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -119,17 +147,24 @@ const ImageGenerator: React.FC = () => {
         </Typography>
       </Backdrop>
 
-      <div className="text-center p-10 text-2xl">Image Generator</div>
+      <CommonModal
+        open={modalOpen}
+        title={modalContent.title}
+        message={modalContent.message}
+        onClose={handleCloseModal}
+      ></CommonModal>
+
+      <div className="text-center py-6 text-2xl">Image Generator</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
         {imageURLs.data?.map((source: ImageData, index: number) => (
           <figure key={index} className="">
-            <img src={source.url} className="max-h-80"></img>
+            <img src={source.url} className="max-h-60"></img>
             {/* <div>{source.url}</div> */}
           </figure>
         ))}
       </section>
       <div className="w-full">
-        <Divider></Divider>
+        <Divider sx={{marginTop:"10px"}}></Divider>
         <div className="flex m-4 justify-center">
           <TextField
             label="Input prompt..."

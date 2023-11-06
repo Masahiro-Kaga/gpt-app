@@ -17,6 +17,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import SettingDrawer from "../common/SettingDrawer";
+import CommonModal from "../common/CommonModal";
 import { Item } from "src/client/types";
 import SendIcon from "@mui/icons-material/Send";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
@@ -25,9 +26,14 @@ import LanguageIcon from "@mui/icons-material/Language";
 const AudioScriptor: React.FC = () => {
   const [language, setLanguage] = useState<string>("en");
   const [temperature, setTemperature] = useState<number>(0.2);
-  const [script, setScript] = useState<string>("Script here");
+  const [script, setScript] = useState<string>("🤖Let's get the transcript by smart AI🎤");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    message: "",
+  });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -106,6 +112,7 @@ const AudioScriptor: React.FC = () => {
     formData.append("audio", file);
     formData.append("language", language);
     formData.append("temperature", temperature.toString());
+    formData.append("serviceType", "audioScriptor");
     setLoading(true);
 
     try {
@@ -115,7 +122,19 @@ const AudioScriptor: React.FC = () => {
         },
         timeout: 10000,
       });
-      setScript(response.data);
+      if (response.data === "Over usage.") {
+        handleOpenModal(
+          "User cannot request twice or more.",
+          "Ask developer to remove the usage restriction."
+        );
+      } else if (response.data === "Same IP."){
+        handleOpenModal(
+          "User cannot request from the same IP as others.",
+          "Ask developer to remove the IP restriction."
+        );
+      } else {
+        setScript(response.data);
+      }
     } catch (error) {
       console.error("Axios error:", error);
       if (error) {
@@ -124,6 +143,15 @@ const AudioScriptor: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleOpenModal = (title: string, message: string) => {
+    setModalContent({ title, message });
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   const triggerFileInputClick = () => {
@@ -155,9 +183,16 @@ const AudioScriptor: React.FC = () => {
         </Typography>
       </Backdrop>
 
+      <CommonModal
+        open={modalOpen}
+        title={modalContent.title}
+        message={modalContent.message}
+        onClose={handleCloseModal}
+      ></CommonModal>
+
       <div className="text-center p-10 text-2xl">Audio Scriptor</div>
       <section className="flex gap-2 justify-center w-full flex-wrap">
-        <Box width={800}>
+        <Box maxWidth={800}>
           <div>{script}</div>
         </Box>
       </section>

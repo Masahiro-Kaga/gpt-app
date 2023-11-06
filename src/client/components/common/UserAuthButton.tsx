@@ -13,18 +13,20 @@ const UserAuthButton: React.FC<UserAuthButtonProps> = ({
   return (
     <Button
       sx={{
-        width: "200px",
+        width: "100%",
         margin: "25px 0",
         alignSelf: "center",
         backgroundColor: "white",
         color: "black",
         "&:hover": { backgroundColor: "rgba(255,255,255,0.7)" },
+        overflowWrap: 'break-word'
       }}
       variant="contained"
       disabled={false}
       onClick={userAction}
     >
-      {typeOfButton}
+      <span className="w-full">{typeOfButton}</span>
+      {/* {typeOfButton} */}
     </Button>
   );
 };

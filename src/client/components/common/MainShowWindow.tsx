@@ -19,13 +19,13 @@ const MainShowWindow: React.FC<MainShowWindowProps> = ({ children }) => {
   const option = useSelector((state: RootState) => state.optionKey);
 
   return (
-    <div className="flex p-10 sm:p-6" css={containerStyles}>
+    <div className="flex px-2 sm:px-6 py-2" css={containerStyles}>
       <Box
         sx={{
           flexGrow: 1,
           backgroundColor: "rgba(255,255,255,0.8)",
-          height: `calc(100vh - ${option.headerHeight}px - 40px)`,
-          padding: { xs: "10px", sm: "20px" },
+          height: `calc(100vh - ${option.headerHeight}px - 20px)`,
+          // padding: { xs: "10px", sm: "20px" },
           width: "100%",
           borderRadius: "20px",
         }}

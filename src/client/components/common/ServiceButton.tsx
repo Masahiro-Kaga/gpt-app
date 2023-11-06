@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 
 interface ServiceButtonProps {
   to: string;
+  fontSize: string;
   title: string;
   backgroundColor: string;
   disabled: boolean;
@@ -12,6 +13,7 @@ interface ServiceButtonProps {
 
 const ServiceButton: React.FC<ServiceButtonProps> = ({
   to,
+  fontSize,
   title,
   backgroundColor,
   disabled,
@@ -22,7 +24,7 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
       to={to}
       variant="contained"
       sx={{
-        fontSize: "1rem",
+        fontSize: { fontSize },
         backgroundColor: { backgroundColor },
         "&:hover": {
           color: "black",

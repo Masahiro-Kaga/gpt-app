@@ -15,6 +15,7 @@ const router = express.Router();
 
 router.post("/", validateUser, async (req, res) => {
   try {
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const { error, value } = UserValidationSchema.validate(req.body, {
       abortEarly: false,
     });
@@ -24,7 +25,7 @@ router.post("/", validateUser, async (req, res) => {
         .status(401)
         .json(`User registration validation error: ${error.message}`);
     }
-    const newUser = new User(req.body);
+    const newUser = new User({...req.body,clientIp});
     await newUser.save();
     res.send({ pass: true, data: newUser });
   } catch (error) {

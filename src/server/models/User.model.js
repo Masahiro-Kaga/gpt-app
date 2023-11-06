@@ -14,14 +14,37 @@ const UserSchema = new Schema({
     required: true,
     type: String,
   },
+  userRole:{
+    required: true,
+    type: String,
+    default: "user",
+  },
   accessedRegion: {
     required:true,
     type:String
   },
-    localTime: {
+  localTime: {
 		type: String,
 		required: true,
 	},
+  clientIp: {
+    type: String,
+    required: true,
+  },
+  usageCount: {
+    imageGenerator: {
+      type: Number,
+      default: 0,
+    },
+    gptHandler: {
+      type: Number,
+      default: 0,
+    },
+    audioScriptor: {
+      type: Number,
+      default: 0,
+    },
+  },
   created: {
     type: Date,
     default: new Date(),

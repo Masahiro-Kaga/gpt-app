@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import {
   Box,
   Backdrop,
@@ -24,70 +24,35 @@ import { fetchSession, deleteSession } from "../../store/slice";
 import ServiceButton from "./ServiceButton";
 import UserAuthButton from "./UserAuthButton";
 
-const commonContainerStyles = css`
-  flex: 1;
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  margin: 0 5%;
-  max-width: 400px;
-`;
-
-const loginContainer = css`
-  ${commonContainerStyles};
-  background-color: rgba(0, 0, 0, 0.6);
-  gap: 20px;
-  margin: 10px inherit;
-  padding: 20px;
-`;
-
-const descriptionContainer = css`
-  ${commonContainerStyles};
-  flex-direction: column;
-  gap: 10px 0px;
-`;
-
-const userActiveStatusContainer = (isActive: boolean) => css`
-  ${commonContainerStyles};
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  & div span {
-    color: ${isActive ? "green" : "red"};
-  }
-`;
-
 interface InputFormProps {
   value: string;
   label: string;
   onChangeEvent: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputForm: React.FC<InputFormProps> = ({ value, label, onChangeEvent }) => (
-    <FormControl sx={{ margin: "5px 20px", color: "white" }}>
-      <InputLabel sx={{ color: "white", "&.Mui-focused": { color: "white" } }}>
-        {label}
-      </InputLabel>
-      <Input
-        value={value}
-        sx={{
-          "&:before, &:hover:not(.Mui-disabled):before, &:after": {
-            borderBottomColor: "white",
-          },
-          "& .MuiInput-input": {
-            color: "white",
-          },
-        }}
-        onChange={onChangeEvent}
-        
-      />
-    </FormControl>
-)
+const InputForm: React.FC<InputFormProps> = ({
+  value,
+  label,
+  onChangeEvent,
+}) => (
+  <FormControl sx={{ margin: "5px 20px", color: "white" }}>
+    <InputLabel sx={{ color: "white", "&.Mui-focused": { color: "white" } }}>
+      {label}
+    </InputLabel>
+    <Input
+      value={value}
+      sx={{
+        "&:before, &:hover:not(.Mui-disabled):before, &:after": {
+          borderBottomColor: "white",
+        },
+        "& .MuiInput-input": {
+          color: "white",
+        },
+      }}
+      onChange={onChangeEvent}
+    />
+  </FormControl>
+);
 
 interface ModalProps {
   open: boolean;
@@ -111,7 +76,6 @@ const Login: React.FC = () => {
   const registerUser = async () => {
     const localTime = moment.tz(moment.tz.guess()).format();
     const accessedRegion = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    ;
     try {
       const response: APIGeneralResponseType = await axios.post("/api/user", {
         username,
@@ -119,7 +83,6 @@ const Login: React.FC = () => {
         localTime,
         accessedRegion,
       });
-      ;
       setLogInOutModal({
         open: true,
         title: response.pass ? "Success!" : "Failed",
@@ -127,10 +90,7 @@ const Login: React.FC = () => {
       });
       setUsername("");
       setPassword("");
-    } catch (error) {
-      ;
-      ;
-    }
+    } catch (error) {}
   };
 
   const loginUser = async (): Promise<APIGeneralResponseType> => {
@@ -170,7 +130,6 @@ const Login: React.FC = () => {
         title: response.pass ? "Success!" : "Failed",
         message: response.pass ? "You are now Logged Out!" : response.data,
       });
-      ;
     } catch (error) {
       console.error(error);
     } finally {
@@ -179,7 +138,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col justify-around w-full md:flex-row md:h-screen items-center">
+    <div className="relative flex flex-col-reverse justify-around w-full md:flex-row md:h-screen items-center">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
@@ -187,16 +146,22 @@ const Login: React.FC = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <div>
+      <div css={descriptionContainer}>
         <div css={userActiveStatusContainer(!!user.username)}>
           <div>
             User Status:
             {user.username ? (
-              <span className="text-green-400"> Logged in as {user.username}</span>
+              <span className="text-green-400">
+                {" "}
+                Logged In
+              </span>
             ) : (
-              <span className="text-red-500"> Not logged in</span>
+              <span className="text-red-500"> Nobody Logged In</span>
             )}
           </div>
+          
+          {user.username && <div>User: <span className="text-green-400">{user.username}</span></div>}
+          
         </div>
         <div css={loginContainer}>
           <InputForm
@@ -209,36 +174,48 @@ const Login: React.FC = () => {
             label="Password"
             onChangeEvent={(event) => setPassword(event.target.value)}
           ></InputForm>
-          <div className="flex gap-4">
-            {user.isSessionActive ? (
-              <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
-            ) : (
-              <UserAuthButton userAction={loginUser} typeOfButton="Login" />
-            )}
-            <UserAuthButton userAction={registerUser} typeOfButton="Register" />
+          <div className="flex gap-2">
+            <div className="flex-1">
+              {user.isSessionActive ? (
+                <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
+              ) : (
+                <UserAuthButton userAction={loginUser} typeOfButton="Login" />
+              )}
+            </div>
+            <div className="flex-1">
+              <UserAuthButton
+                userAction={registerUser}
+                typeOfButton="Register"
+              />
+            </div>
           </div>
         </div>
       </div>
       <div css={descriptionContainer}>
         <img src="/images/logo.png"></img>
-        <ServiceButton
-          to="/contents/image-generation"
-          backgroundColor="rgb(245, 186, 71)"
-          disabled={user.isSessionActive ? false : true}
-          title="Image Generator"
-        ></ServiceButton>
-        <ServiceButton
-          to="/contents/gpt-handler"
-          backgroundColor="rgb(11, 144, 166)"
-          disabled={user.isSessionActive ? false : true}
-          title="GPT Handler"
-        ></ServiceButton>
-        <ServiceButton
-          to="/contents/audio-script"
-          backgroundColor="rgb(230, 144, 166)"
-          disabled={user.isSessionActive ? false : true}
-          title="Audio Scriptor"
-        ></ServiceButton>
+        <div css={blinkingStyles} className={`flex flex-col gap-2 ${!user.isSessionActive && "hidden"}`}>
+          <ServiceButton
+            to="/contents/image-generation"
+            fontSize="1rem"
+            backgroundColor="rgb(245, 186, 71)"
+            disabled={user.isSessionActive ? false : true}
+            title="Image Generator"
+          ></ServiceButton>
+          <ServiceButton
+            to="/contents/gpt-handler"
+            fontSize="1rem"
+            backgroundColor="rgb(11, 144, 166)"
+            disabled={user.isSessionActive ? false : true}
+            title="GPT Handler"
+          ></ServiceButton>
+          <ServiceButton
+            to="/contents/audio-script"
+            fontSize="1rem"
+            backgroundColor="rgb(230, 144, 166)"
+            disabled={user.isSessionActive ? false : true}
+            title="Audio Scriptor"
+          ></ServiceButton>
+        </div>
       </div>
       <Modal
         open={logInOutModal.open}
@@ -254,7 +231,8 @@ const Login: React.FC = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: "400px",
+            maxWidth: "90%",
             bgcolor: "background.paper",
             border: "2px solid #000",
             boxShadow: 24,
@@ -285,5 +263,49 @@ const Login: React.FC = () => {
     </div>
   );
 };
+
+const commonContainerStyles = css`
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  margin: 0 10px;
+  max-width: 400px;
+`;
+
+const userActiveStatusContainer = (isActive: boolean) => css`
+  ${commonContainerStyles};
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  & div span {
+    color: ${isActive ? "green" : "red"};
+  }
+`;
+
+const loginContainer = css`
+  ${commonContainerStyles};
+  background-color: rgba(0, 0, 0, 0.6);
+  gap: 20px;
+  padding: 20px;
+`;
+
+const descriptionContainer = css`
+  ${commonContainerStyles};
+  width: 100%;
+  margin: 20px 0
+`;
+
+const blinkingStyles = css`
+  animation: ${keyframes`
+    50% { opacity: 0.5; }
+    0 100% { opacity: 1; }
+  `} 2s 3;
+`;
 
 export default Login;

@@ -1,18 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
 
-import { openaiAuthorized } from "../../middleware/index";
+import { openaiAuthorized, usageRestrictions } from "../../middleware/index";
 
 dotenv.config();
 
 const router = express.Router();
 
-router.post("/answer", openaiAuthorized, async (req, res) => {
-  const openai = req.user.openai;
+router.post("/answer", openaiAuthorized, usageRestrictions, async (req, res) => {
+  const openai = req.openaiAuth;
 
   console.log("Check env file if it doesn't work.")
   if (process.env.EXECUTABLE_GPT === "true") {
-    console.time("Image load time");
+    
+    console.time("Answer load time");
     try {
       const completion = await openai.createCompletion({
         model: "gpt-3.5-turbo-instruct",
@@ -24,11 +25,13 @@ router.post("/answer", openaiAuthorized, async (req, res) => {
       });
 
       const answer = completion.data.choices[0].text;
+      req.user.usageCount[req.body.serviceType] += 1;
+      await req.user.save();
       res.json({ pass: true, data: answer });
     } catch (error) {
       console.error(error);
     } finally {
-      console.timeEnd("Image load time");
+      console.timeEnd("Answer load time");
     }
   } else {
     res.json({ psss: true, data: [{ test: true }] });
