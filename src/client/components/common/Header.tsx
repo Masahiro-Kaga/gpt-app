@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
+import CommonModal from "../common/CommonModal";
+
 import { Link, useNavigate } from "react-router-dom";
 import ServiceButton from "./ServiceButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +29,23 @@ export default function Header() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const isDesktop = useMediaQuery("(min-width:768px)");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    message: "",
+  });
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleOpenModal = (title: string, message: string) => {
+    setModalContent({ title, message });
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   const headerRef = useRef<HTMLDivElement>(null);
@@ -42,13 +59,26 @@ export default function Header() {
 
   const logoutUser = async (): Promise<void> => {
     try {
-      const response: APIGeneralResponseType = await axios.get(
-        "/api/user/logout"
+      handleOpenModal(
+        "Logout successfully",
+        "Automatically navigate you to the Home right now."
       );
-      response.pass && dispatch(deleteSession());
-      navigate("/");
+      setTimeout(async () => {
+        try {
+          handleCloseModal();
+          const response: APIGeneralResponseType = await axios.get(
+            "/api/user/logout"
+          );
+          if (response.pass) {
+            dispatch(deleteSession());
+            navigate("/");
+          }
+        } catch (error) {
+          console.error("Error during logout:", error);
+        }
+      }, 3000);
     } catch (error) {
-      console.error(error);
+      console.error("Error opening modal:", error);
     }
   };
 
@@ -73,6 +103,14 @@ export default function Header() {
 
   return (
     <>
+      <CommonModal
+        open={modalOpen}
+        title={modalContent.title}
+        message={modalContent.message}
+        onClose={handleCloseModal}
+        noButton={true}
+      ></CommonModal>
+
       {isDesktop ? (
         <Box
           ref={headerRef}

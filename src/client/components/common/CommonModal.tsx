@@ -6,9 +6,10 @@ interface ModalProps {
     title: string;
     message: string;
     onClose: () => void;
+    noButton?: boolean;
   }
   
-const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose }) => {
+const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose, noButton }) => {
     return (
       <Modal
         open={open}
@@ -40,9 +41,12 @@ const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose }) =>
         <Typography id="modal-description" variant="body1">
           {message}
         </Typography>
-        <Button variant="contained" color="secondary" onClick={onClose}>
-          Close
-        </Button>
+        {/* // if no button is specified, do not show the button */}
+        {!noButton && (
+          <Button variant="contained" color="primary" onClick={onClose}>
+            OK
+          </Button>
+        )}
       </Box>
     </Modal>
   );
