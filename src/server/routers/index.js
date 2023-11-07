@@ -39,23 +39,27 @@ class RouteHandler {
 
 		if ( mongoose !== undefined && mongoose.connection !== undefined ) {
 			sessionMiddleware = session( {
+				sameSite: 'lax',
 				secret: process.env.SESSION_SECRET,
 				resave: false,
 				rolling: true,
 				saveUninitialized: false,
 
 				cookie: {
-                    // secure:false,
+                    // secure:true,
 					secure:process.env.NODE_ENV === "production" ? true : false,
                     httpOnly:true,
 					maxAge: +( process.env.SESSION_TIMEOUT || 4 * 60 * 60 * 1000 ),
 				},
+				proxy: true,
                 store: MongoStore.create({
                     mongoUrl: connectDbUrl
                 })
 			} );
 			router.use( sessionMiddleware );
 		}
+
+		console.log(process.env.NODE_ENV === "production" ? true : false)
 
 		return {
 			router,

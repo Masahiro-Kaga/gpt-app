@@ -12,6 +12,8 @@ dotenv.config();
 const port = process.env.REACT_APP_SERVER_PORT;
 const app = express();
 
+app.set('trust proxy', 1);
+
 const { DBHandler } = require("./db");
 const { RouteHandler } = require("./routers");
 
