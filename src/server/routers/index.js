@@ -59,8 +59,6 @@ class RouteHandler {
 			router.use( sessionMiddleware );
 		}
 
-		console.log(process.env.NODE_ENV === "production" ? true : false)
-
 		return {
 			router,
 			sessionMiddleware,
@@ -96,6 +94,20 @@ class RouteHandler {
             }
           }
         } 
+
+		//--------------------deployment--------------------
+		if (process.env.NODE_ENV === "production") {
+		router.use(express.static(path.join(global.globalDir, "build")));
+
+		router.get("*", (req, res) =>
+			res.sendFile(path.resolve(global.globalDir, "build", "index.html"))
+		);
+		} else {
+		  router.get("/", (req, res) => {
+		    res.send("API is running..");
+		  });
+		} 
+		//--------------------deployment--------------------
 
 		router.use( ( err, req, res, next ) => {
 			if ( err && err.error && err.error.isJoi ) {
