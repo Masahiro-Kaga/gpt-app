@@ -88,7 +88,12 @@ const ImageGenerator: React.FC = () => {
   const getImages = async () => {
     setLoading(true);
     try {
-      const data = { prompt, n: numberOfImages, size: imageSize, serviceType: "imageGenerator" };
+      const data = {
+        prompt,
+        n: numberOfImages,
+        size: imageSize,
+        serviceType: "imageGenerator",
+      };
       const response = await axios.post("/api/imageGenerator/images", data, {
         timeout: 10000,
       });
@@ -97,7 +102,7 @@ const ImageGenerator: React.FC = () => {
           "User cannot request twice or more.",
           "Ask developer to remove the usage restriction."
         );
-      } else if (response.data === "Same IP."){
+      } else if (response.data === "Same IP.") {
         handleOpenModal(
           "User cannot request from the same IP as others.",
           "Ask developer to remove the IP restriction."
@@ -155,63 +160,65 @@ const ImageGenerator: React.FC = () => {
       ></CommonModal>
 
       <div className="text-center py-6 text-2xl">Image Generator</div>
-      <section className="flex gap-2 justify-center w-full flex-wrap">
-        {imageURLs.data?.map((source: ImageData, index: number) => (
-          <figure key={index} className="">
-            <img src={source.url} className="max-h-60"></img>
-            {/* <div>{source.url}</div> */}
-          </figure>
-        ))}
-      </section>
-      <div className="w-full">
-        <Divider sx={{marginTop:"10px"}}></Divider>
-        <div className="flex m-4 justify-center">
-          <TextField
-            label="Input prompt..."
-            className=""
-            value={prompt}
-            onChange={(event) => setPrompt(event.target.value)}
-            sx={{
-              margin: "0px",
-              width: "800px",
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={getImages}
-                    edge="end"
-                    disabled={prompt.length < 1}
-                    color={prompt.length < 1 ? "default" : "primary"}
-                  >
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
-        </div>
-        <div className="flex m-4 justify-center">
-          <Box
-            position="relative"
-            border={1}
-            borderColor="rgba(0,0,0,0.2)"
-            mt={2}
-            pt={1.5}
-            pl={2}
-            borderRadius="5px"
-            width="800px"
-            margin="auto"
-          >
-            <SettingDrawer items={items}>Setting</SettingDrawer>
-            <Box display="flex" flexWrap="wrap" justifyContent="space-around">
-              {items.map((item, index) => (
-                <div key={index}>
-                  {item.title}: <span>{item.value}</span>
-                </div>
-              ))}
+      <div className="flex flex-col-reverse md:flex-col w-full flex-grow">
+        <section className="flex flex-grow gap-2 justify-center w-full flex-wrap">
+          {imageURLs.data?.map((source: ImageData, index: number) => (
+            <figure key={index} className="my-auto">
+              <img src={source.url} className="max-h-60"></img>
+              {/* <div>{source.url}</div> */}
+            </figure>
+          ))}
+        </section>
+        <div className="w-full">
+          <Divider sx={{ marginTop: "10px" }}></Divider>
+          <div className="flex m-4 justify-center">
+            <TextField
+              label="Input prompt..."
+              className=""
+              value={prompt}
+              onChange={(event) => setPrompt(event.target.value)}
+              sx={{
+                margin: "0px",
+                width: "800px",
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={getImages}
+                      edge="end"
+                      disabled={prompt.length < 1}
+                      color={prompt.length < 1 ? "default" : "primary"}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
+          </div>
+          <div className="flex m-4 justify-center">
+            <Box
+              position="relative"
+              border={1}
+              borderColor="rgba(0,0,0,0.2)"
+              mt={2}
+              pt={1.5}
+              pl={2}
+              borderRadius="5px"
+              width="800px"
+              margin="auto"
+            >
+              <SettingDrawer items={items}>Setting</SettingDrawer>
+              <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+                {items.map((item, index) => (
+                  <div key={index}>
+                    {item.title}: <span>{item.value}</span>
+                  </div>
+                ))}
+              </Box>
             </Box>
-          </Box>
+          </div>
         </div>
       </div>
     </div>

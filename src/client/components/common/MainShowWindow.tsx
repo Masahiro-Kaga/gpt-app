@@ -24,7 +24,7 @@ const MainShowWindow: React.FC<MainShowWindowProps> = ({ children }) => {
         sx={{
           flexGrow: 1,
           backgroundColor: "rgba(255,255,255,0.8)",
-          height: `calc(100vh - ${option.headerHeight}px - 20px)`,
+          height: `calc(100dvh - ${option.headerHeight}px - 20px)`,
           // padding: { xs: "10px", sm: "20px" },
           width: "100%",
           borderRadius: "20px",

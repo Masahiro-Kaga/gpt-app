@@ -26,7 +26,9 @@ import LanguageIcon from "@mui/icons-material/Language";
 const AudioScriptor: React.FC = () => {
   const [language, setLanguage] = useState<string>("en");
   const [temperature, setTemperature] = useState<number>(0.2);
-  const [script, setScript] = useState<string>("🤖Let's get the transcript by smart AI🎤");
+  const [script, setScript] = useState<string>(
+    "🤖Let's get the transcript by smart AI🎤"
+  );
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -127,7 +129,7 @@ const AudioScriptor: React.FC = () => {
           "User cannot request twice or more.",
           "Ask developer to remove the usage restriction."
         );
-      } else if (response.data === "Same IP."){
+      } else if (response.data === "Same IP.") {
         handleOpenModal(
           "User cannot request from the same IP as others.",
           "Ask developer to remove the IP restriction."
@@ -191,68 +193,70 @@ const AudioScriptor: React.FC = () => {
       ></CommonModal>
 
       <div className="text-center p-10 text-2xl">Audio Scriptor</div>
-      <section className="flex gap-2 justify-center w-full flex-wrap">
-        <Box maxWidth={800}>
-          <div>{script}</div>
-        </Box>
-      </section>
-      <div className="w-full">
-        <Divider></Divider>
-        <div className="flex m-4 justify-center">
-          <input
-            ref={fileInputRef}
-            type="file"
-            onChange={handleFileChange}
-            accept="audio/*"
-            style={{ display: "none" }}
-          />
-          <Button variant="contained" onClick={triggerFileInputClick}>
-            Choose File
-          </Button>
-          <Input
-            type="text"
-            value={file ? file.name : ""}
-            readOnly
-            placeholder="No file chosen"
-            sx={{
-              marginLeft: "20px",
-              width: "500px",
-            }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleFileUpload}
-                  edge="end"
-                  disabled={file === null}
-                  color={file === null ? "default" : "primary"}
-                >
-                  <SendIcon />
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </div>
-        <div className="flex m-4 justify-center">
-          <Box
-            position="relative"
-            border={1}
-            borderColor="rgba(0,0,0,0.2)"
-            mt={2}
-            pt={1.5}
-            pl={2}
-            borderRadius="5px"
-            width="800px"
-            margin="auto"
-          >
-            <SettingDrawer items={items}>Setting</SettingDrawer>
-            <Box display="flex" flexWrap="wrap" justifyContent="space-around">
-              {items.map((item, index) => (
-                <div key={index}>
-                  {item.title}: <span>{item.value}</span>
-                </div>
-              ))}
-            </Box>
+      <div className="flex flex-col-reverse md:flex-col w-full flex-grow">
+        <section className="flex flex-grow gap-2 justify-center w-full flex-wrap">
+          <Box maxWidth={800} className="my-auto">
+            <div className="m-5">{script}</div>
           </Box>
+        </section>
+        <div className="w-full">
+          <Divider></Divider>
+          <div className="flex m-4 justify-center">
+            <input
+              ref={fileInputRef}
+              type="file"
+              onChange={handleFileChange}
+              accept="audio/*"
+              style={{ display: "none" }}
+            />
+            <Button variant="contained" onClick={triggerFileInputClick}>
+              Choose File
+            </Button>
+            <Input
+              type="text"
+              value={file ? file.name : ""}
+              readOnly
+              placeholder="No file chosen"
+              sx={{
+                marginLeft: "20px",
+                width: "500px",
+              }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleFileUpload}
+                    edge="end"
+                    disabled={file === null}
+                    color={file === null ? "default" : "primary"}
+                  >
+                    <SendIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </div>
+          <div className="flex m-4 justify-center">
+            <Box
+              position="relative"
+              border={1}
+              borderColor="rgba(0,0,0,0.2)"
+              mt={2}
+              pt={1.5}
+              pl={2}
+              borderRadius="5px"
+              width="800px"
+              margin="auto"
+            >
+              <SettingDrawer items={items}>Setting</SettingDrawer>
+              <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+                {items.map((item, index) => (
+                  <div key={index}>
+                    {item.title}: <span>{item.value}</span>
+                  </div>
+                ))}
+              </Box>
+            </Box>
+          </div>
         </div>
       </div>
     </div>

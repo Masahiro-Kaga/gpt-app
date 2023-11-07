@@ -83,10 +83,24 @@ const Login: React.FC = () => {
         localTime,
         accessedRegion,
       });
+      if (user.isSessionActive){
+        const logoutResponse: APIGeneralResponseType = await axios.get(
+          "/api/user/logout"
+        );
+        logoutResponse.pass && dispatch(deleteSession());  
+      }
+      const loginResponse: APIGeneralResponseType = await axios.post(
+        "/api/user/login",
+        {
+          username,
+          password,
+        }
+      );
+      loginResponse.pass && dispatch(fetchSession({ username }));
       setLogInOutModal({
         open: true,
         title: response.pass ? "Success!" : "Failed",
-        message: response.pass ? "You are now Registered!" : response.data,
+        message: response.pass ? "You are now Registered and Logged in!" : response.data,
       });
       setUsername("");
       setPassword("");

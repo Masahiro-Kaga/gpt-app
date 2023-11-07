@@ -25,7 +25,9 @@ const GptHandler: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [maxToken, setMaxToken] = useState<number>(500);
   const [temperature, setTemperature] = useState<number>(0.3);
-  const [answer, setAnswer] = useState<string>("🤖Let's get the answer by smart AI😀");
+  const [answer, setAnswer] = useState<string>(
+    "🤖Let's get the answer by smart AI😀"
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({
@@ -86,7 +88,7 @@ const GptHandler: React.FC = () => {
           "User cannot request twice or more.",
           "Ask developer to remove the usage restriction."
         );
-      } else if (response.data === "Same IP."){
+      } else if (response.data === "Same IP.") {
         handleOpenModal(
           "User cannot request from the same IP as others.",
           "Ask developer to remove the IP restriction."
@@ -144,60 +146,62 @@ const GptHandler: React.FC = () => {
       ></CommonModal>
 
       <div className="text-center p-10 text-2xl">GPT Handler</div>
-      <section className="flex gap-2 justify-center w-full flex-wrap">
-        <Box maxWidth={800}>
-          <div>{answer}</div>
-        </Box>
-      </section>
-      <div className="w-full">
-        <Divider></Divider>
-        <div className="flex m-4 justify-center">
-          <TextField
-            label="Input prompt..."
-            className=""
-            value={prompt}
-            onChange={(event) => setPrompt(event.target.value)}
-            sx={{
-              margin: "0px",
-              width: "800px",
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={getAnswer}
-                    edge="end"
-                    disabled={prompt.length < 1}
-                    color={prompt.length < 1 ? "default" : "primary"}
-                  >
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
-        </div>
-        <div className="flex m-4 justify-center">
-          <Box
-            position="relative"
-            border={1}
-            borderColor="rgba(0,0,0,0.2)"
-            mt={2}
-            pt={1.5}
-            pl={2}
-            borderRadius="5px"
-            width="800px"
-            margin="auto"
-          >
-            <SettingDrawer items={items}>Setting</SettingDrawer>
-            <Box display="flex" flexWrap="wrap" justifyContent="space-around">
-              {items.map((item, index) => (
-                <div key={index}>
-                  {item.title}: <span>{item.value}</span>
-                </div>
-              ))}
-            </Box>
+      <div className="flex flex-col-reverse md:flex-col w-full flex-grow">
+        <section className="flex flex-grow gap-2 justify-center w-full flex-wrap">
+          <Box maxWidth={800} className="my-auto" >
+            <div className="m-5">{answer}</div>
           </Box>
+        </section>
+        <div className="w-full">
+          <Divider></Divider>
+          <div className="flex m-4 justify-center">
+            <TextField
+              label="Input prompt..."
+              className=""
+              value={prompt}
+              onChange={(event) => setPrompt(event.target.value)}
+              sx={{
+                margin: "0px",
+                width: "800px",
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={getAnswer}
+                      edge="end"
+                      disabled={prompt.length < 1}
+                      color={prompt.length < 1 ? "default" : "primary"}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
+          </div>
+          <div className="flex m-4 justify-center">
+            <Box
+              position="relative"
+              border={1}
+              borderColor="rgba(0,0,0,0.2)"
+              mt={2}
+              pt={1.5}
+              pl={2}
+              borderRadius="5px"
+              width="800px"
+              margin="auto"
+            >
+              <SettingDrawer items={items}>Setting</SettingDrawer>
+              <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+                {items.map((item, index) => (
+                  <div key={index}>
+                    {item.title}: <span>{item.value}</span>
+                  </div>
+                ))}
+              </Box>
+            </Box>
+          </div>
         </div>
       </div>
     </div>

@@ -28,7 +28,7 @@ class RouteHandler {
         // Allow CORS = require(same origin.
 		// const origin = [];
         // process.env.NODE_ENV === 'development' && origin.push( `${process.env.REACT_APP_URL}:${process.env.REACT_APP_CLIENT_PORT || 3000}` );
-		const origin = ["http://localhost:8000","http://localhost:3000","https://mkportfolio.link"];
+		const origin = ["http://localhost:8000","http://localhost:3000", "https://mkportfolio.link"];
 
         const corsSettings = { origin };
         // process.env.NODE_ENV === 'development' && ( corsSettings.credentials = true ); // Access-Control-Allow-Credentials when axios sent withCredentials.
@@ -46,14 +46,16 @@ class RouteHandler {
 				saveUninitialized: false,
 
 				cookie: {
-                    // secure:true,
 					secure:process.env.NODE_ENV === "production" ? true : false,
                     httpOnly:true,
 					maxAge: +( process.env.SESSION_TIMEOUT || 4 * 60 * 60 * 1000 ),
 				},
 				proxy: true,
                 store: MongoStore.create({
-                    mongoUrl: connectDbUrl
+                    mongoUrl: connectDbUrl,
+					autoRemove: 'interval',
+					autoRemoveInterval: 10
+				  
                 })
 			} );
 			router.use( sessionMiddleware );
