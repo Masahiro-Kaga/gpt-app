@@ -127,7 +127,7 @@ const AudioScriptor: React.FC = () => {
       if (response.data === "Over usage.") {
         handleOpenModal(
           "User cannot request twice or more.",
-          "Ask developer to remove the usage restriction."
+          "Please reach out to the app developer via LinkedIn to request the removal of restrictions."
         );
       } else if (response.data === "Same IP.") {
         handleOpenModal(
@@ -190,6 +190,7 @@ const AudioScriptor: React.FC = () => {
         title={modalContent.title}
         message={modalContent.message}
         onClose={handleCloseModal}
+        linkedIn={true}
       ></CommonModal>
 
       <div className="text-center p-10 text-2xl">Audio Scriptor</div>

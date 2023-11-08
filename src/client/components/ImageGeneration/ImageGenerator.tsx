@@ -100,7 +100,7 @@ const ImageGenerator: React.FC = () => {
       if (response.data === "Over usage.") {
         handleOpenModal(
           "User cannot request twice or more.",
-          "Ask developer to remove the usage restriction."
+          "Please reach out to the app developer via LinkedIn to request the removal of restrictions."
         );
       } else if (response.data === "Same IP.") {
         handleOpenModal(
@@ -157,6 +157,7 @@ const ImageGenerator: React.FC = () => {
         title={modalContent.title}
         message={modalContent.message}
         onClose={handleCloseModal}
+        linkedIn={true}
       ></CommonModal>
 
       <div className="text-center py-6 text-2xl">Image Generator</div>

@@ -76,7 +76,7 @@ export default function Header() {
         } catch (error) {
           console.error("Error during logout:", error);
         }
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error("Error opening modal:", error);
     }

@@ -7,9 +7,10 @@ interface ModalProps {
     message: string;
     onClose: () => void;
     noButton?: boolean;
+    linkedIn?: boolean;
   }
   
-const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose, noButton }) => {
+const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose, noButton, linkedIn }) => {
     return (
       <Modal
         open={open}
@@ -29,6 +30,7 @@ const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose, noBu
         border: "2px solid #000",
         boxShadow: 24,
         p: 4,
+        borderRadius: 3,
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
@@ -44,7 +46,12 @@ const CommonModal: React.FC<ModalProps> = ({ open, title, message, onClose, noBu
         {/* // if no button is specified, do not show the button */}
         {!noButton && (
           <Button variant="contained" color="primary" onClick={onClose}>
-            OK
+            Close
+          </Button>
+        )}
+        {linkedIn && (
+          <Button variant="contained" color="primary" onClick={() => { window.open('https://www.linkedin.com/in/masahiro-kaga-ab8604192/', '_blank') }}>
+            LinkedIn
           </Button>
         )}
       </Box>
