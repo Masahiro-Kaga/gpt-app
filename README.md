@@ -15,6 +15,29 @@ Portfolio - Open AI Play Ground
 
 <br>
 
+## What user can do with this App
+Simply, AI will help you to
+- Create images.
+- Answer the user's question.
+- Transcript via audio file.
+
+
+<br>
+
+## Features
+| Category   | Technologies                                            |
+|------------|---------------------------------------------------------|
+| Client     | React.js with Typescript, Redux, Tailwind, Material UI   |
+| Server     | MongoDB, Express.js, Node.js                            |
+| DevOps     | AWS (VPC, EC2, Route53, S3), Docker, Webpack            |
+| AI/ML      | OpenAI API (GPT-3.5, DALL-E, Whisper)                   |
+| Security   | Session management for user authentication              |
+| Validation | Client:Input validation, Server: JOI module                    |
+
+
+<br>
+
+
 ## Usage and Temrs of Use
 
  Usage
@@ -30,27 +53,24 @@ Portfolio - Open AI Play Ground
 
 <br>
 
-## Features
+## Environment
+| Category   | Technologies                                            |
+|------------|---------------------------------------------------------|
+| Client     | React.js with Typescript, Redux, Tailwind, Material UI   |
+| Server     | MongoDB, Express.js, Node.js                            |
+| DevOps     | AWS (VPC, EC2, Route53, S3), Docker, Webpack            |
+| AI/ML      | OpenAI API (GPT-3.5, DALL-E, Whisper)                   |
+| Security   | Session management for user authentication              |
+| Validation | Input validation with the JOI module                    |
+| Design     | Fully responsive design                                 |
 
-- Built with MERN stack.
-- Hosted on AWS EC2.
-- Offers three main services: Image generation, Chat, and Audio transcription.
-- Integrates with OpenAI's API.
-- App configuration with Docker and Webpack.
-- Built using TypeScript.
-- Session management for user authentication.
-- State management with Redux.
-- RESTful API calls using Axios.
-- Styled with Material UI (MUI).
-- Also styled using Tailwind.
-- Input validation with the JOI module.
-- Fully responsive design.
 
 <br>
 
 ## Deploy Environment
 
 - AWS EC2 (For both client and server-side hosting)
+
 <br>
 
 
