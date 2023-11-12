@@ -1,8 +1,8 @@
-const dotenv = require("dotenv");
+
 const { Configuration, OpenAIApi } = require("openai");
 const User = require("../../models/User.model");
 
-dotenv.config();
+
 
 const openaiAuthorized = (req, res, next) => {
   try {

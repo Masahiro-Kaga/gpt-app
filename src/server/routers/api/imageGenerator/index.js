@@ -1,9 +1,9 @@
 const express = require("express");
-const dotenv = require("dotenv");
+
 
 const { openaiAuthorized, usageRestrictions } = require("../../middleware/index");
 
-dotenv.config();
+
 
 const router = express.Router();
 

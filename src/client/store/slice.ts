@@ -1,13 +1,8 @@
 import axios from "axios";
 
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk, AsyncThunkAction, AsyncThunk } from "@reduxjs/toolkit";
 
 import { APIGeneralResponseType } from "../axiosConfig";
-
-const userInitialState = {
-  username: "",
-  isSessionActive: false,
-};
 
 export const fetchLatestSessionData = createAsyncThunk(
   "user/fetchLatestSessionData",
@@ -23,9 +18,15 @@ export const fetchLatestSessionData = createAsyncThunk(
   }
 );
 
+// Define the type of the thunk inside the slice.
+export type FetchLatestSessionData = AsyncThunkAction<APIGeneralResponseType, void, {}>;
+
 const userSlice = createSlice({
   name: "userSlice",
-  initialState: userInitialState,
+  initialState: {
+    username: "",
+    isSessionActive: false,
+  },
   reducers: {
     fetchSession: (state, action: PayloadAction<{ username: string }>) => {
       state.username = action.payload.username;
@@ -50,13 +51,33 @@ const userSlice = createSlice({
   },
 });
 
-const optionInitialState = {
-  headerHeight: 0,
-};
+const locationSlice = createSlice({
+  name: "locationSlice",
+  initialState: {
+    location: "",
+  },
+  reducers: {
+    setCurrentPath: (state, action: PayloadAction<{ location: string }>) => {
+      state.location = action.payload.location;
+    },
+  },
+});
+
+const httpErrorSlice = createSlice({
+  name: "httpErrorSlice",
+  initialState: { httpError: ""},
+  reducers: {
+    setHttpError: (state, action: PayloadAction<{ httpError: string }>) => {
+      state.httpError = action.payload.httpError;
+    },
+  },
+})
 
 const optionSlice = createSlice({
   name: "optionSlice",
-  initialState: optionInitialState,
+  initialState: {
+    headerHeight: 0,
+  },
   reducers: {
     getHeaderHeight: (
       state,
@@ -68,7 +89,11 @@ const optionSlice = createSlice({
 });
 
 export const { fetchSession, deleteSession } = userSlice.actions;
+export const { setCurrentPath } = locationSlice.actions;
+export const { setHttpError } = httpErrorSlice.actions;
 export const { getHeaderHeight } = optionSlice.actions;
 
 export const userReducer = userSlice.reducer;
+export const locationReducer = locationSlice.reducer;
+export const httpErrorReducer = httpErrorSlice.reducer;
 export const optionReducer = optionSlice.reducer;

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { useEffect } from "react";
 import {
   Routes,
@@ -10,8 +8,9 @@ import {
 } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { APIGeneralResponseType } from "./axiosConfig";
-import { fetchSession, deleteSession } from "./store/slice";
+import { implementAxiosInterceptor } from "./axiosConfig";
+import { fetchLatestSessionData, setCurrentPath } from "./store/slice";
+import store, { AppDispatch } from "./store/store";
 
 import ContentsPage from "./pages/ContentsPage";
 import Header from "./components/common/Header";
@@ -20,71 +19,15 @@ import ErrorPage from "./pages/ErrorPage";
 
 const App:React.FC = () =>{
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
 
-  useEffect(() => {
-    const responseInterceptor = axios.interceptors.response.use(
-      (response) => {
-        return response.data;
-      },
-      (error) => {
-        if (error.code === "ECONNABORTED") {
-          return { pass: false, data: "Request timed out, No response." };
-        }
-
-        switch (error.response.status) {
-          case 500:
-            navigate("/error/500");
-            break;
-
-          case 440:
-            console.log(
-              error.request,
-              "Session Expired. Logging out and redirecting to 440 page."
-            );
-            dispatch(deleteSession());
-            if (location.pathname !== "/") {
-              navigate(`/error/${error.response.status}`);
-            }
-            break;
-
-          case 404:
-            navigate(`/error/${error.response.status}`);
-            break;
-
-          case 403:
-            break;
-
-          case 401:
-            break;
-
-          default:
-        }
-        return { pass: false, data: error.response.data };
-      }
-    );
-    return () => {
-      axios.interceptors.response.eject(responseInterceptor);
-    };
-  }, [navigate]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response: APIGeneralResponseType = await axios.get(
-          "/api/user/check-session"
-        );
-        if (response.pass === null) return;
-        if (response.pass === true) {
-          dispatch(fetchSession({ username: response.data }));
-        }
-      } catch (error) {
-        throw error;
-      }
-    };
-    fetchData();
-  }, [location.pathname]);
+  // Because of Strict Mode, this useEffect is called twice. Thus, clean up function is needed.
+  useEffect(() => { return implementAxiosInterceptor(navigate, dispatch, store) }, []);
+  // Apart from Error Page, fetch latest session data when the path is changed.
+  useEffect(() => { !location.pathname.includes("error") && dispatch(fetchLatestSessionData())}, [location.pathname]);
+  // Due to the axios configuration to navigate the user to the error page when the user is not authenticated,
+  useEffect(() => { dispatch(setCurrentPath({location:location.pathname})),[location.pathname]}); 
 
   return (
     <Routes>
@@ -101,6 +44,7 @@ const App:React.FC = () =>{
         <Route path=":subPage" element={<ContentsPage />} />
       </Route>
       <Route path="/error/:errorCode" element={<ErrorPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }

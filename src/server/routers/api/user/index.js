@@ -1,6 +1,6 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
 
 const validateUser = require("./middleware");
 const User = require("../../../models/User.model");
@@ -9,13 +9,11 @@ const {
   UserLoginValidationSchema,
 } = require("../../../models/User.model");
 
-dotenv.config();
-
 const router = express.Router();
 
 router.post("/", validateUser, async (req, res) => {
   try {
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
     const { error, value } = UserValidationSchema.validate(req.body, {
       abortEarly: false,
     });
@@ -25,7 +23,7 @@ router.post("/", validateUser, async (req, res) => {
         .status(401)
         .json(`User registration validation error: ${error.message}`);
     }
-    const newUser = new User({...req.body,clientIp});
+    const newUser = new User({ ...req.body, clientIp });
     await newUser.save();
     res.send({ pass: true, data: newUser });
   } catch (error) {
@@ -49,6 +47,11 @@ router.post("/login", async (req, res) => {
     }
 
     const user = await User.findOne({ username: req.body.username });
+
+    // Forcely delete all sessions with the same usernam.
+    const sessionCollection = await mongoose.connection.collection("sessions");
+    await sessionCollection.deleteMany({ session: { $regex: `.*"username":"${req.body.username}".*` } });
+    
     const isValidPassword =
       user && (await bcrypt.compare(req.body.password, user.password));
     if (!user || !isValidPassword) {
@@ -87,17 +90,14 @@ router.get("/check-session", async (req, res) => {
       if (!user) {
         return res.status(401).json("Unauthorized. Invalid credentials.");
       }
-
       return res.json({ pass: true, data: user.username });
     }
     if (req.session && !("userId" in req.session)) {
-      return res.status(440).json("Session expired.");
+      return res.status(401).json("Session already expired or No session.");
     }
   } catch (error) {
     console.error(`Check session error: ${error.message}`);
-    return res
-      .status(500)
-      .json("Internal Server Error while user check login status.");
+    return res.status(500).json("Internal Server Error.");
   }
 });
 

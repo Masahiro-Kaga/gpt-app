@@ -1,11 +1,67 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { Fade, Button } from "@mui/material";
 
 import BackgroundImage from "../components/common/BackgroundImage";
+import { AppDispatch, RootState } from "../store/store";
+import { setHttpError } from "../store/slice";
+
+const ErrorPage: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const params = useParams();
+  const [key, setKey] = useState(Math.random());
+
+  const httpStatus = useSelector((state: RootState) => state.httpErrorKey);
+  const errorCode = params.errorCode || 404;
+  const httpError = httpStatus.httpError || "Page Not Found";
+
+  useEffect(() => {
+    setKey(Math.random());
+  }, [location]);
+
+  useEffect(() => {
+    // Clean up function: reset httpError to empty string when the user leaves the page.
+    return () => {
+      dispatch(setHttpError({ httpError: "" }));
+    };
+  }, []);
+
+  const redirectRootPageHandler = () => {
+    navigate("/");
+  };
+
+  return (
+    <>
+      <BackgroundImage
+        url="/images/background-images/error-bg.gif"
+        classOption="opacity-80 brightness-50 grayscale"
+      />
+      <Fade key={key} in={true} timeout={1000} mountOnEnter unmountOnExit>
+        <div className="flex items-center justify-center h-screen">
+          <div css={errorContainerStyle}>
+            <div css={titleStyle}>Error: {errorCode}</div>
+            <div>
+              <p css={messageStyle}>{httpError}</p>
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={redirectRootPageHandler}
+            >
+              Back to Home
+            </Button>
+          </div>
+        </div>
+      </Fade>
+    </>
+  );
+};
 
 const errorContainerStyle = css`
   width: 300px;
@@ -31,50 +87,5 @@ const messageStyle = css`
   margin-bottom: 10px;
   align-self: center;
 `;
-
-const ErrorPage: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params: any = useParams();
-  const [key, setKey] = useState(Math.random());
-
-  useEffect(() => {
-    setKey(Math.random());
-  }, [location]);
-
-  const handleLoginClick = () => {
-    navigate("/");
-  };
-
-  return (
-    <>
-      <BackgroundImage
-        url="/images/background-images/error-bg.gif"
-        classOption="opacity-80 brightness-50 grayscale"
-      />
-      <Fade key={key} in={true} timeout={1000} mountOnEnter unmountOnExit>
-        <div className="flex items-center justify-center h-screen">
-          <div css={errorContainerStyle}>
-            <div css={titleStyle}>Error: {params.errorCode}</div>
-            <div>
-              {params.errorCode === "440" && (
-                <p css={messageStyle}>Session Expired, Please login.</p>
-              )}
-            </div>
-            {params.errorCode === "440" && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleLoginClick}
-              >
-                Login
-              </Button>
-            )}
-          </div>
-        </div>
-      </Fade>
-    </>
-  );
-};
 
 export default ErrorPage;

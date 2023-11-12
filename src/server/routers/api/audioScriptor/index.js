@@ -1,11 +1,11 @@
 const express = require("express");
-const dotenv = require("dotenv");
+
 const multer = require("multer");
 const { Readable } = require("stream");
 
 const { openaiAuthorized, usageRestrictions } = require("../../middleware/index");
 
-dotenv.config();
+
 
 const router = express.Router();
 

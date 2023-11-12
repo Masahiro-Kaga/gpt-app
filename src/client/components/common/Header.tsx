@@ -10,6 +10,7 @@ import {
   ListItem,
   ListItemText,
   Drawer,
+  ListItemButton,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -83,20 +84,30 @@ export default function Header() {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <List>
-        <ListItem component={Link} to="/contents/image-generation">
+        <ListItemButton component={Link} to="/contents/image-generation">
           <ListItemText primary="Image Generator" />
-        </ListItem>
-        <ListItem component={Link} to="/contents/gpt-handler">
+        </ListItemButton>
+        <ListItemButton component={Link} to="/contents/gpt-handler">
           <ListItemText primary="GPT Handler" />
-        </ListItem>
-        <ListItem component={Link} to="/contents/audio-script">
+        </ListItemButton>
+        <ListItemButton component={Link} to="/contents/audio-script">
           <ListItemText primary="Audio Scriptor" />
-        </ListItem>
-        <ListItem onClick={() => logoutUser()}>
+        </ListItemButton>
+      </List>
+      <List>
+        <ListItemButton onClick={() => logoutUser()}>
           <ListItemText primary={user.isSessionActive ? "Logout" : ""} />
-        </ListItem>
+        </ListItemButton>
       </List>
     </Box>
   );
@@ -220,32 +231,6 @@ export default function Header() {
               >
                 <MenuIcon />
               </IconButton>
-              <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                <ServiceButton
-                  to="/contents/image-generation"
-                  fontSize="13px"
-                  title="Image Generator"
-                  backgroundColor="rgb(245, 186, 71)"
-                  disabled={false}
-                />
-                <ServiceButton
-                  to="/contents/gpt-handler"
-                  fontSize="13px"
-                  title="GPT Handler"
-                  backgroundColor="rgb(11, 144, 166)"
-                  disabled={false}
-                ></ServiceButton>
-                <ServiceButton
-                  to="/contents/audio-script"
-                  fontSize="13px"
-                  title="Audio Scriptor"
-                  backgroundColor="rgb(230, 144, 166)"
-                  disabled={false}
-                ></ServiceButton>
-                <Button onClick={() => logoutUser()}>
-                  {user.isSessionActive ? "Logout" : ""}
-                </Button>
-              </Box>
               <Drawer
                 variant="temporary"
                 anchor="left"

@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import axios from "axios";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /** @jsxImportSource @emotion/react */
@@ -20,7 +20,7 @@ import {
 
 import { APIGeneralResponseType } from "../../axiosConfig";
 import { RootState } from "../../store/store";
-import { fetchSession, deleteSession } from "../../store/slice";
+import { fetchSession, deleteSession, setHttpError } from "../../store/slice";
 import ServiceButton from "./ServiceButton";
 import UserAuthButton from "./UserAuthButton";
 
@@ -71,9 +71,13 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setHttpError({ httpError: "" }));
+  }, [dispatch]);
   const user = useSelector((state: RootState) => state.userKey);
-
+  
   const registerUser = async () => {
+    setLoading(true);
     const localTime = moment.tz(moment.tz.guess()).format();
     const accessedRegion = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
@@ -102,12 +106,22 @@ const Login: React.FC = () => {
         title: response.pass ? "Success!" : "Failed",
         message: response.pass ? "You are now Registered and Logged in!" : response.data,
       });
+    } catch (error) {
+      console.error(error);
+      setLogInOutModal({
+        open: true,
+        title: "Failed",
+        message: "An error occurred",
+      });
+      setLoading(false);
+    } finally {
       setUsername("");
       setPassword("");
-    } catch (error) {}
+      setLoading(false);
+    }
   };
 
-  const loginUser = async (): Promise<APIGeneralResponseType> => {
+  const loginUser = async () => {
     setLoading(true);
     try {
       const response: APIGeneralResponseType = await axios.post(
@@ -123,11 +137,11 @@ const Login: React.FC = () => {
         title: response.pass ? "Success!" : "Failed",
         message: response.pass ? "You are now Logged In!" : response.data,
       });
-      return response;
     } catch (error) {
       console.error(error);
-      return { pass: false, data: "An error occurred" };
     } finally {
+      setUsername("");
+      setPassword("");
       setLoading(false);
     }
   };

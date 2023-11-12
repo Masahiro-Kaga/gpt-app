@@ -17,9 +17,9 @@ class RouteHandler {
 	 *
 	 * @returns {object} Express router object.
 	 */
-	static getMiddlewareRoutes(connectDbUrl) {
+	static getMiddlewareRoutes() {
 		const router = express.Router();
-		let sessionMiddleware = null;
+		// let sessionMiddleware = null;
 
 		// if (process.env.NODE_ENV === "production") {
 		// 	router.set('trust proxy', 1); // trust first proxy
@@ -35,36 +35,7 @@ class RouteHandler {
 		corsSettings.credentials = true;
 
         router.use( cors( corsSettings ) );
-		router.use( cookieParser() );
-
-		if ( mongoose !== undefined && mongoose.connection !== undefined ) {
-			sessionMiddleware = session( {
-				sameSite: 'lax',
-				secret: process.env.SESSION_SECRET,
-				resave: false,
-				rolling: true,
-				saveUninitialized: false,
-
-				cookie: {
-					secure:process.env.NODE_ENV === "production" ? true : false,
-                    httpOnly:true,
-					maxAge: +( process.env.SESSION_TIMEOUT || 4 * 60 * 60 * 1000 ),
-				},
-				proxy: true,
-                store: MongoStore.create({
-                    mongoUrl: connectDbUrl,
-					autoRemove: 'interval',
-					autoRemoveInterval: 10
-				  
-                })
-			} );
-			router.use( sessionMiddleware );
-		}
-
-		return {
-			router,
-			sessionMiddleware,
-		};
+		return router;
 	}
 
 	/**

@@ -21,12 +21,7 @@ app.use(express.json());
 
 const connectDb = async () => {
   try {
-    return DBHandler.init({
-      driver: process.env.MONGODB_DRIVER || "",
-      username: process.env.MONGODB_USERNAME || "",
-      password: process.env.MONGODB_PASSWORD || "",
-      database: process.env.MONGODB_DATABASE || "",
-    });
+    return DBHandler.init();
   } catch (error) {
     console.error("Error while connecting to the database: ", error);
     return false;
@@ -36,13 +31,13 @@ const connectDb = async () => {
 (async () => {
 
   const isConnectedDb = await connectDb();
-  if (!isConnectedDb.pass) {
+  if (!isConnectedDb) {
     console.log("Unable to connect to mongodb, check console.");
   } else {
-    const { router: middlewareRouter } = await RouteHandler.getMiddlewareRoutes(
-      isConnectedDb.data.url
-    );
+    const middlewareRouter = await RouteHandler.getMiddlewareRoutes();
+    const middlewareDatabase = await DBHandler.getMiddlewareSession();
     app.use(middlewareRouter);
+    app.use(middlewareDatabase);
 
     const apiRouter = await RouteHandler.getApiRoutes();
     app.use(apiRouter);
@@ -50,6 +45,5 @@ const connectDb = async () => {
     console.log("Connected mongo.");
   }
 })();
-
 
 app.listen(port, () => console.log(`Server is running on PORT ${port}`));
