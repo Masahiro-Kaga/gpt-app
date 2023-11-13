@@ -16,6 +16,9 @@ import {
   InputLabel,
   Modal,
   Typography,
+  List,
+  ListItemText,
+  useMediaQuery,
 } from "@mui/material";
 
 import { APIGeneralResponseType } from "../../axiosConfig";
@@ -69,13 +72,14 @@ const Login: React.FC = () => {
     message: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const isDesktop = useMediaQuery("(min-width:768px)");
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setHttpError({ httpError: "" }));
   }, [dispatch]);
   const user = useSelector((state: RootState) => state.userKey);
-  
+
   const registerUser = async () => {
     setLoading(true);
     const localTime = moment.tz(moment.tz.guess()).format();
@@ -87,11 +91,11 @@ const Login: React.FC = () => {
         localTime,
         accessedRegion,
       });
-      if (user.isSessionActive){
+      if (user.isSessionActive) {
         const logoutResponse: APIGeneralResponseType = await axios.get(
           "/api/user/logout"
         );
-        logoutResponse.pass && dispatch(deleteSession());  
+        logoutResponse.pass && dispatch(deleteSession());
       }
       const loginResponse: APIGeneralResponseType = await axios.post(
         "/api/user/login",
@@ -104,7 +108,9 @@ const Login: React.FC = () => {
       setLogInOutModal({
         open: true,
         title: response.pass ? "Success!" : "Failed",
-        message: response.pass ? "You are now Registered and Logged in!" : response.data,
+        message: response.pass
+          ? "You are now Registered and Logged in!"
+          : response.data,
       });
     } catch (error) {
       console.error(error);
@@ -165,6 +171,10 @@ const Login: React.FC = () => {
     }
   };
 
+  const linkedinNaviagtor = () => {
+    window.open("https://www.linkedin.com/in/masahiro-kaga-ab8604192/", "_blank");
+  }
+
   return (
     <div className="relative flex flex-col-reverse justify-around w-full md:flex-row md:h-screen items-center">
       <Backdrop
@@ -179,49 +189,59 @@ const Login: React.FC = () => {
           <div>
             User Status:
             {user.username ? (
-              <span className="text-green-400">
-                {" "}
-                Logged In
-              </span>
+              <span className="text-green-400"> Logged In</span>
             ) : (
               <span className="text-red-500"> Nobody Logged In</span>
             )}
           </div>
-          
-          {user.username && <div>User: <span className="text-green-400">{user.username}</span></div>}
-          
-        </div>
-        <div css={loginContainer}>
-          <InputForm
-            value={username}
-            label="Username"
-            onChangeEvent={(event) => setUsername(event.target.value)}
-          ></InputForm>
-          <InputForm
-            value={password}
-            label="Password"
-            onChangeEvent={(event) => setPassword(event.target.value)}
-          ></InputForm>
-          <div className="flex gap-2">
-            <div className="flex-1">
-              {user.isSessionActive ? (
-                <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
-              ) : (
-                <UserAuthButton userAction={loginUser} typeOfButton="Login" />
-              )}
+
+          {user.username && (
+            <div>
+              User: <span className="text-green-400">{user.username}</span>
             </div>
-            <div className="flex-1">
+          )}
+        </div>
+        {user.isSessionActive ? (
+          <div css={loginContainer}>
+            <List>
+              <ListItemText css={ listItemIndent }>・Select a service {isDesktop ? " on the right" : "above"} to start playing.</ListItemText>
+              <ListItemText css={ listItemIndent }>・Usage limit of each service is 1 time per User or IP Location due to security and API cost considerations.</ListItemText>
+              <ListItemText css={ listItemIndent }>・For unlimited access or any inquiries, please contact me via LinkedIn below.</ListItemText>
+            </List>
+            <div className="flex gap-2">
+              <UserAuthButton userAction={linkedinNaviagtor} typeOfButton="LinkedIn" />
+              <UserAuthButton userAction={logoutUser} typeOfButton="Logout" />
+            </div>
+          </div>
+        ) : (
+          <div css={loginContainer}>
+            <InputForm
+              value={username}
+              label="Username"
+              onChangeEvent={(event) => setUsername(event.target.value)}
+            ></InputForm>
+            <InputForm
+              value={password}
+              label="Password"
+              onChangeEvent={(event) => setPassword(event.target.value)}
+            ></InputForm>
+
+            <div className="flex gap-2">
+              <UserAuthButton userAction={loginUser} typeOfButton="Login" />
               <UserAuthButton
                 userAction={registerUser}
                 typeOfButton="Register"
               />
             </div>
           </div>
-        </div>
+        )}{" "}
       </div>
       <div css={descriptionContainer}>
         <img src="/images/logo.png"></img>
-        <div css={blinkingStyles} className={`flex flex-col gap-2 ${!user.isSessionActive && "hidden"}`}>
+        <div
+          css={blinkingStyles}
+          className={`flex flex-col gap-2 ${!user.isSessionActive && "hidden"}`}
+        >
           <ServiceButton
             to="/contents/image-generation"
             fontSize="1rem"
@@ -326,7 +346,14 @@ const loginContainer = css`
 const descriptionContainer = css`
   ${commonContainerStyles};
   width: 100%;
-  margin: 20px 0
+  margin: 20px 0;
+`;
+
+const listItemIndent = css`
+  color: white;
+  padding: 5px .8em;
+  text-indent: -1.0em;
+  text-align: justify;
 `;
 
 const blinkingStyles = css`
@@ -335,5 +362,7 @@ const blinkingStyles = css`
     0 100% { opacity: 1; }
   `} 2s 3;
 `;
+
+
 
 export default Login;

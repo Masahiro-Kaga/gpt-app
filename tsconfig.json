@@ -1,9 +1,6 @@
 {
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  },
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -11,9 +8,7 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@server/*": ["src/server/*"],
-      "@routers/*": ["src/server/routers/*"],
-      "@models/*": ["src/server/models/*"]
+      "@client/*": ["src/client/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,7 +17,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,

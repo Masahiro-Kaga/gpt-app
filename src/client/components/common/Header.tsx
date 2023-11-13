@@ -7,7 +7,6 @@ import {
   IconButton,
   useMediaQuery,
   List,
-  ListItem,
   ListItemText,
   Drawer,
   ListItemButton,
@@ -24,7 +23,7 @@ import { RootState } from "src/client/store/store";
 import { APIGeneralResponseType } from "src/client/axiosConfig";
 import axios from "axios";
 
-export default function Header() {
+const Header: React.FC = () => {
   const user = useSelector((state: RootState) => state.userKey);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -253,3 +252,5 @@ export default function Header() {
     </>
   );
 }
+
+export default Header;

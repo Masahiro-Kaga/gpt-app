@@ -19,14 +19,11 @@ class RouteHandler {
 	 */
 	static getMiddlewareRoutes() {
 		const router = express.Router();
-		// let sessionMiddleware = null;
 
-		// if (process.env.NODE_ENV === "production") {
-		// 	router.set('trust proxy', 1); // trust first proxy
-		// }
+		if (process.env.NODE_ENV === "production") {
+			router.set('trust proxy', 1); // trust first proxy
+		}
 
-        // Allow CORS = require(same origin.
-		// const origin = [];
         // process.env.NODE_ENV === 'development' && origin.push( `${process.env.REACT_APP_URL}:${process.env.REACT_APP_CLIENT_PORT || 3000}` );
 		const origin = ["http://localhost:8000","http://localhost:3000", "https://mkportfolio.link"];
 

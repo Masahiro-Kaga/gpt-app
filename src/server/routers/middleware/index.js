@@ -2,8 +2,6 @@
 const { Configuration, OpenAIApi } = require("openai");
 const User = require("../../models/User.model");
 
-
-
 const openaiAuthorized = (req, res, next) => {
   try {
     if (!process.env.CHATGPT_APIKEY) {

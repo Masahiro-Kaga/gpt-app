@@ -6,17 +6,17 @@ const cookieParser = require("cookie-parser");
 const chalk = require("chalk");
 
 const mongoURL = () => {
-  if (process.env.NODE_ENV === "production") {
-    return process.env.MONGODB_ATLAS_PROD;
-  } else if (process.env.NODE_ENV === "development") {
-    return process.env.MONGODB_ATLAS_DEV;
-  } else if (process.env.DOCKER_ENV) {
+  if (process.env.DOCKER_ENV) {
     // Docker environment variables. Flexible setting for any user.
     const driver = process.env.MONGODB_DRIVER;
     const username = process.env.MONGODB_USERNAME;
     const password = process.env.MONGODB_PASSWORD;
     const database = process.env.MONGODB_DATABASE;
     return `${driver}${username}:${password}@${database}`;
+  } else if (process.env.NODE_ENV === "development") {
+    return process.env.MONGODB_ATLAS_DEV;
+  } else if (process.env.NODE_ENV === "production") {
+    return process.env.MONGODB_ATLAS_PROD;
   }
 };
 
@@ -40,22 +40,6 @@ class DBHandler {
     }
   }
 
-  static mongoURL() {
-    if (process.env.NODE_ENV === "production") {
-      return process.env.MONGODB_ATLAS_PROD;
-    } else if (process.env.NODE_ENV === "development") {
-      return process.env.MONGODB_ATLAS_DEV;
-    } else if (process.env.DOCKER_ENV) {
-      // Docker environment variables. Flexible setting for any user.
-      const driver = process.env.MONGODB_DRIVER;
-      const username = process.env.MONGODB_USERNAME;
-      const password = process.env.MONGODB_PASSWORD;
-      const database = process.env.MONGODB_DATABASE;
-      return `${driver}${username}:${password}@${database}`;
-    }
-  };
-
-
   static async getMiddlewareSession() {
     const router = express.Router();
     let sessionMiddleware = null;
@@ -78,7 +62,7 @@ class DBHandler {
         },
         proxy: true,
         store: MongoStore.create({
-          mongoUrl: DBHandler.mongoURL(),
+          mongoUrl: mongoURL(),
           autoRemove: "interval",
           autoRemoveInterval: 10,
         }),

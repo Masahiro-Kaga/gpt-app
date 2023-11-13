@@ -319,6 +319,10 @@ module.exports = function (webpackEnv) {
           'scheduler/tracing': 'scheduler/tracing-profiling',
         }),
         ...(modules.webpackAliases || {}),
+        // Set the path from the src folder as a root to import modules
+        'src': path.resolve(__dirname, '../src/'),
+        // Set the path from the client folder
+        '@client': path.resolve(__dirname, '../src/client/')
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).

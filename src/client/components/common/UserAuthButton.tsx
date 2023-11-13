@@ -26,7 +26,6 @@ const UserAuthButton: React.FC<UserAuthButtonProps> = ({
       onClick={userAction}
     >
       <span className="w-full">{typeOfButton}</span>
-      {/* {typeOfButton} */}
     </Button>
   );
 };

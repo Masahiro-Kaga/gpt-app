@@ -5,14 +5,12 @@ require("module-alias/register");
 
 global.globalDir = path.resolve(__dirname, "../..");
 global.serverDir = path.resolve(__dirname);
-global.routesDir = path.resolve(__dirname, "./routes");
-global.modulesDir = path.resolve(__dirname, "./modules");
+global.routesDir = path.resolve(__dirname, "./routers");
+global.modelsDir = path.resolve(__dirname, "./models");
 
 dotenv.config();
 const port = process.env.REACT_APP_SERVER_PORT;
 const app = express();
-
-app.set('trust proxy', 1);
 
 const { DBHandler } = require("./db");
 const { RouteHandler } = require("./routers");
@@ -35,9 +33,9 @@ const connectDb = async () => {
     console.log("Unable to connect to mongodb, check console.");
   } else {
     const middlewareRouter = await RouteHandler.getMiddlewareRoutes();
-    const middlewareDatabase = await DBHandler.getMiddlewareSession();
+    const middlewareSession = await DBHandler.getMiddlewareSession();
     app.use(middlewareRouter);
-    app.use(middlewareDatabase);
+    app.use(middlewareSession);
 
     const apiRouter = await RouteHandler.getApiRoutes();
     app.use(apiRouter);

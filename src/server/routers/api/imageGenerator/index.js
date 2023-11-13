@@ -1,9 +1,7 @@
 const express = require("express");
 
 
-const { openaiAuthorized, usageRestrictions } = require("../../middleware/index");
-
-
+const { openaiAuthorized, usageRestrictions } = require(`${global.routesDir}/middleware/index`);
 
 const router = express.Router();
 
