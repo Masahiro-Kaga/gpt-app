@@ -2,10 +2,6 @@ const cors = require( 'cors');
 const path = require( 'path');
 const fs = require( 'fs');
 const express = require( 'express');
-const cookieParser = require( 'cookie-parser');
-const mongoose = require( 'mongoose');
-const session = require( 'express-session');
-const MongoStore = require('connect-mongo')
 // const helmet = require( 'helmet');
 
 /**
@@ -24,11 +20,15 @@ class RouteHandler {
 			router.set('trust proxy', 1); // trust first proxy
 		}
 
-        // process.env.NODE_ENV === 'development' && origin.push( `${process.env.REACT_APP_URL}:${process.env.REACT_APP_CLIENT_PORT || 3000}` );
-		const origin = ["http://localhost:8000","http://localhost:3000", "https://mkportfolio.link"];
+		const origin = [];
+		if (process.env.NODE_ENV === "development") {
+			origin.push(`http://localhost:${REACT_APP_CLIENT_PORT}`);
+		} else {
+			origin.push(`http://localhost:${REACT_APP_SERVER_PORT}`);
+			origin.push(process.env.REACT_APP_URL);
+		}
 
         const corsSettings = { origin };
-        // process.env.NODE_ENV === 'development' && ( corsSettings.credentials = true ); // Access-Control-Allow-Credentials when axios sent withCredentials.
 		corsSettings.credentials = true;
 
         router.use( cors( corsSettings ) );
