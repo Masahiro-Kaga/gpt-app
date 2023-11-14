@@ -2,7 +2,7 @@ const cors = require( 'cors');
 const path = require( 'path');
 const fs = require( 'fs');
 const express = require( 'express');
-// const helmet = require( 'helmet');
+const helmet = require( 'helmet' );
 
 /**
  * Static class for updating different routing components.
@@ -16,15 +16,18 @@ class RouteHandler {
 	static getMiddlewareRoutes() {
 		const router = express.Router();
 
+		// Allow security protocols via default helmet middleware(s).
+		router.use( helmet( { contentSecurityPolicy: false } ) );
+
 		if (process.env.NODE_ENV === "production") {
 			router.set('trust proxy', 1); // trust first proxy
 		}
 
 		const origin = [];
 		if (process.env.NODE_ENV === "development") {
-			origin.push(`http://localhost:${REACT_APP_CLIENT_PORT}`);
+			origin.push(`http://localhost:${process.env.REACT_APP_CLIENT_PORT}`);
 		} else {
-			origin.push(`http://localhost:${REACT_APP_SERVER_PORT}`);
+			origin.push(`http://localhost:${process.env.REACT_APP_SERVER_PORT}`);
 			origin.push(process.env.REACT_APP_URL);
 		}
 
