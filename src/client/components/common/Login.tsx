@@ -85,12 +85,21 @@ const Login: React.FC = () => {
     const localTime = moment.tz(moment.tz.guess()).format();
     const accessedRegion = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
-      const response: APIGeneralResponseType = await axios.post("/api/user", {
+      const response: APIGeneralResponseType = await axios.post("/api/user/register", {
         username,
         password,
         localTime,
         accessedRegion,
       });
+      if ( !response.pass ) {
+        setLogInOutModal({
+          open: true,
+          title: "Failed",
+          message: "Username already exists",
+        });
+        setLoading(false);
+        return;
+      }
       if (user.isSessionActive) {
         const logoutResponse: APIGeneralResponseType = await axios.get(
           "/api/user/logout"

@@ -33,10 +33,9 @@ const connectDb = async () => {
     console.log("Unable to connect to mongodb, check console.");
   } else {
     const middlewareRouter = await RouteHandler.getMiddlewareRoutes();
-    const middlewareSession = await DBHandler.getMiddlewareSession();
     app.use(middlewareRouter);
+    const middlewareSession = await DBHandler.getMiddlewareSession();
     app.use(middlewareSession);
-
     const apiRouter = await RouteHandler.getApiRoutes();
     app.use(apiRouter);
 

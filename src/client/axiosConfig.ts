@@ -32,7 +32,6 @@ export const implementAxiosInterceptor = (
     (error) => {
       // The case the request was made and the server responded with a status code that falls out of the range of 2xx.
       if (error.response) {
-        console.log(error.response.data);
         dispatch(
           setHttpError({
             httpError: error.response.data,
@@ -42,8 +41,10 @@ export const implementAxiosInterceptor = (
         // Different actions based on the HTTP status code from the error response.
         switch (error.response.status) {
           case 500: // Internal server error: navigate to a generic error page.
+          case 429: // Too many requests: navigate to a generic error page.
           case 404: // Not found: navigate to a not found error page.
           case 403: // Forbidden: add handling for forbidden resources.
+
             // Server error: navigate to a generic error page.
             navigate(`/error/${error.response.status}`);
             break;

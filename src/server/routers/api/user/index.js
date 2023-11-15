@@ -11,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.post("/", validateUser, async (req, res) => {
+router.post("/register", validateUser, async (req, res) => {
   try {
     const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
     const { error, value } = UserValidationSchema.validate(req.body, {

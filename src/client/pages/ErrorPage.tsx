@@ -85,7 +85,7 @@ const titleStyle = css`
 const messageStyle = css`
   font-size: 16px;
   margin-bottom: 10px;
-  align-self: center;
+  text-align: center;
 `;
 
 export default ErrorPage;
