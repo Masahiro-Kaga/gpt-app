@@ -17,6 +17,10 @@ const { RouteHandler } = require("./routers");
 
 app.use(express.json());
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1); // trust first proxy
+}
+
 const connectDb = async () => {
   try {
     return DBHandler.init();

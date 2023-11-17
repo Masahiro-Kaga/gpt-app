@@ -28,7 +28,7 @@ interface ImageData {
   imageName: string;
 }
 
-const defaultImageName = "placeHolder";
+const defaultImageName = "placeholder";
 
 const ImageGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");

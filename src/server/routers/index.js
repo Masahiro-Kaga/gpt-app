@@ -20,10 +20,6 @@ class RouteHandler {
     // Allow security protocols via default helmet middleware(s).
     router.use(helmet({ contentSecurityPolicy: false }));
 
-    if (process.env.NODE_ENV === "production") {
-      router.set("trust proxy", 1); // trust first proxy
-    }
-
     const origin = [];
     if (process.env.NODE_ENV === "development") {
       origin.push(`http://localhost:${process.env.REACT_APP_CLIENT_PORT}`);
