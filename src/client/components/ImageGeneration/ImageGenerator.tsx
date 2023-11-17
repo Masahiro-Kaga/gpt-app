@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Divider,
+  Button,
   IconButton,
   TextField,
   Select,
@@ -24,7 +25,10 @@ import { Item } from "src/client/types";
 
 interface ImageData {
   url: string;
+  imageName: string;
 }
+
+const defaultImageName = "placeHolder";
 
 const ImageGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
@@ -38,18 +42,17 @@ const ImageGenerator: React.FC = () => {
   });
 
   useEffect(() => {
-    const number = [];
+    const placeHolders = [];
     for (let i = 0; i < numberOfImages; i++) {
-      number.push({ url: "/images/place-holder/placeholder.png" });
+      placeHolders.push({
+        url: `/images/place-holder/${ defaultImageName }.png`,
+        imageName: `${defaultImageName}${i}`,
+      });
     }
-    setImageURLs({
-      data: number,
-    });
+    setImageURLs(placeHolders);
   }, [numberOfImages]);
 
-  const [imageURLs, setImageURLs] = useState<{ data: ImageData[] }>({
-    data: [],
-  });
+  const [imageURLs, setImageURLs] = useState<ImageData[]>([]);
 
   const items: Item[] = [
     {
@@ -118,6 +121,27 @@ const ImageGenerator: React.FC = () => {
     }
   };
 
+  const downloadImage = async (imageName: string) => {
+    try {
+      const response: Blob = await axios.get(
+        `/api/imageGenerator/downloadImage/${imageName}`,
+        {
+          responseType: "blob",
+        }
+      );
+      const url = window.URL.createObjectURL(response);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", imageName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleOpenModal = (title: string, message: string) => {
     setModalContent({ title, message });
     setModalOpen(true);
@@ -163,10 +187,13 @@ const ImageGenerator: React.FC = () => {
       <div className="text-center py-6 text-2xl">Image Generator</div>
       <div className="flex flex-col-reverse md:flex-col w-full flex-grow">
         <section className="flex flex-grow gap-2 justify-center w-full flex-wrap">
-          {imageURLs.data?.map((source: ImageData, index: number) => (
-            <figure key={index} className="my-auto">
+          {imageURLs?.map((source: ImageData) => (
+            <figure key={source.imageName} className="flex flex-col justify-center gap-2">
               <img src={source.url} className="max-h-60"></img>
-              {/* <div>{source.url}</div> */}
+              {!source.imageName.includes(defaultImageName) && (
+              <Button variant="contained" onClick={() => downloadImage(source.imageName)}>
+                DownLoad
+              </Button>)}
             </figure>
           ))}
         </section>

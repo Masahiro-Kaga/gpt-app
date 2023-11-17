@@ -13,7 +13,7 @@ router.post("/answer", openaiAuthorized, usageRestrictions, async (req, res) => 
     
     console.time("Answer load time");
     try {
-      const completion = await openai.createCompletion({
+      const response = await openai.createCompletion({
         model: "gpt-3.5-turbo-instruct",
         prompt: req.body.prompt
           ? req.body.prompt
@@ -22,7 +22,7 @@ router.post("/answer", openaiAuthorized, usageRestrictions, async (req, res) => 
         temperature: req.body.temperature,
       });
 
-      const answer = completion.data.choices[0].text;
+      const answer = response.data.choices[0].text;
       req.user.usageCount[req.body.serviceType] += 1;
       await req.user.save();
       res.json({ pass: true, data: answer });

@@ -22,7 +22,7 @@ router.post( "/script", openaiAuthorized, upload.single("audio"), usageRestricti
         const bufferStream = Readable.from(audioBuffer);
         bufferStream.path = req.file.originalname;
 
-        const script = await openai.createTranscription(
+        const response = await openai.createTranscription(
           bufferStream,
           "whisper-1",
           undefined,
@@ -38,7 +38,7 @@ router.post( "/script", openaiAuthorized, upload.single("audio"), usageRestricti
         req.user.usageCount[req.body.serviceType] += 1;
         await req.user.save();  
 
-        res.json({ pass: true, data: script.data.text });
+        res.json({ pass: true, data: response.data.text });
       } catch (error) {
         res.json({ pass: false, data: "Test unsuccessful" });
       } finally {
